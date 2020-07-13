@@ -20,7 +20,7 @@ export const Name = styled.p`
   margin: auto 0;
   cursor: pointer;
 
-  transition: color 0.2s ease-in-out;
+  transition: color 0.1s ease-in-out;
 
   &:hover {
     color: ${primary};
@@ -32,7 +32,12 @@ export const Settings = styled.div`
   height: 1.5rem;
   margin: auto 0;
   cursor: pointer;
-  color: ${primary};
+
+  transition: color 0.1s ease-in-out;
+
+  &:hover {
+    color: ${primary};
+  }
 `;
 
 export const Avatar = styled.i`
@@ -40,5 +45,16 @@ export const Avatar = styled.i`
   height: 2rem;
   margin: auto 0;
   cursor: pointer;
-  color: ${primary};
+
+  transition: color 0.1s ease-in-out;
+
+  &:hover {
+    color: ${primary};
+  }
+`;
+
+export const LinkContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  position: relative;
 `;

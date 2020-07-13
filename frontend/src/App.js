@@ -1,16 +1,19 @@
-import React from 'react';
+import React from "react";
 
-import { Router, Redirect } from '@reach/router';
+import { Router, Redirect } from "@reach/router";
 
-import Searchbar from './components/Searchbar';
-import Authbar from './components/Authbar';
-import Routes from './components/Routes';
+import Searchbar from "./components/Searchbar";
+import Authbar from "./components/Authbar";
+import Routes from "./components/Routes";
 
-import Home from './routes/Home';
+import Register from "./routes/Register";
+import Login from "./routes/Login";
 
-import NotFound from './routes/NotFound';
+import Home from "./routes/Home";
 
-import { MainContainer } from './styles';
+import NotFound from "./routes/NotFound";
+
+import { MainContainer } from "./styles";
 
 function App() {
   return (
@@ -18,8 +21,10 @@ function App() {
       <Searchbar />
       <Routes>
         <Router>
-          <Redirect from="/" to="/home" noThrow/>
+          <Redirect from="/" to="/home" noThrow />
           <Home path="home" />
+          <Register path="/register" />
+          <Login path="/login" />
           <NotFound default />
         </Router>
       </Routes>

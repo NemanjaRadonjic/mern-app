@@ -1,4 +1,6 @@
-import { css, createGlobalStyle } from 'styled-components';
+import { css, createGlobalStyle } from "styled-components";
+
+import { primary } from "./theme";
 
 // prettier-ignore
 export const reset = css`
@@ -52,6 +54,20 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+a:-webkit-any-link {
+  text-decoration: none;
+  height: inherit;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  transition: color 0.1s ease-in-out;
+
+  &:hover {
+    color: ${primary};
+  }
 }
 `
 

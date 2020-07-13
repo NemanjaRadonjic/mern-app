@@ -7,6 +7,7 @@ export const globalStyles = css`
     font-family: "Baloo Da 2", cursive;
     color: ${textDark};
   }
+
   * {
     color: ${textDark};
   }
