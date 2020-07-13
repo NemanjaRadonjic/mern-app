@@ -56,5 +56,4 @@ export const Avatar = styled.i`
 export const LinkContainer = styled.div`
   height: 100%;
   width: 100%;
-  position: relative;
 `;
