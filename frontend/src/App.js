@@ -22,8 +22,8 @@ function App() {
       <Router component={Routes}>
         <Redirect from="/" to="/home" noThrow />
         <Home path="home" />
-        <Register path="/register" />
-        <Login path="/login" />
+        <Register exact path="/register" />
+        <Login exact path="/login" />
         <NotFound default />
       </Router>
       <Authbar />

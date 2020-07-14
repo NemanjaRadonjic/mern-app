@@ -1,8 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import { Container } from './styles';
+import { Container } from "./styles";
 
-function Routes({children}) {
+// class Routes extends React.Component {
+//   render() {
+//     return <Container>{this.props.children}</Container>;
+//   }
+// }
+
+function Routes({ children }) {
   return <Container>{children}</Container>;
 }
 

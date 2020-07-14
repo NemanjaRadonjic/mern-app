@@ -19,9 +19,20 @@ export const Input = styled.input`
   width: 60%;
   margin: 1rem auto;
   font-size: 1.1rem;
-  padding: 0.3rem 1rem;
+  padding: 0.5rem 1rem;
   border: none;
   border-bottom: 2px solid ${primary};
+  background-color: transparent;
+  box-shadow: inset 0 0px 0px rgb(0, 0, 0, 0.2);
+  transition: box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: inset 0 3px 10px rgb(0, 0, 0, 0.1);
+  }
+
+  &:focus {
+    box-shadow: inset 0 3px 10px rgb(0, 0, 0, 0.1);
+  }
 `;
 
 export const Message = styled.div`
