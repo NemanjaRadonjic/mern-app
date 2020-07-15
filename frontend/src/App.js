@@ -2,15 +2,15 @@ import React from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import Searchbar from "./components/Searchbar";
-import Authbar from "./components/Authbar";
+import Searchbar from "@components/Searchbar";
+import Authbar from "@components/Authbar";
 
-import Register from "./components/routes/Register";
-import Login from "./components/routes/Login";
+import Register from "@routes/Register";
+import Login from "@routes/Login";
 
-import Home from "./components/routes/Home";
+import Home from "@routes/Home";
 
-import NotFound from "./components/routes/NotFound";
+import NotFound from "@routes/NotFound";
 
 import { MainContainer, RoutesContainer } from "./styles";
 

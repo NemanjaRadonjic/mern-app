@@ -1,10 +1,10 @@
 import React from "react";
 
-import useFormHook from "../../../hooks/useFormHook";
+import useFormHook from "@hooks/useFormHook";
 
 import { Link } from "react-router-dom";
 
-import { Form, Header, Input, Button, Message } from "../../../styles/common";
+import { Form, Header, Input, Button, Message } from "@styles/common";
 
 function Register() {
   const { inputs, onChange } = useFormHook({

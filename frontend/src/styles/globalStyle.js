@@ -1,6 +1,6 @@
 import { css, createGlobalStyle } from "styled-components";
 
-import { textDark, primary } from "./theme";
+import { textDark, primary } from "@styles/theme";
 
 export const globalStyles = css`
   html {

@@ -1,7 +1,7 @@
 import React from "react";
 
-function Home({ children }) {
-  return <>{children}content</>;
+function Home() {
+  return <>Home</>;
 }
 
 export default Home;
