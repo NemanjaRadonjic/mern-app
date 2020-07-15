@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { backgroundWhite } from "./styles/theme";
+import { backgroundWhite } from "@styles/theme";
 
 export const MainContainer = styled.div`
   display: flex;
