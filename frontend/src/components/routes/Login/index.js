@@ -1,17 +1,16 @@
 import React from "react";
 
-import useFormHook from "../../hooks/useFormHook";
+import useFormHook from "../../../hooks/useFormHook";
 
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 
-import { Form, Header, Input, Button, Message } from "../../styles/common";
+import { Form, Header, Input, Button, Message } from "../../../styles/common";
 
 function Login() {
-  const { inputs, setInputs } = useFormHook({
+  const { inputs, onChange } = useFormHook({
     email: "",
     password: "",
   });
-  console.log(inputs);
   return (
     <Form>
       <Header>Login</Header>
@@ -20,18 +19,14 @@ function Login() {
         placeholder="Email"
         name="email"
         value={inputs.email}
-        onChange={(event) =>
-          setInputs({ ...inputs, [event.target.name]: event.target.value })
-        }
+        onChange={onChange}
       />
       <Input
         type="password"
         placeholder="Password"
         name="password"
         value={inputs.password}
-        onChange={(event) =>
-          setInputs({ ...inputs, [event.target.name]: event.target.value })
-        }
+        onChange={onChange}
       />
       <Message>
         <Link to="/register">
