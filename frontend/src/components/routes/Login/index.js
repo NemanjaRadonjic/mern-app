@@ -17,7 +17,8 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("/auth/login", inputs);
+      const response = await axios.post("/auth/login", inputs);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
