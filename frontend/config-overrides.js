@@ -11,6 +11,7 @@ module.exports = function override(config, env) {
     "@styles": path.resolve(__dirname, `${paths.appSrc}/styles`),
     "@components": path.resolve(__dirname, `${paths.appSrc}/components`),
     "@routes": path.resolve(__dirname, `${paths.appSrc}/components/routes`),
+    "@axios": path.resolve(__dirname, `${paths.appSrc}/axios`),
   })(config, env);
   return config;
 };

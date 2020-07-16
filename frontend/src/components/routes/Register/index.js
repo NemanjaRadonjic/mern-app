@@ -2,6 +2,8 @@ import React from "react";
 
 import useFormHook from "@hooks/useFormHook";
 
+import axios from "@axios";
+
 import { Link } from "react-router-dom";
 
 import { Form, Header, Input, Button, Message } from "@styles/common";
@@ -13,8 +15,17 @@ function Register() {
     password: "",
     repeatPassword: "",
   });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.post("/auth/register", inputs);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Header>Register</Header>
       <Input
         type="text"
