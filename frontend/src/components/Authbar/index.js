@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Link } from "react-router-dom";
+
+import { connect } from "react-redux";
 
 import {
   Container,
@@ -11,14 +13,13 @@ import {
   LinkContainer,
 } from "./styles";
 
-function Authbar() {
-  const [isLoggedIn] = useState(false);
+function Authbar({ user }) {
   return (
     <Container>
       <AuthContainer>
-        {isLoggedIn ? (
+        {user ? (
           <>
-            <Name>Username</Name>
+            <Name>{user.username}</Name>
             <Settings className="fas fa-cog" />
             <Avatar className="fas fa-user-tie" />
           </>
@@ -37,4 +38,8 @@ function Authbar() {
   );
 }
 
-export default Authbar;
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+
+export default connect(mapStateToProps)(Authbar);

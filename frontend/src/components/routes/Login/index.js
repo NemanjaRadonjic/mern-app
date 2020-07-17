@@ -4,7 +4,7 @@ import useFormHook from "@hooks/useFormHook";
 
 import axios from "@axios";
 
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
 
@@ -12,7 +12,7 @@ import { login } from "../../../store/actions/userActions";
 
 import { Form, Header, Input, Button, Message } from "@styles/common";
 
-function Login(props) {
+function Login({ user, login }) {
   const { inputs, onChange } = useFormHook({
     email: "",
     password: "",
@@ -23,13 +23,17 @@ function Login(props) {
     try {
       const response = await axios.post("/auth/login", inputs);
       if (response.data.success) {
-        props.login(response.data.user);
+        login(response.data.user);
       }
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  if (user) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <Header>Login</Header>
@@ -57,4 +61,8 @@ function Login(props) {
   );
 }
 
-export default connect(null, { login })(Login);
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+
+export default connect(mapStateToProps, { login })(Login);
