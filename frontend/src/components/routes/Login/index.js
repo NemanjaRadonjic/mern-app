@@ -6,9 +6,13 @@ import axios from "@axios";
 
 import { Link } from "react-router-dom";
 
+import { connect } from "react-redux";
+
+import { login } from "../../../store/actions/userActions";
+
 import { Form, Header, Input, Button, Message } from "@styles/common";
 
-function Login() {
+function Login(props) {
   const { inputs, onChange } = useFormHook({
     email: "",
     password: "",
@@ -18,6 +22,9 @@ function Login() {
     event.preventDefault();
     try {
       const response = await axios.post("/auth/login", inputs);
+      if (response.data.success) {
+        props.login(response.data.user);
+      }
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -50,4 +57,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default connect(null, { login })(Login);

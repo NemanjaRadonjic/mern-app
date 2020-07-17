@@ -79,7 +79,10 @@ router.post("/login", async (req, res) => {
     res.json({ success: false, message: "Something went wrong." });
   }
 
-  res.json({ currentUser: { username: matchedUser[0].username, email } });
+  res.json({
+    success: true,
+    user: { username: matchedUser[0].username, email },
+  });
 });
 
 module.exports = router;
