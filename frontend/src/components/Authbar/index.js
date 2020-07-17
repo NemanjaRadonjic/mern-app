@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
 
+import { logout } from "@actions/userActions";
+
 import {
   Container,
   AuthContainer,
@@ -13,13 +15,14 @@ import {
   LinkContainer,
 } from "./styles";
 
-function Authbar({ user }) {
+function Authbar({ user, logout }) {
   return (
     <Container>
       <AuthContainer>
         {user ? (
           <>
             <Name>{user.username}</Name>
+            <button onClick={logout}>Log out</button>
             <Settings className="fas fa-cog" />
             <Avatar className="fas fa-user-tie" />
           </>
@@ -42,4 +45,4 @@ const mapStateToProps = (state) => {
   return { user: state.user };
 };
 
-export default connect(mapStateToProps)(Authbar);
+export default connect(mapStateToProps, { logout })(Authbar);

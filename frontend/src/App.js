@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
 
@@ -12,9 +12,17 @@ import Home from "@routes/Home";
 
 import NotFound from "@routes/NotFound";
 
+import { connect } from "react-redux";
+
+import { login } from "@actions/userActions";
+
 import { MainContainer, RoutesContainer } from "./styles";
 
-function App() {
+function App({ login }) {
+  const user = JSON.parse(window.localStorage.getItem("user"));
+  useEffect(() => {
+    login(user);
+  });
   return (
     <MainContainer>
       <Searchbar />
@@ -34,4 +42,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(null, { login })(App);

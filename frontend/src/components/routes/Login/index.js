@@ -8,7 +8,7 @@ import { Link, Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
 
-import { login } from "../../../store/actions/userActions";
+import { login } from "@actions/userActions";
 
 import { Form, Header, Input, Button, Message } from "@styles/common";
 
@@ -23,6 +23,7 @@ function Login({ user, login }) {
     try {
       const response = await axios.post("/auth/login", inputs);
       if (response.data.success) {
+        window.localStorage.setItem("user", JSON.stringify(response.data.user));
         login(response.data.user);
       }
     } catch (error) {
