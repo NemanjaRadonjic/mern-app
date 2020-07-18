@@ -1,10 +1,12 @@
 import React from "react";
 
+import { useHistory } from "react-router-dom";
+
 import useFormHook from "@hooks/useFormHook";
 
 import axios from "@axios";
 
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
 
@@ -13,6 +15,8 @@ import { login } from "@actions/userActions";
 import { Form, Header, Input, Button, Message } from "@styles/common";
 
 function Login({ user, login }) {
+  let history = useHistory();
+
   const { inputs, onChange } = useFormHook({
     email: "",
     password: "",
@@ -25,6 +29,9 @@ function Login({ user, login }) {
       if (response.data.success) {
         window.localStorage.setItem("user", JSON.stringify(response.data.user));
         login(response.data.user);
+        history.push("/");
+      } else {
+        console.log(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -32,7 +39,7 @@ function Login({ user, login }) {
   };
 
   if (user) {
-    return <Redirect to="/" />;
+    return <div>You are already logged in!</div>;
   }
 
   return (

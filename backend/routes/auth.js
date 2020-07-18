@@ -45,9 +45,8 @@ router.post("/register", async (req, res) => {
   // saving user in mongodb
   try {
     await user.save();
-    return res.json({
+    res.json({
       success: true,
-      message: "Welcome!",
     });
   } catch (error) {
     return res.json({ message: "Something went wrong.", success: false });

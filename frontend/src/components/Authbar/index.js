@@ -16,13 +16,18 @@ import {
 } from "./styles";
 
 function Authbar({ user, logout }) {
+  const handleLogout = () => {
+    logout();
+    window.localStorage.removeItem("user");
+  };
+
   return (
     <Container>
       <AuthContainer>
         {user ? (
           <>
             <Name>{user.username}</Name>
-            <button onClick={logout}>Log out</button>
+            <button onClick={handleLogout}>Log out</button>
             <Settings className="fas fa-cog" />
             <Avatar className="fas fa-user-tie" />
           </>
