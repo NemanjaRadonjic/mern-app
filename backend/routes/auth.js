@@ -9,7 +9,7 @@ router.post("/register", async (req, res) => {
   // check if passwords match
   if (password !== repeatPassword) {
     return res.json({
-      success: false,
+      field: "password",
       message: "Password don't match",
     });
   }
@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
     const matchedUser = await User.find({ username });
     if (matchedUser.length !== 0) {
       return res.json({
-        success: false,
+        field: "username",
         message: "Username already exists",
       });
     }
@@ -34,7 +34,7 @@ router.post("/register", async (req, res) => {
     const matchedUser = await User.find({ email });
     if (matchedUser.length !== 0) {
       return res.json({
-        success: false,
+        field: "email",
         message: "Email already exists",
       });
     }

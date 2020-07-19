@@ -17,27 +17,29 @@ import { Form, Header, Input, Button, Message, Error } from "@styles/common";
 function Login({ user, login }) {
   let history = useHistory();
 
-  const { inputs, onChange } = useFormHook({
+  const { inputs, onChange, errors, setErrors, fields } = useFormHook({
     email: "",
     password: "",
   });
+  console.log("INPUT: ", inputs);
+  console.log("ERROR: ", errors);
 
-  const [error, setError] = useState({
-    email: null,
-    password: null,
-  });
+  // const [errors, setErrors] = useState({
+  //   email: null,
+  //   password: null,
+  // });
 
   const handleChange = (event) => {
     onChange(event);
-    setError(null);
+    setErrors({ ...fields });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (inputs.email.length === 0) {
-      setError({ ...error, email: "Please enter your email." });
+      setErrors({ ...errors, email: "Please enter your email." });
     } else if (inputs.password.length === 0) {
-      setError({ ...error, password: "Please enter your password." });
+      setErrors({ ...errors, password: "Please enter your password." });
     } else {
       try {
         const response = await axios.post("/auth/login", inputs);
@@ -49,10 +51,10 @@ function Login({ user, login }) {
           login(response.data.user);
           history.push("/");
         }
-      } catch (err) {
-        const { field, message } = err.response.data;
-        setError({
-          ...error,
+      } catch (error) {
+        const { field, message } = error.response.data;
+        setErrors({
+          ...errors,
           [field]: message,
         });
       }
@@ -73,7 +75,7 @@ function Login({ user, login }) {
         value={inputs.email}
         onChange={handleChange}
       />
-      <Error>{error && error.email}</Error>
+      <Error>{errors.email}</Error>
       <Input
         type="password"
         placeholder="Password"
@@ -81,7 +83,7 @@ function Login({ user, login }) {
         value={inputs.password}
         onChange={handleChange}
       />
-      <Error>{error && error.password}</Error>
+      <Error>{errors.password}</Error>
       <Message>
         <Link to="/register">
           Don't have an account? Click here to Register!
