@@ -48,6 +48,7 @@ function Register() {
         name="username"
         value={inputs.username}
         onChange={onChange}
+        onBlur={() => console.log("blurred")}
       />
       <Input
         type="email"

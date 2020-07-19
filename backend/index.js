@@ -19,7 +19,7 @@ app.use("/auth", authRoutes);
 
 app.get("/users", async (req, res) => {
   const users = await User.find({});
-  return res.json({ users });
+  return res.json([...users]);
 });
 
 mongoose

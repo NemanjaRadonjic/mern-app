@@ -17,7 +17,7 @@ export const Header = styled.div`
 
 export const Input = styled.input`
   width: 60%;
-  margin: 1rem auto;
+  margin: 0.5rem auto;
   font-size: 1.1rem;
   padding: 0.5rem 1rem;
   border: none;
@@ -42,6 +42,14 @@ export const Message = styled.div`
   &:hover {
     color: ${primary};
   }
+`;
+
+export const Error = styled.div`
+  width: 60%;
+  height: 1.5rem;
+  margin: 0 auto 0.5rem auto;
+  color: red;
+  text-align: center;
 `;
 
 export const Button = styled.button`

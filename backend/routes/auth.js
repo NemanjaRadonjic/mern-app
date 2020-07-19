@@ -53,33 +53,27 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// TODO: add a different route that fe will send requests to onBlur to check database and update the user immediately
-
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
   let matchedUser;
-
   try {
     matchedUser = await User.find({ email });
     if (matchedUser.length === 0) {
-      return res.json({
-        success: false,
+      return res.status(422).json({
+        field: "email",
         message: "No account under that email.",
       });
     }
     if (password !== matchedUser[0].password) {
-      return res.json({
-        success: false,
+      return res.status(422).json({
+        field: "password",
         message: "Password is not correct.",
       });
     }
   } catch (error) {
-    res.json({ success: false, message: "Something went wrong." });
+    return res.json({ message: "Something went wrong." });
   }
-
-  res.json({
-    success: true,
+  return res.json({
     user: { username: matchedUser[0].username, email },
   });
 });
