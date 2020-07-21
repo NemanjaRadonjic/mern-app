@@ -21,13 +21,6 @@ function Login({ user, login }) {
     email: "",
     password: "",
   });
-  console.log("INPUT: ", inputs);
-  console.log("ERROR: ", errors);
-
-  // const [errors, setErrors] = useState({
-  //   email: null,
-  //   password: null,
-  // });
 
   const handleChange = (event) => {
     onChange(event);

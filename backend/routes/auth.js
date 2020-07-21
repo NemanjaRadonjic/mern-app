@@ -4,15 +4,7 @@ const router = express.Router();
 const User = require("../models/User");
 
 router.post("/register", async (req, res) => {
-  const { username, email, password, repeatPassword } = req.body;
-
-  // check if passwords match
-  if (password !== repeatPassword) {
-    return res.json({
-      field: "password",
-      message: "Password don't match",
-    });
-  }
+  const { username, email, password } = req.body;
 
   // check if username already exists
   const user = new User({ username, email, password });
@@ -20,7 +12,7 @@ router.post("/register", async (req, res) => {
   try {
     const matchedUser = await User.find({ username });
     if (matchedUser.length !== 0) {
-      return res.json({
+      return res.status(422).json({
         field: "username",
         message: "Username already exists",
       });
@@ -33,7 +25,7 @@ router.post("/register", async (req, res) => {
   try {
     const matchedUser = await User.find({ email });
     if (matchedUser.length !== 0) {
-      return res.json({
+      return res.status(422).json({
         field: "email",
         message: "Email already exists",
       });
