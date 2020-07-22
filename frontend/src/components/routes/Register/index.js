@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 
 import useFormHook from "@hooks/useFormHook";
 
+import { validateRegister } from "@validations";
+
 import axios from "@axios";
 
 import { Link } from "react-router-dom";
@@ -15,22 +17,42 @@ function Register() {
 
   const [didRegister, setDidRegister] = useState(false);
 
-  const { inputs, onChange, errors, setErrors, validate } = useFormHook({
+  const { inputs, onChange, errors, setErrors } = useFormHook({
     username: "",
     email: "",
     password: "",
     repeatPassword: "",
   });
 
-  React.useEffect(() => {}, [errors]);
-
-  const handleChange = (event) => {
+  const handleChange = (event, field) => {
+    event.persist();
     onChange(event);
+    setErrors((prevState) => {
+      return {
+        ...prevState,
+        [event.target.name]: validateRegister[field](event.target.value),
+      };
+    });
   };
-
+  console.log(errors);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (false) {
+    setErrors((prevState) => {
+      console.log(prevState);
+      return {
+        username: validateRegister.username(inputs.username),
+        email: validateRegister.email(inputs.email),
+        password: validateRegister.password(inputs.password),
+        repeatPassword: validateRegister.repeatPassword(inputs.repeatPassword),
+      };
+    });
+    console.log(errors);
+    if (
+      !errors.username &&
+      !errors.email &&
+      !errors.password &&
+      !errors.repeatPassword
+    ) {
       try {
         const response = await axios.post("/auth/register", inputs);
         if (response.data.success) {
@@ -42,7 +64,7 @@ function Register() {
         setErrors({ ...errors, [field]: message });
       }
     } else {
-      setErrors(validate.all());
+      console.log("errors");
     }
   };
 
@@ -59,10 +81,7 @@ function Register() {
         name="username"
         value={inputs.username}
         onChange={(event) => {
-          handleChange(event);
-          setErrors((prevState) => {
-            return { ...prevState, username: validate.username().errors };
-          });
+          handleChange(event, "username");
         }}
       />
       <Error>{errors.username}</Error>
@@ -72,8 +91,7 @@ function Register() {
         name="email"
         value={inputs.email}
         onChange={(event) => {
-          handleChange(event);
-          setErrors({ ...errors, email: validate.email().errors });
+          handleChange(event, "email");
         }}
       />
       <Error>{errors.email}</Error>
@@ -83,8 +101,7 @@ function Register() {
         name="password"
         value={inputs.password}
         onChange={(event) => {
-          handleChange(event);
-          setErrors({ ...errors, password: validate.password().errors });
+          handleChange(event, "password");
         }}
       />
       <Error>{errors.password}</Error>
@@ -93,13 +110,7 @@ function Register() {
         placeholder="Repeat password"
         name="repeatPassword"
         value={inputs.repeatPassword}
-        onChange={(event) => {
-          handleChange(event);
-          setErrors({
-            ...errors,
-            repeatPassword: validate.repeatPassword().errors,
-          });
-        }}
+        onChange={onChange}
       />
       <Error>{errors.repeatPassword}</Error>
       <Message>
