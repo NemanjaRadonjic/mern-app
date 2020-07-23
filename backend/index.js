@@ -17,10 +17,10 @@ app.use(bodyParser.json());
 
 app.use("/auth", authRoutes);
 
-app.get("/users", async (req, res) => {
-  const users = await User.find({});
-  return res.json([...users]);
-});
+// app.get("/users", async (req, res) => {
+//   const users = await User.find({});
+//   return res.json([...users]);
+// });
 
 mongoose
   .connect(process.env.MONGO_CONNECTION, {
