@@ -29,7 +29,6 @@ router.post("/register/validate", async (req, res) => {
   } catch (error) {
     return res.json({ success: false, message: "Something went wrong." });
   }
-  return res.json({ message: "no errors found" });
 });
 
 router.post("/register", async (req, res) => {

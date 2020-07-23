@@ -24,7 +24,6 @@ function Register({ history }) {
       });
       setErrors((prevState) => {
         const { field, message } = response.data;
-
         return {
           ...prevState,
           [field]: message,
@@ -47,14 +46,13 @@ function Register({ history }) {
     });
   };
 
-  const handlePasswordChange = (event, compareTo) => {
+  const comparePasswords = (event, compareTo) => {
     event.persist();
-    onChange(event);
     setErrors((prevErrors) => {
       const { value } = event.target;
       return {
         ...prevErrors,
-        repeatPassword: validateRegister.repeatPassword(value, compareTo),
+        repeatPassword: validateRegister.comparePasswords(value, compareTo),
       };
     });
   };
@@ -74,12 +72,8 @@ function Register({ history }) {
     const newErrors = validateRegister.checkIfEmpty(inputs, errors);
     setErrors(newErrors);
 
-    if (
-      !newErrors.username &&
-      !newErrors.email &&
-      !newErrors.password &&
-      !newErrors.repeatPassword
-    ) {
+    const finalErrors = new Array(Object.values(newErrors))[0];
+    if (finalErrors.every((error) => error.length === 0)) {
       try {
         const response = await axios.post("/auth/register", inputs);
         if (response.data.success) {
@@ -122,7 +116,10 @@ function Register({ history }) {
         placeholder="Password"
         name="password"
         value={inputs.password}
-        onChange={handleChange}
+        onChange={(event) => {
+          handleChange(event);
+          comparePasswords(event, inputs.repeatPassword);
+        }}
       />
       <Error>{errors.password}</Error>
       <Input
@@ -131,7 +128,8 @@ function Register({ history }) {
         name="repeatPassword"
         value={inputs.repeatPassword}
         onChange={(event) => {
-          handlePasswordChange(event, inputs.password);
+          handleChange(event);
+          comparePasswords(event, inputs.password);
         }}
       />
       <Error>{errors.repeatPassword}</Error>

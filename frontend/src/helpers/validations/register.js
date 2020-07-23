@@ -1,45 +1,48 @@
 export const validateRegister = {
   username: (username) => {
-    let errors = "";
+    let error = "";
+    const re = /[^A-Za-z0-9]+/g;
     if (username.length <= 4 && username.length > 0) {
-      errors = "Username has to be more than 4 characters long.";
+      error = "Username has to be more than 4 characters long.";
+    } else if (re.test(username.toLowerCase())) {
+      error = "Please use only letters and numbers.";
     } else if (username.length > 12) {
-      errors = "Username has to be less than 12 characters long.";
+      error = "Username has to be less than 12 characters long.";
     }
-    return errors;
+    return error;
   },
 
   email: (email) => {
-    let errors = "";
+    let error = "";
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (email.length === 0) {
-      errors = "";
-    } else if (!re.test(String(email).toLowerCase())) {
-      errors = "Please enter a valid email.";
+      error = "";
+    } else if (!re.test(email.toLowerCase())) {
+      error = "Please enter a valid email.";
     }
-    return errors;
+    return error;
   },
 
   password: (password) => {
-    let errors = "";
+    let error = "";
     if (password.length < 8 && password.length > 0) {
-      errors = "Password has to be more than 8 characters long.";
+      error = "Password has to be more than 8 characters long.";
     } else if (password.length > 30) {
-      errors = "Password has to be less than 30 characters long.";
+      error = "Password has to be less than 30 characters long.";
     }
-    return errors;
+    return error;
   },
 
   repeatPassword: (repeatPassword, password) => {
-    let errors = "";
-    if (repeatPassword.length === 0) {
-      errors = "";
-    } else if (password.length === 0) {
-      errors = "Please enter your password first.";
-    } else if (repeatPassword !== password) {
-      errors = "Passwords do not match.";
+    return "";
+  },
+
+  comparePasswords: (currentField, compareTo) => {
+    let error = "";
+    if (currentField !== compareTo) {
+      error = "Passwords do not match.";
     }
-    return errors;
+    return error;
   },
 
   checkIfEmpty: (inputs, errorFields) => {
