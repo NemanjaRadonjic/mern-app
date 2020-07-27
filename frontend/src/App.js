@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import Searchbar from "@components/Searchbar";
@@ -7,13 +6,12 @@ import Authbar from "@components/Authbar";
 
 import Register from "@routes/Register";
 import Login from "@routes/Login";
-
 import Home from "@routes/Home";
-
 import NotFound from "@routes/NotFound";
 
-import { connect } from "react-redux";
+import ProtectedRoute from "@routes/ProtectedRoute";
 
+import { connect } from "react-redux";
 import { login } from "@actions/userActions";
 
 import { MainContainer, RoutesContainer } from "./styles";
@@ -32,8 +30,19 @@ function App({ login }) {
             <Redirect to="/home" />
           </Route>
           <Route exact path="/home" component={Home} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
+          <ProtectedRoute
+            exact
+            path="/register"
+            component={Register}
+            redirectTo="/home"
+          />
+          <ProtectedRoute
+            exact
+            path="/login"
+            component={Login}
+            redirectTo="/home"
+          />
+
           <Route default component={NotFound} />
         </Switch>
       </RoutesContainer>

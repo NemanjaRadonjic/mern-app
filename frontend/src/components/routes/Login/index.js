@@ -14,7 +14,7 @@ import { login } from "@actions/userActions";
 
 import { Form, Header, Input, Button, Message, Error } from "@styles/common";
 
-function Login({ user, login }) {
+function Login({ login }) {
   let history = useHistory();
 
   const { inputs, onChange, errors, setErrors, fields } = useFormHook({
@@ -49,10 +49,6 @@ function Login({ user, login }) {
     }
   };
 
-  if (user) {
-    return <div>You are already logged in!</div>;
-  }
-
   return (
     <Form autoComplete="off" onSubmit={handleSubmit}>
       <Header>Login</Header>
@@ -82,8 +78,4 @@ function Login({ user, login }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return { user: state.user };
-};
-
-export default connect(mapStateToProps, { login })(Login);
+export default connect(null, { login })(Login);
