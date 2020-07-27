@@ -14,7 +14,7 @@ export const validateRegister = {
 
   email: (email) => {
     let error = "";
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (email.length === 0) {
       error = "";
     } else if (!re.test(email.toLowerCase())) {
@@ -45,7 +45,7 @@ export const validateRegister = {
     return error;
   },
 
-  checkIfEmpty: (inputs, errorFields) => {
+  setDefaultErrors: (inputs, errorFields) => {
     const errors = {
       ...errorFields,
     };

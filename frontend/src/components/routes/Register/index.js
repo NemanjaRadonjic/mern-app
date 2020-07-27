@@ -60,29 +60,32 @@ function Register({ history }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const errors = {
-      username: validateRegister.username(inputs.username),
-      email: validateRegister.email(inputs.email),
-      password: validateRegister.password(inputs.password),
-      repeatPassword: validateRegister.repeatPassword(
-        inputs.repeatPassword,
-        inputs.password
-      ),
+    const validateFields = {
+      username: validateRegister.username(inputs.username) || errors.username,
+      email: validateRegister.email(inputs.email) || errors.email,
+      password: validateRegister.password(inputs.password) || errors.password,
+      repeatPassword:
+        validateRegister.repeatPassword(
+          inputs.repeatPassword,
+          inputs.password
+        ) || errors.repeatPassword,
     };
-    const newErrors = validateRegister.checkIfEmpty(inputs, errors);
+
+    const newErrors = validateRegister.setDefaultErrors(inputs, validateFields);
     setErrors(newErrors);
 
     const finalErrors = new Array(Object.values(newErrors))[0];
+
     if (finalErrors.every((error) => error.length === 0)) {
       try {
-        const response = await axios.post("/auth/register", inputs);
-        if (response.data.success) {
-          setDidRegister(true);
-          history.push("/login");
-        }
+        await axios.post("/auth/register", inputs);
+        setDidRegister(true);
+        history.push("/login");
       } catch (error) {
-        const { field, message } = error.response.data;
-        setErrors({ ...errors, [field]: message });
+        if (error.response.status === 422) {
+          const { field, message } = error.response.data;
+          setErrors({ ...errors, [field]: message });
+        }
       }
     }
   };
@@ -103,7 +106,7 @@ function Register({ history }) {
       />
       <Error>{errors.username}</Error>
       <Input
-        type="email"
+        type="text"
         placeholder="Email"
         name="email"
         value={inputs.email}

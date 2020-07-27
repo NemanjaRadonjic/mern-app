@@ -36,14 +36,9 @@ function Login({ user, login }) {
     } else {
       try {
         const response = await axios.post("/auth/login", inputs);
-        if (response.status === 200) {
-          window.localStorage.setItem(
-            "user",
-            JSON.stringify(response.data.user)
-          );
-          login(response.data.user);
-          history.push("/");
-        }
+        window.localStorage.setItem("user", JSON.stringify(response.data.user));
+        login(response.data.user);
+        history.push("/");
       } catch (error) {
         const { field, message } = error.response.data;
         setErrors({
@@ -62,7 +57,7 @@ function Login({ user, login }) {
     <Form autoComplete="off" onSubmit={handleSubmit}>
       <Header>Login</Header>
       <Input
-        type="email"
+        type="text"
         placeholder="Email"
         name="email"
         value={inputs.email}
