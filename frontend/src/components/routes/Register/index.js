@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import useFormHook from "@hooks/useFormHook";
@@ -7,8 +7,6 @@ import axios from "@axios";
 import { Form, Header, Input, Button, Message, Error } from "@styles/common";
 
 function Register({ history }) {
-  const [didRegister, setDidRegister] = useState(false);
-
   const { inputs, onChange, errors, setErrors } = useFormHook({
     username: "",
     email: "",
@@ -79,7 +77,6 @@ function Register({ history }) {
     if (finalErrors.every((error) => error.length === 0)) {
       try {
         await axios.post("/auth/register", inputs);
-        setDidRegister(true);
         history.push("/login");
       } catch (error) {
         if (error.response.status === 422) {
@@ -90,9 +87,6 @@ function Register({ history }) {
     }
   };
 
-  if (didRegister) {
-    return <div>Don't you have an account ?</div>;
-  }
   return (
     <Form autoComplete="off" onSubmit={handleSubmit}>
       <Header>Register</Header>

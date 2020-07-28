@@ -1,22 +1,14 @@
 import React from "react";
-
-import { useHistory } from "react-router-dom";
-
-import useFormHook from "@hooks/useFormHook";
-
-import axios from "@axios";
-
 import { Link } from "react-router-dom";
-
 import { connect } from "react-redux";
 
+import useFormHook from "@hooks/useFormHook";
+import axios from "@axios";
 import { login } from "@actions/userActions";
 
 import { Form, Header, Input, Button, Message, Error } from "@styles/common";
 
-function Login({ login }) {
-  let history = useHistory();
-
+function Login({ login, history }) {
   const { inputs, onChange, errors, setErrors, fields } = useFormHook({
     email: "",
     password: "",
@@ -37,8 +29,8 @@ function Login({ login }) {
       try {
         const response = await axios.post("/auth/login", inputs);
         window.localStorage.setItem("user", JSON.stringify(response.data.user));
+        history.push("/home");
         login(response.data.user);
-        history.push("/");
       } catch (error) {
         const { field, message } = error.response.data;
         setErrors({

@@ -14,6 +14,9 @@ import ProtectedRoute from "@routes/ProtectedRoute";
 import { connect } from "react-redux";
 import { login } from "@actions/userActions";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { MainContainer, RoutesContainer } from "./styles";
 
 function App({ login }) {
@@ -35,18 +38,21 @@ function App({ login }) {
             path="/register"
             component={Register}
             redirectTo="/home"
+            redirectMsg="You already have an account"
           />
           <ProtectedRoute
             exact
             path="/login"
             component={Login}
             redirectTo="/home"
+            redirectMsg="You are already logged in"
           />
 
           <Route default component={NotFound} />
         </Switch>
       </RoutesContainer>
       <Authbar />
+      <ToastContainer />
     </MainContainer>
   );
 }
