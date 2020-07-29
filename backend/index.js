@@ -8,6 +8,7 @@ require("dotenv").config();
 const User = require("./models/User");
 
 const authRoutes = require("./routes/auth");
+const postRoutes = require("./routes/posts");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/auth", authRoutes);
+app.use("/posts", postRoutes);
 
 // app.get("/users", async (req, res) => {
 //   const users = await User.find({});

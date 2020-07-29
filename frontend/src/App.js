@@ -52,7 +52,7 @@ function App({ login }) {
         </Switch>
       </RoutesContainer>
       <Authbar />
-      <ToastContainer />
+      <ToastContainer position="top-center" />
     </MainContainer>
   );
 }

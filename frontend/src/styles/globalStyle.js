@@ -1,6 +1,6 @@
 import { css, createGlobalStyle } from "styled-components";
 
-import { textDark, primary } from "@styles/theme";
+import { textDark, primary, backgroundWhite } from "@styles/theme";
 
 export const globalStyles = css`
   html {
@@ -26,6 +26,25 @@ export const globalStyles = css`
     &:hover {
       color: ${primary};
     }
+  }
+
+  .Toastify__toast--error {
+    background: ${backgroundWhite};
+  }
+  .Toastify__toast-body {
+    color: ${primary};
+    text-align: center;
+  }
+
+  .Toastify__close-button > svg {
+    fill: ${primary};
+  }
+  .Toastify__close-button:hover > svg,
+  .Toastify__close-button:focus > svg {
+    fill: ${textDark};
+  }
+  .Toastify__progress-bar {
+    background: ${primary};
   }
 `;
 
