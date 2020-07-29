@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
 
+const moment = require("moment");
+
 const fetchPosts = async (req, res) => {
   try {
     const response = await Post.find().populate("author", "username -_id");
@@ -41,6 +43,7 @@ const createPost = async (req, res) => {
   const post = new Post({ title, content });
 
   post.author = user;
+  post.createdAt = moment().format("MM/DD/YYYY, h:mm:ss A");
 
   try {
     await post.save();

@@ -3,15 +3,21 @@ import { v4 as id } from "uuid";
 import moment from "moment";
 
 import axios from "@axios";
-import { Container, PostContainer } from "./styles";
+import {
+  Container,
+  PostContainer,
+  PostHead,
+  PostInfo,
+  PostContent,
+  Title,
+  Author,
+  Date,
+} from "./styles";
 
 function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    console.log(Date.now());
-    const createdAt = moment("7/29/2020 | 3:42AM", "M/DD/YYYY | h:mmA");
-    console.log(createdAt.fromNow());
     const fetchPosts = async () => {
       const response = await axios.get("/posts");
       setPosts(response.data);
@@ -19,14 +25,21 @@ function Home() {
     fetchPosts();
   }, []);
 
-  const renderPosts = posts.map((post) => (
-    <PostContainer key={id()}>
-      {console.log(post)}
-      <div>Author: {post.author.username}</div>
-      <div>Title: {post.title}</div>
-      <div>Content: {post.content}</div>
-    </PostContainer>
-  ));
+  const renderPosts = posts.map((post) => {
+    const createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
+    return (
+      <PostContainer key={id()}>
+        <PostHead>
+          <Title>{post.title}</Title>
+          <PostInfo>
+            <Author>{post.author.username}</Author>
+            <Date>{createdAt.fromNow()}</Date>
+          </PostInfo>
+        </PostHead>
+        <PostContent>{post.content}</PostContent>
+      </PostContainer>
+    );
+  });
 
   return <Container>{renderPosts}</Container>;
 }
