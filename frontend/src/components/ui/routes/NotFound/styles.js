@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { textGray } from "../../../styles/theme";
+import { textGray } from "@styles/theme";
 
 export const Container = styled.div`
   width: 100%;

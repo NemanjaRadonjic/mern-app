@@ -1,16 +1,11 @@
 import styled from "styled-components";
+
 import { primary } from "@styles/theme";
 
-export const Container = styled.div`
-  height: 100vh;
-  width: 100%;
-`;
-
 export const PostContainer = styled.div`
-  border: 2px solid ${primary};
   max-width: 100%;
   padding: 1rem;
-  margin-top: 1rem;
+  border-bottom: 1px solid ${primary};
 `;
 export const PostHead = styled.div`
   display: flex;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { primary } from "../../styles/theme";
+import { primary } from "@styles/theme";
 
 export const Container = styled.div`
   height: 100%;

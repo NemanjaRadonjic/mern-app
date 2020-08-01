@@ -10,7 +10,7 @@ module.exports = function override(config, env) {
     "@hooks": path.resolve(__dirname, `${paths.appSrc}/hooks`),
     "@styles": path.resolve(__dirname, `${paths.appSrc}/styles`),
     "@components": path.resolve(__dirname, `${paths.appSrc}/components`),
-    "@routes": path.resolve(__dirname, `${paths.appSrc}/components/routes`),
+    "@routes": path.resolve(__dirname, `${paths.appSrc}/components/ui/routes`),
     "@axios": path.resolve(__dirname, `${paths.appSrc}/axios`),
     "@actions": path.resolve(__dirname, `${paths.appSrc}/store/actions`),
     "@validations": path.resolve(

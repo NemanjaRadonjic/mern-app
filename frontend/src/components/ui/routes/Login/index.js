@@ -6,7 +6,7 @@ import useFormHook from "@hooks/useFormHook";
 import axios from "@axios";
 import { login } from "@actions/userActions";
 
-import { Form, Header, Input, Button, Message, Error } from "@styles/common";
+import { Form, Header, Input, Error, Button, Message } from "@styles/common";
 
 function Login({ login, history }) {
   const { inputs, onChange, errors, setErrors, fields } = useFormHook({

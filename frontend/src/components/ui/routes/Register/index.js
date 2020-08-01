@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import useFormHook from "@hooks/useFormHook";
 import { validateRegister } from "@validations/register";
 import axios from "@axios";
+
 import { Form, Header, Input, Button, Message, Error } from "@styles/common";
 
 function Register({ history }) {
@@ -90,6 +91,7 @@ function Register({ history }) {
   return (
     <Form autoComplete="off" onSubmit={handleSubmit}>
       <Header>Register</Header>
+
       <Input
         type="text"
         placeholder="Username"

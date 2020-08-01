@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import Searchbar from "@components/Searchbar";
-import Authbar from "@components/Authbar";
+import Searchbar from "@components/ui/Searchbar";
+import Authbar from "@components/ui/Authbar";
 
 import Register from "@routes/Register";
 import Login from "@routes/Login";

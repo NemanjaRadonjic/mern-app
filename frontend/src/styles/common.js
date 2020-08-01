@@ -35,6 +35,14 @@ export const Input = styled.input`
   }
 `;
 
+export const Error = styled.div`
+  width: 60%;
+  height: 1.5rem;
+  margin: 0 auto 0.5rem auto;
+  color: red;
+  text-align: center;
+`;
+
 export const Message = styled.div`
   cursor: pointer;
   margin: 3rem auto 1rem auto;
@@ -42,14 +50,6 @@ export const Message = styled.div`
   &:hover {
     color: ${primary};
   }
-`;
-
-export const Error = styled.div`
-  width: 60%;
-  height: 1.5rem;
-  margin: 0 auto 0.5rem auto;
-  color: red;
-  text-align: center;
 `;
 
 export const Button = styled.button`

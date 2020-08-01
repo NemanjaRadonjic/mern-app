@@ -13,34 +13,27 @@ const fetchPosts = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const { title, content, email } = req.body;
-  let errors = {
-    title: "",
-    content: "",
-  };
+  const { content, id } = req.body;
+  let errors = "";
 
-  if (title.length === 0) {
-    errors.title = "Please enter a title.";
-  }
   if (content.length === 0) {
-    errors.content = "Please enter content of your post.";
+    errors = "Please enter content of your post.";
   }
-
-  if (errors.title || errors.content) {
-    return res.status(422).json({ errors });
+  if (errors) {
+    return res.status(422).json(errors);
   }
 
   let user;
   try {
-    user = await User.findOne({ email });
+    user = await User.findOne({ id });
   } catch (error) {
     res.json({
       success: false,
-      message: "Couldn't find a user with that email.",
+      message: "Couldn't find a user with that id.",
     });
   }
 
-  const post = new Post({ title, content });
+  const post = new Post({ content });
 
   post.author = user;
   post.createdAt = moment().format("MM/DD/YYYY, h:mm:ss A");
