@@ -6,6 +6,7 @@ const moment = require("moment");
 const fetchPosts = async (req, res) => {
   try {
     const response = await Post.find().populate("author", "username -_id");
+    console.log(response);
     res.json(response);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
@@ -25,7 +26,8 @@ const createPost = async (req, res) => {
 
   let user;
   try {
-    user = await User.findOne({ id });
+    user = await User.findById(id);
+    console.log(user);
   } catch (error) {
     res.json({
       success: false,

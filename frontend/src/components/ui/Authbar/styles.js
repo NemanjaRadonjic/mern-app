@@ -10,7 +10,7 @@ export const Container = styled.div`
 export const AuthContainer = styled.div`
   margin: 1rem 2rem 0 0;
   height: 2.5rem;
-  width: 30%;
+  width: 40%;
   float: right;
   display: flex;
   justify-content: space-around;
@@ -29,7 +29,21 @@ export const Name = styled.p`
 
 export const Settings = styled.div`
   font-size: 1.5rem;
-  height: 1.5rem;
+  margin: auto;
+  cursor: pointer;
+  color: grey;
+  transition: color 0.1s ease-in-out;
+
+  &:hover {
+    color: ${primary};
+  }
+`;
+
+export const Avatar = styled.img`
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   margin: auto 0;
   cursor: pointer;
 
@@ -40,12 +54,13 @@ export const Settings = styled.div`
   }
 `;
 
-export const Avatar = styled.i`
-  font-size: 2rem;
-  height: 2rem;
-  margin: auto 0;
+export const Button = styled.a`
+  margin: auto;
+  font-size: inherit;
+  font-family: inherit;
+  background: none;
+  border: none;
   cursor: pointer;
-
   transition: color 0.1s ease-in-out;
 
   &:hover {

@@ -12,6 +12,7 @@ import {
   Name,
   Settings,
   Avatar,
+  Button,
   LinkContainer,
 } from "./styles";
 
@@ -26,10 +27,10 @@ function Authbar({ user, logout }) {
       <AuthContainer>
         {user ? (
           <>
+            <Button onClick={handleLogout}>Log out</Button>
             <Name>{user.username}</Name>
-            <button onClick={handleLogout}>Log out</button>
             <Settings className="fas fa-cog" />
-            <Avatar className="fas fa-user-tie" />
+            <Avatar src="https://www.nlg.nhs.uk/content/uploads/2016/04/man.jpg" />
           </>
         ) : (
           <>
