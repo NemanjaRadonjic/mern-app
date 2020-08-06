@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { v4 as id } from "uuid";
-import moment from "moment";
 
 import axios from "@axios";
 import Post from "@components/elements/Post";
@@ -21,8 +20,7 @@ function Home() {
   }, [shouldUpdate]);
 
   const renderPosts = posts.map((post) => {
-    const createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
-    return <Post key={id()} post={post} createdAt={createdAt} />;
+    return <Post key={id()} post={post} />;
   });
 
   return (

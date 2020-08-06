@@ -5,11 +5,23 @@ const moment = require("moment");
 
 const fetchPosts = async (req, res) => {
   try {
-    const response = await Post.find().populate("author", "username -_id");
-    console.log(response);
-    res.json(response);
+    const posts = await Post.find().populate("author", "username -_id");
+    res.json(posts);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const fetchPost = async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const post = await Post.findById(postId).populate(
+      "author",
+      "username -_id"
+    );
+    res.json(post);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -27,7 +39,6 @@ const createPost = async (req, res) => {
   let user;
   try {
     user = await User.findById(id);
-    console.log(user);
   } catch (error) {
     res.json({
       success: false,
@@ -63,4 +74,22 @@ const createPost = async (req, res) => {
   res.status(201).send();
 };
 
-module.exports = { createPost, fetchPosts };
+const vote = async (req, res) => {
+  const { postId } = req.params;
+  const { type, userId } = req.body;
+  let post;
+  try {
+    post = await Post.findById(postId);
+  } catch (error) {
+    console.log(error);
+  }
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (error) {
+    console.log(error);
+  }
+  post.votes[type].push(user);
+};
+
+module.exports = { createPost, fetchPosts, fetchPost, vote };

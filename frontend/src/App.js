@@ -7,6 +7,7 @@ import Authbar from "@components/ui/Authbar";
 import Register from "@routes/Register";
 import Login from "@routes/Login";
 import Home from "@routes/Home";
+import Post from "@routes/Post";
 import NotFound from "@routes/NotFound";
 
 import ProtectedRoute from "@routes/ProtectedRoute";
@@ -47,6 +48,7 @@ function App({ login }) {
             redirectTo="/home"
             redirectMsg="You are already logged in"
           />
+          <Route exact path="/posts/:postId" component={Post} />
 
           <Route default component={NotFound} />
         </Switch>
