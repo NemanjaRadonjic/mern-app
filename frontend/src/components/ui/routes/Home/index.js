@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { v4 as id } from "uuid";
 
 import axios from "@axios";
@@ -8,23 +9,30 @@ import { Container, Posts } from "./styles";
 import NewPost from "./NewPost";
 
 function Home() {
+  const user = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await axios.get("/posts");
+    const fetchPosts = async (url) => {
+      const response = await axios.get(url);
       setPosts(response.data.reverse());
     };
-    fetchPosts();
-  }, [shouldUpdate]);
+    if (user) {
+      fetchPosts(`/posts/${user.id}`);
+    } else {
+      fetchPosts("/posts");
+    }
+  }, [shouldUpdate, user]);
 
   const renderPosts = posts.map((post) => {
-    return <Post key={id()} post={post} />;
+    console.log(post);
+    return <Post key={id()} post={post} userId={user.id} />;
   });
 
   return (
     <Container>
+      {console.log(user)}
       <NewPost shouldUpdate={shouldUpdate} setShouldUpdate={setShouldUpdate} />
       <Posts>{renderPosts}</Posts>
     </Container>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "@axios";
 import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -11,22 +11,39 @@ import {
   PostContent,
   Author,
   Date,
+  VoteContainer,
+  LikeContainer,
+  DislikeContainer,
+  Button,
+  VoteCount,
 } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 
-const Post = ({ post, history }) => {
-  const userId = useSelector((state) => state.user.id);
+const Post = ({ post, history, userId }) => {
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
+  const [votes, setVotes] = useState({
+    likes: { count: post.votes.likes.length, voted: false },
+    dislikes: { count: post.votes.dislikes.length, voted: false },
+  });
 
   const vote = async (event) => {
     event.stopPropagation();
-    try {
-      await axios.post(`/posts/${post._id}/vote`, {
-        type: event.target.name,
-        userId,
-      });
-    } catch (error) {
-      console.log(error);
+    const type = event.target.name;
+    if (userId) {
+      try {
+        await axios.post(`/posts/${post._id}/vote`, {
+          type,
+          userId,
+        });
+        setVotes({
+          ...votes,
+          [type]: { count: votes[type].count + 1, voted: true },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("You have to login to vote");
     }
   };
 
@@ -48,20 +65,28 @@ const Post = ({ post, history }) => {
         <PostContent>
           <p>{post.content}</p>
         </PostContent>
-        <div>
-          <div>
-            Likes: {post.votes.likes.length}
-            <button name="like" onClick={vote}>
-              Like
-            </button>
-          </div>
-          <div>
-            Dislikes: {post.votes.dislikes.length}
-            <button name="dislike" onClick={vote}>
-              Dislike
-            </button>
-          </div>
-        </div>
+        <VoteContainer>
+          <LikeContainer>
+            <Button
+              name="likes"
+              onClick={vote}
+              className={`fa${
+                votes.likes.voted || post.voted?.liked ? "s" : "r"
+              } fa-thumbs-up`}
+            ></Button>
+            <VoteCount>{votes.likes.count}</VoteCount>
+          </LikeContainer>
+          <DislikeContainer>
+            <Button
+              name="dislikes"
+              onClick={vote}
+              className={`fa${
+                votes.dislikes.voted || post.voted?.disliked ? "s" : "r"
+              } fa-thumbs-down`}
+            ></Button>
+            <VoteCount>{votes.dislikes.count}</VoteCount>
+          </DislikeContainer>
+        </VoteContainer>
       </PostHead>
     </PostContainer>
   );

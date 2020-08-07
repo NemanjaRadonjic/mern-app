@@ -46,6 +46,12 @@ export const globalStyles = css`
   .Toastify__progress-bar {
     background: ${primary};
   }
+  .fa-thumbs-down {
+    transform: translateY(0.13rem);
+  }
+  .fa-thumbs-up {
+    transform: translateY(-0.13rem);
+  }
 `;
 
 export const GlobalStyle = createGlobalStyle`${globalStyles}`;
