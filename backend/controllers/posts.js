@@ -98,45 +98,94 @@ const createPost = async (req, res) => {
 
 const vote = async (req, res) => {
   const { postId } = req.params;
+  // type is either likes or dislikes
   const { type, userId } = req.body;
 
   let post;
   try {
     post = await Post.findById(postId);
   } catch (error) {
-    console.log(error);
+    return res.status(404).json({ message: "Couldn't find a post." });
   }
 
   let user;
   try {
     user = await User.findById(userId);
   } catch (error) {
-    console.log(error);
+    return res.status(404).json({ message: "Couldn't find a user." });
   }
 
   // checking if a user already voted on a post
-  let alreadyLiked = post.votes.likes.some((user) => user == userId);
-  let alreadyDisliked = post.votes.dislikes.some((user) => user == userId);
+  if (type === "likes") {
+    // check if a user has already liked a post
+    if (post.votes.likes.some((user) => user == userId)) {
+      return res.status(401).json({ message: "You already liked this post." });
+    } else {
+      // deleting a user from dislikes if he wants to like and saving the user to that posts likes
+      post.votes.dislikes = post.votes.dislikes.filter((id) => {
+        id != userId;
+      });
+      post.votes[type].push(user);
 
-  if (alreadyLiked || alreadyDisliked) {
-    res.status(401).json({ message: "You already voted" });
+      try {
+        await post.save();
+      } catch (error) {
+        return res.status(500).json("Couldn't save the post.");
+      }
+
+      // deleting a post from a users votedPosts dislikes and saving it to likes
+      user.votedPosts.dislikes = user.votedPosts.dislikes.filter(
+        (id) => id != postId
+      );
+      user.votedPosts[type].push(post);
+
+      try {
+        await user.save();
+      } catch (error) {
+        return res.status(500).json("Couldn't save the post.");
+      }
+      return res.status(201).json({
+        likes: post.votes.likes.length,
+        dislikes: post.votes.dislikes.length,
+        liked: true,
+        disliked: false,
+      });
+    }
   } else {
-    post.votes[type].push(user);
-    try {
-      await post.save();
-    } catch (error) {
-      console.log(error);
-      res.status(500).json();
-    }
+    // check if a user has already disliked a post
+    if (post.votes.dislikes.some((user) => user == userId)) {
+      return res
+        .status(401)
+        .json({ message: "You already disliked this post." });
+    } else {
+      // deleting a user from likes if he wants to dislike and saving the user to that posts dislikes
+      post.votes.likes = post.votes.likes.filter((id) => id != userId);
 
-    user.votedPosts[type].push(post);
-    try {
-      await user.save();
-    } catch (error) {
-      console.log(error);
-      res.status(500).json();
+      post.votes[type].push(user);
+
+      try {
+        await post.save();
+      } catch (error) {
+        return res.status(500).json("Couldn't save the post.");
+      }
+
+      // deleting a post from a users votedPosts likes and saving it to dislikes
+      user.votedPosts.likes = user.votedPosts.likes.filter(
+        (id) => id != postId
+      );
+      user.votedPosts[type].push(post);
+      try {
+        await user.save();
+      } catch (error) {
+        return res.status(500).json("Couldn't save the user.");
+      }
+      return res.status(201).json({
+        likes: post.votes.likes.length,
+        dislikes: post.votes.dislikes.length,
+        liked: false,
+        disliked: true,
+      });
     }
-    res.status(201).json();
   }
 };
 

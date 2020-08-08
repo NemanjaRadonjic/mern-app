@@ -19,20 +19,18 @@ function Home() {
       setPosts(response.data.reverse());
     };
     if (user) {
-      fetchPosts(`/posts/${user.id}`);
+      fetchPosts(`/posts/user/${user.id}`);
     } else {
       fetchPosts("/posts");
     }
   }, [shouldUpdate, user]);
 
   const renderPosts = posts.map((post) => {
-    console.log(post);
-    return <Post key={id()} post={post} userId={user.id} />;
+    return <Post key={id()} post={post} user={user} />;
   });
 
   return (
     <Container>
-      {console.log(user)}
       <NewPost shouldUpdate={shouldUpdate} setShouldUpdate={setShouldUpdate} />
       <Posts>{renderPosts}</Posts>
     </Container>

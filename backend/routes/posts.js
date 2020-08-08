@@ -5,7 +5,7 @@ const PostControllers = require("../controllers/posts");
 
 router.route("/").get(PostControllers.fetchPosts);
 
-router.route("/:userId").get(PostControllers.fetchPostsById);
+router.route("/user/:userId").get(PostControllers.fetchPostsById);
 
 router.route("/:postId").get(PostControllers.fetchPost);
 

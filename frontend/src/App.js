@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import axios from "@axios";
 
 import Searchbar from "@components/ui/Searchbar";
 import Authbar from "@components/ui/Authbar";
@@ -22,7 +23,19 @@ import { MainContainer, RoutesContainer } from "./styles";
 
 function App({ login }) {
   const user = JSON.parse(window.localStorage.getItem("user"));
+
   useEffect(() => {
+    // const fetchUser = async () => {
+    //   if (user) {
+    //     try {
+    //       await axios.get(`/user/${user.id}`);
+    //       login(user);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }
+    // };
+    // fetchUser();
     login(user);
   });
   return (

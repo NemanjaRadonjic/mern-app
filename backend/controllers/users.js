@@ -100,4 +100,14 @@ const validate = async (req, res) => {
   }
 };
 
-module.exports = { login, register, validate };
+const fetchUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    await User.findById(userId);
+  } catch (error) {
+    return res.status(404).json();
+  }
+  return res.status(200).json();
+};
+
+module.exports = { login, register, validate, fetchUser };

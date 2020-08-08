@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "@axios";
-import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
+import { toast } from "react-toastify";
 
 import {
   PostContainer,
@@ -19,31 +19,30 @@ import {
 } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 
-const Post = ({ post, history, userId }) => {
+const Post = ({ post, history, user }) => {
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
   const [votes, setVotes] = useState({
-    likes: { count: post.votes.likes.length, voted: false },
-    dislikes: { count: post.votes.dislikes.length, voted: false },
+    likes: post.votes.likes.length,
+    dislikes: post.votes.dislikes.length,
+    liked: post.voted?.liked,
+    disliked: post.voted?.disliked,
   });
 
   const vote = async (event) => {
     event.stopPropagation();
     const type = event.target.name;
-    if (userId) {
+    if (user) {
       try {
-        await axios.post(`/posts/${post._id}/vote`, {
+        const response = await axios.post(`/posts/${post._id}/vote`, {
           type,
-          userId,
+          userId: user.id,
         });
-        setVotes({
-          ...votes,
-          [type]: { count: votes[type].count + 1, voted: true },
-        });
+        setVotes({ ...response.data });
       } catch (error) {
         console.log(error);
       }
     } else {
-      console.log("You have to login to vote");
+      toast.error("You have to login to vote.");
     }
   };
 
@@ -70,21 +69,17 @@ const Post = ({ post, history, userId }) => {
             <Button
               name="likes"
               onClick={vote}
-              className={`fa${
-                votes.likes.voted || post.voted?.liked ? "s" : "r"
-              } fa-thumbs-up`}
+              className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
             ></Button>
-            <VoteCount>{votes.likes.count}</VoteCount>
+            <VoteCount>{votes.likes}</VoteCount>
           </LikeContainer>
           <DislikeContainer>
             <Button
               name="dislikes"
               onClick={vote}
-              className={`fa${
-                votes.dislikes.voted || post.voted?.disliked ? "s" : "r"
-              } fa-thumbs-down`}
+              className={`fa${votes.disliked ? "s" : "r"} fa-thumbs-down`}
             ></Button>
-            <VoteCount>{votes.dislikes.count}</VoteCount>
+            <VoteCount>{votes.dislikes}</VoteCount>
           </DislikeContainer>
         </VoteContainer>
       </PostHead>
