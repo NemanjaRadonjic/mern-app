@@ -93,7 +93,7 @@ const createPost = async (req, res) => {
     });
   }
 
-  res.status(201).send();
+  res.status(201).json({ ...post });
 };
 
 const vote = async (req, res) => {
@@ -119,7 +119,24 @@ const vote = async (req, res) => {
   if (type === "likes") {
     // check if a user has already liked a post
     if (post.votes.likes.some((user) => user == userId)) {
-      return res.status(401).json({ message: "You already liked this post." });
+      // filter from post likes
+      post.votes.likes = post.votes.likes.filter((id) => id != userId);
+      // filter from user likes
+      user.votedPosts.likes = user.votedPosts.likes.filter(
+        (id) => id != postId
+      );
+      // save
+      try {
+        await post.save();
+      } catch (error) {
+        return res.status(500).json("Couldn't save the post.");
+      }
+      try {
+        await user.save();
+      } catch (error) {
+        return res.status(500).json("Couldn't save the user.");
+      }
+      return res.status(201).json({ liked: false, disliked: false });
     } else {
       // deleting a user from dislikes if he wants to like and saving the user to that posts likes
       post.votes.dislikes = post.votes.dislikes.filter((id) => {
@@ -145,8 +162,6 @@ const vote = async (req, res) => {
         return res.status(500).json("Couldn't save the post.");
       }
       return res.status(201).json({
-        likes: post.votes.likes.length,
-        dislikes: post.votes.dislikes.length,
         liked: true,
         disliked: false,
       });
@@ -154,9 +169,24 @@ const vote = async (req, res) => {
   } else {
     // check if a user has already disliked a post
     if (post.votes.dislikes.some((user) => user == userId)) {
-      return res
-        .status(401)
-        .json({ message: "You already disliked this post." });
+      // filter from post dislikes
+      post.votes.dislikes = post.votes.dislikes.filter((id) => id != userId);
+      // filter from user dislikes
+      user.votedPosts.dislikes = user.votedPosts.dislikes.filter(
+        (id) => id != postId
+      );
+      // save
+      try {
+        await post.save();
+      } catch (error) {
+        return res.status(500).json("Couldn't save the post.");
+      }
+      try {
+        await user.save();
+      } catch (error) {
+        return res.status(500).json("Couldn't save the user.");
+      }
+      return res.status(201).json({ liked: false, disliked: false });
     } else {
       // deleting a user from likes if he wants to dislike and saving the user to that posts dislikes
       post.votes.likes = post.votes.likes.filter((id) => id != userId);
@@ -180,8 +210,6 @@ const vote = async (req, res) => {
         return res.status(500).json("Couldn't save the user.");
       }
       return res.status(201).json({
-        likes: post.votes.likes.length,
-        dislikes: post.votes.dislikes.length,
         liked: false,
         disliked: true,
       });

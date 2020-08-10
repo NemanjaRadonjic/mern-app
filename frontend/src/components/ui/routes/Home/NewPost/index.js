@@ -13,7 +13,7 @@ import {
   Message,
 } from "./styles";
 
-const NewPost = ({ shouldUpdate, setShouldUpdate }) => {
+const NewPost = ({ posts, setPosts }) => {
   const user = useSelector((state) => state.user);
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
@@ -33,8 +33,8 @@ const NewPost = ({ shouldUpdate, setShouldUpdate }) => {
         id: user.id,
       };
       try {
-        await axios.post("/posts/create", requestBody);
-        setShouldUpdate(!shouldUpdate);
+        const response = await axios.post("/posts/create", requestBody);
+        setPosts([{ ...response.data._doc }, ...posts]);
       } catch (error) {
         console.log(error);
       }

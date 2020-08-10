@@ -11,7 +11,6 @@ import NewPost from "./NewPost";
 function Home() {
   const user = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
-  const [shouldUpdate, setShouldUpdate] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async (url) => {
@@ -23,7 +22,7 @@ function Home() {
     } else {
       fetchPosts("/posts");
     }
-  }, [shouldUpdate, user]);
+  }, [user]);
 
   const renderPosts = posts.map((post) => {
     return <Post key={id()} post={post} user={user} />;
@@ -31,7 +30,7 @@ function Home() {
 
   return (
     <Container>
-      <NewPost shouldUpdate={shouldUpdate} setShouldUpdate={setShouldUpdate} />
+      <NewPost posts={posts} setPosts={setPosts} />
       <Posts>{renderPosts}</Posts>
     </Container>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import axios from "@axios";
+// import axios from "@axios";
 
 import Searchbar from "@components/ui/Searchbar";
 import Authbar from "@components/ui/Authbar";

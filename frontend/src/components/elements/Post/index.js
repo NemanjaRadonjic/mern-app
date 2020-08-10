@@ -37,7 +37,41 @@ const Post = ({ post, history, user }) => {
           type,
           userId: user.id,
         });
-        setVotes({ ...response.data });
+        let updatedVotes = {
+          ...votes,
+          liked: response.data.liked,
+          disliked: response.data.disliked,
+        };
+        if (votes.liked || votes.disliked) {
+          if (updatedVotes.liked) {
+            if (votes.liked) {
+              updatedVotes.likes = updatedVotes.likes - 1;
+            } else {
+              updatedVotes.likes = updatedVotes.likes + 1;
+              updatedVotes.dislikes = updatedVotes.dislikes - 1;
+            }
+          } else if (updatedVotes.disliked) {
+            if (votes.disliked) {
+              updatedVotes.dislikes = updatedVotes.dislikes - 1;
+            } else {
+              updatedVotes.likes = updatedVotes.likes - 1;
+              updatedVotes.dislikes = updatedVotes.dislikes + 1;
+            }
+          } else {
+            if (type === "likes") {
+              updatedVotes.likes = updatedVotes.likes - 1;
+            } else {
+              updatedVotes.dislikes = updatedVotes.dislikes - 1;
+            }
+          }
+        } else {
+          if (updatedVotes.liked) {
+            updatedVotes.likes = updatedVotes.likes + 1;
+          } else {
+            updatedVotes.dislikes = updatedVotes.dislikes + 1;
+          }
+        }
+        setVotes(updatedVotes);
       } catch (error) {
         console.log(error);
       }
