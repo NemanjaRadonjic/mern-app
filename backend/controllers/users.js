@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const { validateRegister } = require("../helpers/validate");
+const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -21,9 +22,13 @@ const login = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong." });
   }
-  return res.json({
-    user: { username: matchedUser.username, email, id: matchedUser.id },
-  });
+  const user = {
+    username: matchedUser.username,
+    email,
+    id: matchedUser.id,
+  };
+  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+  return res.json({ accessToken });
 };
 
 const register = async (req, res) => {

@@ -5,8 +5,6 @@ const cors = require("cors");
 
 require("dotenv").config();
 
-const User = require("./models/User");
-
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/posts");
 
@@ -18,11 +16,6 @@ app.use(bodyParser.json());
 
 app.use("/auth", authRoutes);
 app.use("/posts", postRoutes);
-
-// app.get("/users", async (req, res) => {
-//   const users = await User.find({});
-//   return res.json([...users]);
-// });
 
 mongoose
   .connect(process.env.MONGO_CONNECTION, {

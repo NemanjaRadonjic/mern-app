@@ -20,6 +20,7 @@ function Authbar({ user, logout }) {
   const handleLogout = () => {
     logout();
     window.localStorage.removeItem("user");
+    window.localStorage.removeItem("accessToken");
   };
 
   return (

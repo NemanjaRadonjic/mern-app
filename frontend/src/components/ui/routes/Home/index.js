@@ -30,6 +30,7 @@ function Home() {
 
   return (
     <Container>
+      {console.log(posts)}
       <NewPost posts={posts} setPosts={setPosts} />
       <Posts>{renderPosts}</Posts>
     </Container>

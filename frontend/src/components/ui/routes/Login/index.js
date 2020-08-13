@@ -7,6 +7,7 @@ import axios from "@axios";
 import { login } from "@actions/userActions";
 
 import { Form, Header, Input, Error, Button, Message } from "@styles/common";
+import jwtDecode from "jwt-decode";
 
 function Login({ login, history }) {
   const { inputs, onChange, errors, setErrors, fields } = useFormHook({
@@ -28,15 +29,24 @@ function Login({ login, history }) {
     } else {
       try {
         const response = await axios.post("/auth/login", inputs);
-        window.localStorage.setItem("user", JSON.stringify(response.data.user));
+        const userData = jwtDecode(response.data.accessToken);
+        window.localStorage.setItem("user", JSON.stringify(userData));
+        window.localStorage.setItem(
+          "accessToken",
+          JSON.stringify(response.data.accessToken)
+        );
         history.push("/home");
-        login(response.data.user);
+        login(userData);
       } catch (error) {
-        const { field, message } = error.response.data;
-        setErrors({
-          ...errors,
-          [field]: message,
-        });
+        if (error.response) {
+          const { field, message } = error.response.data;
+          setErrors({
+            ...errors,
+            [field]: message,
+          });
+        } else {
+          console.log(error);
+        }
       }
     }
   };
