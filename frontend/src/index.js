@@ -29,3 +29,5 @@ render(
   </StrictMode>,
   document.getElementById("root")
 );
+
+export default store;

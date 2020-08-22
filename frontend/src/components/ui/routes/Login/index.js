@@ -29,24 +29,23 @@ function Login({ login, history }) {
     } else {
       try {
         const response = await axios.post("/auth/login", inputs);
-        const userData = jwtDecode(response.data.accessToken);
+        const { accessToken } = response.data;
+        const { email, id, username } = jwtDecode(accessToken);
+        const userData = {
+          email,
+          id,
+          username,
+        };
         window.localStorage.setItem("user", JSON.stringify(userData));
-        window.localStorage.setItem(
-          "accessToken",
-          JSON.stringify(response.data.accessToken)
-        );
+        window.localStorage.setItem("accessToken", JSON.stringify(accessToken));
         history.push("/home");
         login(userData);
       } catch (error) {
-        if (error.response) {
-          const { field, message } = error.response.data;
-          setErrors({
-            ...errors,
-            [field]: message,
-          });
-        } else {
-          console.log(error);
-        }
+        const { field, message } = error.response.data;
+        setErrors({
+          ...errors,
+          [field]: message,
+        });
       }
     }
   };

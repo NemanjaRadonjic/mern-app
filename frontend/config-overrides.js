@@ -13,10 +13,7 @@ module.exports = function override(config, env) {
     "@routes": path.resolve(__dirname, `${paths.appSrc}/components/ui/routes`),
     "@axios": path.resolve(__dirname, `${paths.appSrc}/axios`),
     "@actions": path.resolve(__dirname, `${paths.appSrc}/store/actions`),
-    "@validations": path.resolve(
-      __dirname,
-      `${paths.appSrc}/helpers/validations`
-    ),
+    "@helpers": path.resolve(__dirname, `${paths.appSrc}/helpers`),
   })(config, env);
   return config;
 };

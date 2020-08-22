@@ -28,12 +28,17 @@ const NewPost = ({ posts, setPosts }) => {
     if (input.length === 0) {
       setError("What do you want to post?");
     } else {
+      const accessToken = JSON.parse(
+        window.localStorage.getItem("accessToken")
+      );
       const requestBody = {
         content: input,
         id: user.id,
       };
       try {
-        const response = await axios.post("/posts/create", requestBody);
+        const response = await axios.post("/posts/create", requestBody, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
         setPosts([{ ...response.data._doc }, ...posts]);
       } catch (error) {
         console.log(error);

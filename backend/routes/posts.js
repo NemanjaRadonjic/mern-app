@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { authenticateToken } = require("../middleware");
+const { authenticateAccessToken } = require("../jwt");
 
 const PostControllers = require("../controllers/posts");
 
@@ -8,12 +8,16 @@ router.route("/").get(PostControllers.fetchPosts);
 
 router
   .route("/user/:userId")
-  .get(authenticateToken, PostControllers.fetchPostsById);
+  .get(authenticateAccessToken, PostControllers.fetchPostsById);
 
 router.route("/:postId").get(PostControllers.fetchPost);
 
-router.route("/create").post(authenticateToken, PostControllers.createPost);
+router
+  .route("/create")
+  .post(authenticateAccessToken, PostControllers.createPost);
 
-router.route("/:postId/vote").post(authenticateToken, PostControllers.vote);
+router
+  .route("/:postId/vote")
+  .post(authenticateAccessToken, PostControllers.vote);
 
 module.exports = router;

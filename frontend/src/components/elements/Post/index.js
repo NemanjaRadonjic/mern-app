@@ -18,6 +18,7 @@ import {
   VoteCount,
 } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
+import axiosInstance from "@axios";
 
 const Post = ({ post, history, user }) => {
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
@@ -32,11 +33,16 @@ const Post = ({ post, history, user }) => {
     event.stopPropagation();
     const type = event.target.name;
     if (user) {
+      const accessToken = JSON.parse(
+        window.localStorage.getItem("accessToken")
+      );
       try {
+        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
         const response = await axios.post(`/posts/${post._id}/vote`, {
           type,
           userId: user.id,
         });
+
         let updatedVotes = {
           ...votes,
           liked: response.data.liked,
@@ -72,9 +78,7 @@ const Post = ({ post, history, user }) => {
           }
         }
         setVotes(updatedVotes);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     } else {
       toast.error("You have to login to vote.");
     }

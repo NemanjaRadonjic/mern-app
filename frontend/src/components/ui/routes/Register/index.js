@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import useFormHook from "@hooks/useFormHook";
-import { validateRegister } from "@validations/register";
+import { validateRegister } from "@helpers/validations/register";
 import axios from "@axios";
 
 import { Form, Header, Input, Button, Message, Error } from "@styles/common";
