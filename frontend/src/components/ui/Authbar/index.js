@@ -1,9 +1,6 @@
 import React from "react";
-
 import { Link } from "react-router-dom";
-
-import { connect } from "react-redux";
-
+import { useSelector, connect } from "react-redux";
 import { logout } from "@actions/userActions";
 
 import {
@@ -16,7 +13,8 @@ import {
   LinkContainer,
 } from "./styles";
 
-function Authbar({ user, logout }) {
+function Authbar({ logout }) {
+  const user = useSelector((state) => state.user);
   const handleLogout = () => {
     logout();
     window.localStorage.removeItem("user");
@@ -28,10 +26,10 @@ function Authbar({ user, logout }) {
       <AuthContainer>
         {user ? (
           <>
-            <Button onClick={handleLogout}>Log out</Button>
-            <Name>{user.username}</Name>
-            <Settings className="fas fa-cog" />
             <Avatar src="https://www.nlg.nhs.uk/content/uploads/2016/04/man.jpg" />
+            <Settings className="fas fa-cog" />
+            <Name>{user.username}</Name>
+            <Button onClick={handleLogout}>Log out</Button>
           </>
         ) : (
           <>
@@ -48,8 +46,4 @@ function Authbar({ user, logout }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return { user: state.user };
-};
-
-export default connect(mapStateToProps, { logout })(Authbar);
+export default connect(null, { logout })(Authbar);

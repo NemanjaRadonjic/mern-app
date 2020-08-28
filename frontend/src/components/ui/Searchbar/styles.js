@@ -5,11 +5,12 @@ import { primary } from "@styles/theme";
 export const Container = styled.div`
   height: 100%;
   width: 30%;
-  display: flex;
-  flex-direction: column;
+  position: fixed;
+  left: 0;
 `;
 
 export const Input = styled.input`
+  float: right;
   margin: 1rem auto 0 auto;
   font-size: 1.1rem;
   padding: 0.5rem 1rem;

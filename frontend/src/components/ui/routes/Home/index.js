@@ -16,17 +16,14 @@ function Home() {
   useEffect(() => {
     const fetchPosts = async (url, options) => {
       const response = await axios.get(url, options);
-      if (response) {
-        setPosts(response.data.reverse());
-      }
+      response && setPosts(response.data.reverse());
     };
     if (user) {
       const accessToken = JSON.parse(
         window.localStorage.getItem("accessToken")
       );
       axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
-
-      fetchPosts(`/posts/user/${user.id}`);
+      fetchPosts(`/posts/${user.id}`);
     } else {
       fetchPosts("/posts");
     }

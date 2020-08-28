@@ -5,13 +5,15 @@ import { primary } from "@styles/theme";
 export const Container = styled.div`
   height: 100%;
   width: 30%;
+  position: fixed;
+  right: 0;
 `;
 
 export const AuthContainer = styled.div`
   margin: 1rem 2rem 0 0;
   height: 2.5rem;
   width: 40%;
-  float: right;
+  float: left;
   display: flex;
   justify-content: space-around;
 `;

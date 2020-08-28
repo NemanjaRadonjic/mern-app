@@ -19,8 +19,10 @@ import {
 } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 import axiosInstance from "@axios";
+import { useSelector } from "react-redux";
 
-const Post = ({ post, history, user }) => {
+const Post = ({ post, history }) => {
+  const user = useSelector((state) => state.user);
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
   const [votes, setVotes] = useState({
     likes: post.votes.likes.length,

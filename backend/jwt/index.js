@@ -2,13 +2,13 @@ const { sign, verify } = require("jsonwebtoken");
 
 const generateAccessToken = (userData) => {
   return sign(userData, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "5s",
+    expiresIn: "15m",
   });
 };
 
 const generateRefreshToken = (userData) => {
   return sign(userData, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "20s",
+    expiresIn: "2d",
   });
 };
 

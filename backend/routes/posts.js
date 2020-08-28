@@ -7,8 +7,8 @@ const PostControllers = require("../controllers/posts");
 router.route("/").get(PostControllers.fetchPosts);
 
 router
-  .route("/user/:userId")
-  .get(authenticateAccessToken, PostControllers.fetchPostsById);
+  .route("/:userId")
+  .get(authenticateAccessToken, PostControllers.fetchPosts);
 
 router.route("/:postId").get(PostControllers.fetchPost);
 

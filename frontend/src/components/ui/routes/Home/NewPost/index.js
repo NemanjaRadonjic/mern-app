@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import axios from "@axios";
+import axiosInstance from "@axios";
 import {
   Container,
   TopSection,
@@ -36,9 +36,8 @@ const NewPost = ({ posts, setPosts }) => {
         id: user.id,
       };
       try {
-        const response = await axios.post("/posts/create", requestBody, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        const response = await axiosInstance.post("/posts/create", requestBody);
+        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
         setPosts([{ ...response.data._doc }, ...posts]);
       } catch (error) {
         console.log(error);

@@ -2,21 +2,15 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import axios from "@axios";
 
-import {
-  Container,
-  PostSection,
-  PostHead,
-  PostInfo,
-  PostContent,
-  Author,
-  Date,
-  CommentSection,
-} from "./styles";
+import { Container, PostSection, CommentSection } from "./styles";
+
+import PostComponent from "@components/elements/Post";
 
 const Post = (props) => {
   const { postId } = props.match.params;
   const [post, setPost] = useState(props.location.post);
   useEffect(() => {
+    console.log(post);
     const fetchPost = async () => {
       if (!post) {
         const response = await axios.get(`/posts/${postId}`);
@@ -28,17 +22,12 @@ const Post = (props) => {
     };
     fetchPost();
   });
+  console.log(post);
   if (post) {
     return (
       <Container>
         <PostSection>
-          <PostHead>
-            <PostInfo>
-              <Author>{post.author.username}</Author>
-              <Date>{post.createdAt.fromNow()}</Date>
-            </PostInfo>
-            <PostContent>{post.content}</PostContent>
-          </PostHead>
+          <PostComponent post={post} />
         </PostSection>
         <CommentSection></CommentSection>
       </Container>

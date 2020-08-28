@@ -12,7 +12,7 @@ const axiosInstance = create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response.data.expiredAt) {
+    if (error.response?.data.expiredAt) {
       const originalRequest = error.config;
       const userData = JSON.parse(window.localStorage.getItem("user"));
 
@@ -34,7 +34,7 @@ axiosInstance.interceptors.response.use(
         }
       }
     }
-    if (error.response.data.accessToken === "") {
+    if (error.response?.data.accessToken === "") {
       window.localStorage.removeItem("user");
       window.localStorage.removeItem("accessToken");
       store.dispatch(logout());

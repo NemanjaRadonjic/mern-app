@@ -26,18 +26,7 @@ function App({ login }) {
   console.log("app rendered");
 
   useEffect(() => {
-    // const fetchUser = async () => {
-    //   if (user) {
-    //     try {
-    //       await axios.get(`/user/${user.id}`);
-    //       login(user);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   }
-    // };
-    // fetchUser();
-    login(user);
+    user && login(user);
   });
   return (
     <MainContainer>
@@ -68,7 +57,7 @@ function App({ login }) {
         </Switch>
       </RoutesContainer>
       <Authbar />
-      <ToastContainer position="top-center" />
+      <ToastContainer position="bottom-right" />
     </MainContainer>
   );
 }
