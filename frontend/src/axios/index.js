@@ -1,5 +1,4 @@
 import { create } from "axios";
-
 import store from "../index";
 import { logout } from "@actions/userActions";
 import { toast } from "react-toastify";
@@ -15,10 +14,10 @@ axiosInstance.interceptors.response.use(
     if (error.response?.data.expiredAt) {
       const originalRequest = error.config;
       const userData = JSON.parse(window.localStorage.getItem("user"));
-
-      const response = await axiosInstance.post("/refresh_token", {
+      const response = await axiosInstance.post("/auth/refresh_token", {
         userData,
       });
+      // const response = await axiosInstance.post("/auth/login", inputs);
 
       if (response) {
         const { accessToken } = response.data;

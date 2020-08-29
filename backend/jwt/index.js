@@ -8,7 +8,7 @@ const generateAccessToken = (userData) => {
 
 const generateRefreshToken = (userData) => {
   return sign(userData, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "2d",
+    expiresIn: "3d",
   });
 };
 

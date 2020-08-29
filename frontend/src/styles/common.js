@@ -2,6 +2,14 @@ import styled from "styled-components";
 
 import { primary } from "@styles/theme";
 
+export const FormContainer = styled.div`
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
 export const Form = styled.form`
   display: flex;
   flex-direction: column;

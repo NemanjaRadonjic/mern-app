@@ -8,21 +8,17 @@ import PostComponent from "@components/elements/Post";
 
 const Post = (props) => {
   const { postId } = props.match.params;
-  const [post, setPost] = useState(props.location.post);
+  const [post, setPost] = useState();
   useEffect(() => {
-    console.log(post);
     const fetchPost = async () => {
-      if (!post) {
-        const response = await axios.get(`/posts/${postId}`);
-        setPost({
-          ...response.data,
-          createdAt: moment(response.data.createdAt, "MM/DD/YYYY, h:mm:ss A"),
-        });
-      }
+      const response = await axios.get(`/posts/${postId}`);
+      setPost({
+        ...response.data,
+        createdAt: moment(response.data.createdAt, "MM/DD/YYYY, h:mm:ss A"),
+      });
     };
     fetchPost();
-  });
-  console.log(post);
+  }, []);
   if (post) {
     return (
       <Container>

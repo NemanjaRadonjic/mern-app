@@ -23,11 +23,10 @@ import { MainContainer, RoutesContainer } from "./styles";
 
 function App({ login }) {
   const user = JSON.parse(window.localStorage.getItem("user"));
-  console.log("app rendered");
 
   useEffect(() => {
     user && login(user);
-  });
+  }, []);
   return (
     <MainContainer>
       <Searchbar />

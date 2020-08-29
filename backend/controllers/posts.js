@@ -4,32 +4,11 @@ const Post = require("../models/Post");
 const moment = require("moment");
 
 const fetchPosts = async (req, res) => {
-  const { userId } = req.params;
-  if (userId) {
-    try {
-      const posts = await Post.find().populate("author", "username -_id");
-      return res.json(posts);
-    } catch (error) {
-      return res.status(500).json({ message: "Something went wrong." });
-    }
-  }
   try {
     const posts = await Post.find().populate("author", "username -_id");
-    posts.map((post) => {
-      post.votes.likes.map((id) => {
-        if (id == userId) {
-          post.voted.liked = true;
-        }
-      });
-      post.votes.dislikes.map((id) => {
-        if (id == userId) {
-          post.voted.disliked = true;
-        }
-      });
-    });
-    res.json(posts);
+    return res.json(posts);
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 

@@ -6,10 +6,6 @@ const PostControllers = require("../controllers/posts");
 
 router.route("/").get(PostControllers.fetchPosts);
 
-router
-  .route("/:userId")
-  .get(authenticateAccessToken, PostControllers.fetchPosts);
-
 router.route("/:postId").get(PostControllers.fetchPost);
 
 router

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "@axios";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import { toast } from "react-toastify";
@@ -27,8 +26,8 @@ const Post = ({ post, history }) => {
   const [votes, setVotes] = useState({
     likes: post.votes.likes.length,
     dislikes: post.votes.dislikes.length,
-    liked: post.voted?.liked,
-    disliked: post.voted?.disliked,
+    liked: post.votes.likes.includes(user?.id),
+    disliked: post.votes.dislikes.includes(user?.id),
   });
 
   const vote = async (event) => {
@@ -40,7 +39,7 @@ const Post = ({ post, history }) => {
       );
       try {
         axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
-        const response = await axios.post(`/posts/${post._id}/vote`, {
+        const response = await axiosInstance.post(`/posts/${post._id}/vote`, {
           type,
           userId: user.id,
         });

@@ -22,23 +22,6 @@ app.use(cookieParser());
 app.use("/auth", authRoutes);
 app.use("/posts", postRoutes);
 
-app.post("/refresh_token", (req, res) => {
-  const { token } = req.cookies;
-  const { userData } = req.body;
-  if (!token) {
-    return res.json({ accessToken: "" });
-  }
-  verify(token, process.env.REFRESH_TOKEN_SECRET, (err) => {
-    if (err && err.expiredAt) {
-      return res.status(403).json({ accessToken: "" });
-    }
-    const accessToken = generateAccessToken(userData);
-    const refreshToken = generateRefreshToken(userData);
-    res.cookie("token", refreshToken);
-    return res.json({ accessToken });
-  });
-});
-
 mongoose
   .connect(process.env.MONGO_CONNECTION, {
     useNewUrlParser: true,

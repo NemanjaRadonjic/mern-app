@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const { validateRegister } = require("../helpers/validate");
-const jwt = require("jsonwebtoken");
+const { verify } = require("jsonwebtoken");
 const { generateAccessToken, generateRefreshToken } = require("../jwt");
 
 const login = async (req, res) => {
@@ -118,4 +118,21 @@ const fetchUser = async (req, res) => {
   return res.status(200).json();
 };
 
-module.exports = { login, register, validate, fetchUser };
+const refreshToken = async (req, res) => {
+  const { token } = req.cookies;
+  const { userData } = req.body;
+  if (!token) {
+    return res.json({ accessToken: "" });
+  }
+  verify(token, process.env.REFRESH_TOKEN_SECRET, (err) => {
+    if (err && err.expiredAt) {
+      return res.status(403).json({ accessToken: "" });
+    }
+    const accessToken = generateAccessToken(userData);
+    const refreshToken = generateRefreshToken(userData);
+    res.cookie("token", refreshToken);
+    return res.json({ accessToken });
+  });
+};
+
+module.exports = { login, register, validate, fetchUser, refreshToken };

@@ -1,14 +1,16 @@
 const express = require("express");
 const router = express.Router();
 
-const UserControllers = require("../controllers/users");
+const AuthControllers = require("../controllers/auth");
 
-router.route("/register/validate").post(UserControllers.validate); // validate onBlur
+router.route("/refresh_token").post(AuthControllers.refreshToken);
 
-router.route("/register").post(UserControllers.register);
+router.route("/register").post(AuthControllers.register);
 
-router.route("/login").post(UserControllers.login);
+router.route("/register/validate").post(AuthControllers.validate); // validate onBlur
 
-router.route("/:userId").post(UserControllers.fetchUser);
+router.route("/login").post(AuthControllers.login);
+
+router.route("/:userId").post(AuthControllers.fetchUser);
 
 module.exports = router;

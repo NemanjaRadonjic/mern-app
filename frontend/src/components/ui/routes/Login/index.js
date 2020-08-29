@@ -3,10 +3,18 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import useFormHook from "@hooks/useFormHook";
-import axios from "@axios";
+import axiosInstance from "@axios";
 import { login } from "@actions/userActions";
 
-import { Form, Header, Input, Error, Button, Message } from "@styles/common";
+import {
+  FormContainer,
+  Form,
+  Header,
+  Input,
+  Error,
+  Button,
+  Message,
+} from "@styles/common";
 import jwtDecode from "jwt-decode";
 
 function Login({ login, history }) {
@@ -28,7 +36,7 @@ function Login({ login, history }) {
       setErrors({ ...errors, password: "Please enter your password." });
     } else {
       try {
-        const response = await axios.post("/auth/login", inputs);
+        const response = await axiosInstance.post("/auth/login", inputs);
         const { accessToken } = response.data;
         const { email, id, username } = jwtDecode(accessToken);
         const userData = {
@@ -51,31 +59,33 @@ function Login({ login, history }) {
   };
 
   return (
-    <Form autoComplete="off" onSubmit={handleSubmit}>
-      <Header>Login</Header>
-      <Input
-        type="text"
-        placeholder="Email"
-        name="email"
-        value={inputs.email}
-        onChange={handleChange}
-      />
-      <Error>{errors.email}</Error>
-      <Input
-        type="password"
-        placeholder="Password"
-        name="password"
-        value={inputs.password}
-        onChange={handleChange}
-      />
-      <Error>{errors.password}</Error>
-      <Message>
-        <Link to="/register">
-          Don't have an account? Click here to Register!
-        </Link>
-      </Message>
-      <Button>Login</Button>
-    </Form>
+    <FormContainer>
+      <Form autoComplete="off" onSubmit={handleSubmit}>
+        <Header>Login</Header>
+        <Input
+          type="text"
+          placeholder="Email"
+          name="email"
+          value={inputs.email}
+          onChange={handleChange}
+        />
+        <Error>{errors.email}</Error>
+        <Input
+          type="password"
+          placeholder="Password"
+          name="password"
+          value={inputs.password}
+          onChange={handleChange}
+        />
+        <Error>{errors.password}</Error>
+        <Message>
+          <Link to="/register">
+            Don't have an account? Click here to Register!
+          </Link>
+        </Message>
+        <Button>Login</Button>
+      </Form>
+    </FormContainer>
   );
 }
 
