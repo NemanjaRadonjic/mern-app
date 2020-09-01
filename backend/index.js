@@ -4,9 +4,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-const { verify } = require("jsonwebtoken");
-const { generateAccessToken, generateRefreshToken } = require("./jwt");
-
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");

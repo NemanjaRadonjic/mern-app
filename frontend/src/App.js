@@ -9,6 +9,7 @@ import Register from "@routes/Register";
 import Login from "@routes/Login";
 import Home from "@routes/Home";
 import Post from "@routes/Post";
+import Profile from "@routes/Profile";
 import NotFound from "@routes/NotFound";
 
 import ProtectedRoute from "@routes/ProtectedRoute";
@@ -26,7 +27,8 @@ function App({ login }) {
 
   useEffect(() => {
     user && login(user);
-  }, []);
+    console.log("user: ", user);
+  });
   return (
     <MainContainer>
       <Searchbar />
@@ -51,6 +53,14 @@ function App({ login }) {
             redirectMsg="You are already logged in"
           />
           <Route exact path="/posts/:postId" component={Post} />
+          <ProtectedRoute
+            exact
+            path="/user/edit/images"
+            component={Profile}
+            redirectTo="/home"
+            redirectMsg="You have to log in to see that page"
+            userPrivilege
+          />
 
           <Route default component={NotFound} />
         </Switch>

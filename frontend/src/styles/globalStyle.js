@@ -52,6 +52,22 @@ export const globalStyles = css`
   .fa-thumbs-up {
     transform: translateY(-0.13rem);
   }
+  .ReactCrop > div:first-child {
+    width: 100%;
+    height: 100%;
+  }
+  .ReactCrop__image {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .ReactCrop__crop-selection {
+    border: 2px dotted ${primary};
+    border-radius: 50%;
+  }
+  input[type="file"] {
+    display: none;
+  }
 `;
 
 export const GlobalStyle = createGlobalStyle`${globalStyles}`;

@@ -11,34 +11,37 @@ const axiosInstance = create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.data.expiredAt) {
-      const originalRequest = error.config;
-      const userData = JSON.parse(window.localStorage.getItem("user"));
-      const response = await axiosInstance.post("/auth/refresh_token", {
-        userData,
-      });
-      // const response = await axiosInstance.post("/auth/login", inputs);
+    if (error.status === 403) {
+      if (error.response?.data.expiredAt) {
+        const originalRequest = error.config;
+        const userData = JSON.parse(window.localStorage.getItem("user"));
+        const response = await axiosInstance.post("/auth/refresh_token", {
+          userData,
+        });
+        // const response = await axiosInstance.post("/auth/login", inputs);
 
-      if (response) {
-        const { accessToken } = response.data;
-        if (accessToken) {
-          axiosInstance.defaults.headers.authorization =
-            "Bearer " + accessToken;
-          originalRequest.headers.authorization = "Bearer " + accessToken;
-          window.localStorage.setItem(
-            "accessToken",
-            JSON.stringify(accessToken)
-          );
-          return await axiosInstance(originalRequest);
+        if (response) {
+          const { accessToken } = response.data;
+          if (accessToken) {
+            axiosInstance.defaults.headers.authorization =
+              "Bearer " + accessToken;
+            originalRequest.headers.authorization = "Bearer " + accessToken;
+            window.localStorage.setItem(
+              "accessToken",
+              JSON.stringify(accessToken)
+            );
+            return await axiosInstance(originalRequest);
+          }
         }
       }
+      if (error.response?.data.accessToken === "") {
+        window.localStorage.removeItem("user");
+        window.localStorage.removeItem("accessToken");
+        store.dispatch(logout());
+        toast.error("Session expired.");
+      }
     }
-    if (error.response?.data.accessToken === "") {
-      window.localStorage.removeItem("user");
-      window.localStorage.removeItem("accessToken");
-      store.dispatch(logout());
-      toast.error("Session expired.");
-    }
+    return Promise.reject(error);
   }
 );
 

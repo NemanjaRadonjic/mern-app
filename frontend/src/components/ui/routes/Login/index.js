@@ -35,25 +35,33 @@ function Login({ login, history }) {
     } else if (inputs.password.length === 0) {
       setErrors({ ...errors, password: "Please enter your password." });
     } else {
+      let accessToken;
+      let userData = {};
       try {
         const response = await axiosInstance.post("/auth/login", inputs);
-        const { accessToken } = response.data;
+        accessToken = response.data.accessToken;
         const { email, id, username } = jwtDecode(accessToken);
-        const userData = {
+        userData = {
           email,
           id,
           username,
         };
+        console.log("response: ", response);
         window.localStorage.setItem("user", JSON.stringify(userData));
         window.localStorage.setItem("accessToken", JSON.stringify(accessToken));
         history.push("/home");
         login(userData);
       } catch (error) {
-        const { field, message } = error.response.data;
-        setErrors({
-          ...errors,
-          [field]: message,
-        });
+        if (error.response) {
+          const response = error.response;
+          const { field, message } = response.data;
+          setErrors({
+            ...errors,
+            [field]: message,
+          });
+        } else {
+          console.log(error);
+        }
       }
     }
   };
