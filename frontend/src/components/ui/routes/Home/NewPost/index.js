@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axiosInstance from "@axios";
+import avatarSrc from "@helpers/avatarSrc";
 import {
   Container,
   TopSection,
@@ -17,7 +18,6 @@ const NewPost = ({ posts, setPosts }) => {
   const user = useSelector((state) => state.user);
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
-
   const onChange = (event) => {
     setInput(event.target.value);
     setError("");
@@ -36,8 +36,8 @@ const NewPost = ({ posts, setPosts }) => {
         id: user.id,
       };
       try {
-        const response = await axiosInstance.post("/posts/create", requestBody);
         axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
+        const response = await axiosInstance.post("/posts/create", requestBody);
         setPosts([{ ...response.data._doc }, ...posts]);
       } catch (error) {
         console.log(error);
@@ -51,7 +51,7 @@ const NewPost = ({ posts, setPosts }) => {
       {user ? (
         <>
           <TopSection>
-            <Avatar src="https://www.nlg.nhs.uk/content/uploads/2016/04/man.jpg" />
+            <Avatar src={avatarSrc(user)} />
             <TextArea
               rows="1"
               onChange={onChange}

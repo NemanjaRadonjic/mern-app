@@ -11,14 +11,13 @@ const axiosInstance = create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.status === 403) {
+    if (error.response?.status === 403) {
       if (error.response?.data.expiredAt) {
         const originalRequest = error.config;
         const userData = JSON.parse(window.localStorage.getItem("user"));
         const response = await axiosInstance.post("/auth/refresh_token", {
           userData,
         });
-        // const response = await axiosInstance.post("/auth/login", inputs);
 
         if (response) {
           const { accessToken } = response.data;

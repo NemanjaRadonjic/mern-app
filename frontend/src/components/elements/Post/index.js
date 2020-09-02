@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import { toast } from "react-toastify";
+import avatarSrc from "@helpers/avatarSrc";
 
 import {
   PostContainer,
@@ -9,7 +10,7 @@ import {
   PostInfo,
   PostContent,
   Author,
-  Date,
+  Time,
   VoteContainer,
   LikeContainer,
   DislikeContainer,
@@ -94,11 +95,11 @@ const Post = ({ post, history }) => {
 
   return (
     <PostContainer onClick={postModal}>
-      <Avatar src="https://www.nlg.nhs.uk/content/uploads/2016/04/man.jpg" />
+      <Avatar src={avatarSrc(post.author)} />
       <PostHead>
         <PostInfo>
           <Author>{post.author.username}</Author>
-          <Date>{post.createdAt.fromNow()}</Date>
+          <Time>{post.createdAt.fromNow()}</Time>
         </PostInfo>
         <PostContent>
           <p>{post.content}</p>

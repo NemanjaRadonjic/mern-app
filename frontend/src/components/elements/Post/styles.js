@@ -35,7 +35,7 @@ export const Author = styled.div`
   font-weight: bold;
 `;
 
-export const Date = styled.div`
+export const Time = styled.div`
   color: grey;
 `;
 

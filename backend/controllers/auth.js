@@ -23,15 +23,16 @@ const login = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong." });
   }
+  const { id, username, avatar } = matchedUser;
   const userData = {
-    username: matchedUser.username,
+    username,
     email,
-    id: matchedUser.id,
+    id,
   };
   const accessToken = generateAccessToken(userData);
   const refreshToken = generateRefreshToken(userData);
   res.cookie("token", refreshToken);
-  return res.json({ accessToken });
+  return res.json({ accessToken, avatar });
 };
 
 const register = async (req, res) => {
@@ -69,6 +70,7 @@ const register = async (req, res) => {
   ) {
     return res.json(errors);
   } else {
+    user.avatar = "uploads/profile/AvatarDefault.jpg";
     try {
       await user.save();
       return res.status(201).send();

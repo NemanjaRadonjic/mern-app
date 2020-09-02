@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, connect } from "react-redux";
 import { logout } from "@actions/userActions";
+import avatarSrc from "@helpers/avatarSrc";
 
 import {
   Container,
@@ -15,6 +16,7 @@ import {
 
 function Authbar({ logout }) {
   const user = useSelector((state) => state.user);
+  const avatar = useSelector((state) => state.user?.avatar); // forcing a component to re-render
   const handleLogout = () => {
     logout();
     window.localStorage.removeItem("user");
@@ -26,7 +28,7 @@ function Authbar({ logout }) {
       <AuthContainer>
         {user ? (
           <>
-            <Avatar src="https://www.nlg.nhs.uk/content/uploads/2016/04/man.jpg" />
+            <Avatar src={avatarSrc(user)} />
             <Settings className="fas fa-cog" />
             <Name>{user.username}</Name>
             <Button onClick={handleLogout}>Log out</Button>
