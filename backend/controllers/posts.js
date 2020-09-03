@@ -5,7 +5,10 @@ const moment = require("moment");
 
 const fetchPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate("author", "username avatar -_id");
+    const posts = await Post.find().populate(
+      "author",
+      "username avatar background -_id"
+    );
     return res.json(posts);
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong." });
@@ -17,7 +20,7 @@ const fetchPost = async (req, res) => {
   try {
     const post = await Post.findById(postId).populate(
       "author",
-      "username avatar -_id"
+      "username avatar background -_id"
     );
     res.json(post);
   } catch (error) {

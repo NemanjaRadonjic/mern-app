@@ -12,14 +12,14 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
       render={(props) =>
         rest.userPrivilege ? (
           user ? (
-            <Component {...props} />
+            <Component {...props} type={rest.type} />
           ) : (
             toast.error(rest.redirectMsg) && <Redirect to={rest.redirectTo} />
           )
         ) : user ? (
           toast.error(rest.redirectMsg) && <Redirect to={rest.redirectTo} />
         ) : (
-          <Component {...props} />
+          <Component {...props} type={rest.type} />
         )
       }
     />

@@ -63,7 +63,6 @@ export const globalStyles = css`
 
   .ReactCrop__crop-selection {
     border: 2px dotted ${primary};
-    border-radius: 50%;
   }
   input[type="file"] {
     display: none;

@@ -5,8 +5,8 @@ const userReducer = (state = null, action) => {
       return action.payload;
     case "LOGOUT":
       return null;
-    case "CHANGE_AVATAR":
-      newState.avatar = action.payload;
+    case "CHANGE_IMAGE":
+      newState[action.imgType] = action.payload;
       return newState;
     default:
       return state;

@@ -6,6 +6,7 @@ import avatarSrc from "@helpers/avatarSrc";
 
 import {
   PostContainer,
+  PostBackground,
   PostHead,
   PostInfo,
   PostContent,
@@ -30,6 +31,9 @@ const Post = ({ post, history }) => {
     liked: post.votes.likes.includes(user?.id),
     disliked: post.votes.dislikes.includes(user?.id),
   });
+  const background = `http://localhost:4000/uploads/${
+    post.author.background?.split("\\")[1]
+  }`;
 
   const vote = async (event) => {
     event.stopPropagation();
@@ -92,37 +96,38 @@ const Post = ({ post, history }) => {
       post,
     });
   };
-
   return (
-    <PostContainer onClick={postModal}>
-      <Avatar src={avatarSrc(post.author)} />
-      <PostHead>
-        <PostInfo>
-          <Author>{post.author.username}</Author>
-          <Time>{post.createdAt.fromNow()}</Time>
-        </PostInfo>
-        <PostContent>
-          <p>{post.content}</p>
-        </PostContent>
-        <VoteContainer>
-          <LikeContainer>
-            <Button
-              name="likes"
-              onClick={vote}
-              className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
-            ></Button>
-            <VoteCount>{votes.likes}</VoteCount>
-          </LikeContainer>
-          <DislikeContainer>
-            <Button
-              name="dislikes"
-              onClick={vote}
-              className={`fa${votes.disliked ? "s" : "r"} fa-thumbs-down`}
-            ></Button>
-            <VoteCount>{votes.dislikes}</VoteCount>
-          </DislikeContainer>
-        </VoteContainer>
-      </PostHead>
+    <PostContainer onClick={postModal} background={background}>
+      <PostBackground>
+        <Avatar src={avatarSrc(post.author)} />
+        <PostHead>
+          <PostInfo>
+            <Author>{post.author.username}</Author>
+            <Time>{post.createdAt.fromNow()}</Time>
+          </PostInfo>
+          <PostContent>
+            <p>{post.content}</p>
+          </PostContent>
+          <VoteContainer>
+            <LikeContainer>
+              <Button
+                name="likes"
+                onClick={vote}
+                className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
+              ></Button>
+              <VoteCount>{votes.likes}</VoteCount>
+            </LikeContainer>
+            <DislikeContainer>
+              <Button
+                name="dislikes"
+                onClick={vote}
+                className={`fa${votes.disliked ? "s" : "r"} fa-thumbs-down`}
+              ></Button>
+              <VoteCount>{votes.dislikes}</VoteCount>
+            </DislikeContainer>
+          </VoteContainer>
+        </PostHead>
+      </PostBackground>
     </PostContainer>
   );
 };

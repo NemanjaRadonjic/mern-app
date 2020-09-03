@@ -14,6 +14,8 @@ import {
   Message,
 } from "./styles";
 
+const maxLength = 400;
+
 const NewPost = ({ posts, setPosts }) => {
   const user = useSelector((state) => state.user);
   const [input, setInput] = useState("");
@@ -22,7 +24,6 @@ const NewPost = ({ posts, setPosts }) => {
     setInput(event.target.value);
     setError("");
   };
-
   const createPost = async (event) => {
     event.preventDefault();
     if (input.length === 0) {
@@ -53,11 +54,13 @@ const NewPost = ({ posts, setPosts }) => {
           <TopSection>
             <Avatar src={avatarSrc(user)} />
             <TextArea
+              maxLength={maxLength}
               rows="1"
               onChange={onChange}
               value={input}
               placeholder="Post something..."
             />
+            {maxLength + "/" + input.length}
           </TopSection>
           <BottomSection>
             <Error>{error}</Error>

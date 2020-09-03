@@ -1,8 +1,9 @@
 const User = require("../models/User");
 const { decode } = require("jsonwebtoken");
 
-const uploadAvatar = async (req, res) => {
+const uploadImage = async (req, res) => {
   const accessToken = req.headers.authorization.split(" ")[1];
+  const { type } = req.body;
   const { path } = req.file;
   const { id } = decode(accessToken);
   let user;
@@ -13,8 +14,8 @@ const uploadAvatar = async (req, res) => {
     return res.sendStatus(404);
   }
 
-  user.avatar = path;
-  user.avatars.push(path);
+  user[type] = path;
+  user[`${type}s`].push(path);
 
   try {
     user.save();
@@ -25,4 +26,4 @@ const uploadAvatar = async (req, res) => {
   return res.status(200).json({ path });
 };
 
-module.exports = { uploadAvatar };
+module.exports = { uploadImage };

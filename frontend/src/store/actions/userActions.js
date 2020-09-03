@@ -6,6 +6,6 @@ export const logout = () => {
   return { type: "LOGOUT" };
 };
 
-export const changeAvatar = (avatar) => {
-  return { type: "CHANGE_AVATAR", payload: avatar };
+export const changeImage = (image, imgType) => {
+  return { type: "CHANGE_IMAGE", payload: image, imgType };
 };

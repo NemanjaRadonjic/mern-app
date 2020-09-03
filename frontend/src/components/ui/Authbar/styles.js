@@ -11,7 +11,7 @@ export const Container = styled.div`
 
 export const AuthContainer = styled.div`
   margin: 1rem 2rem 0 0;
-  height: 2.5rem;
+  height: 3rem;
   width: 40%;
   float: left;
   display: flex;
@@ -42,8 +42,8 @@ export const Settings = styled.div`
 `;
 
 export const Avatar = styled.img`
-  height: 2.5rem;
-  width: 2.5rem;
+  height: 3rem;
+  width: 3rem;
   border-radius: 50%;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   margin: auto 0;

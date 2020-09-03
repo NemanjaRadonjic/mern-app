@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-// import axios from "@axios";
 
 import Searchbar from "@components/ui/Searchbar";
 import Authbar from "@components/ui/Authbar";
@@ -10,6 +9,7 @@ import Login from "@routes/Login";
 import Home from "@routes/Home";
 import Post from "@routes/Post";
 import Profile from "@routes/Profile";
+import EditImage from "@routes/Profile/EditImage";
 import NotFound from "@routes/NotFound";
 
 import ProtectedRoute from "@routes/ProtectedRoute";
@@ -27,7 +27,6 @@ function App({ login }) {
 
   useEffect(() => {
     user && login(user);
-    console.log("user: ", user);
   });
   return (
     <MainContainer>
@@ -55,8 +54,26 @@ function App({ login }) {
           <Route exact path="/posts/:postId" component={Post} />
           <ProtectedRoute
             exact
-            path="/user/edit/images"
+            path="/profile"
             component={Profile}
+            redirectTo="/home"
+            redirectMsg="You have to log in to see that page"
+            userPrivilege
+          />
+          <ProtectedRoute
+            exact
+            path="/profile/edit/avatar"
+            component={EditImage}
+            type="avatar"
+            redirectTo="/home"
+            redirectMsg="You have to log in to see that page"
+            userPrivilege
+          />
+          <ProtectedRoute
+            exact
+            path="/profile/edit/background"
+            component={EditImage}
+            type="background"
             redirectTo="/home"
             redirectMsg="You have to log in to see that page"
             userPrivilege

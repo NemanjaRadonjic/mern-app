@@ -16,7 +16,7 @@ import {
 
 function Authbar({ logout }) {
   const user = useSelector((state) => state.user);
-  const avatar = useSelector((state) => state.user?.avatar); // forcing a component to re-render
+  const avatar = useSelector((state) => state.user?.avatar); // making a component re-render
   const handleLogout = () => {
     logout();
     window.localStorage.removeItem("user");
