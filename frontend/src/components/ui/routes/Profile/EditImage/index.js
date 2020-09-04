@@ -61,18 +61,23 @@ const uploadAvatar = async (previewCanvas, crop, filename, history, type) => {
   bodyFormData.append("type", type);
 
   const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
-  axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
-  const {
-    data: { path },
-  } = await axiosInstance.post("/upload", bodyFormData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
 
-  const userData = JSON.parse(window.localStorage.getItem("user"));
-  userData[type] = path;
-  window.localStorage.setItem("user", JSON.stringify(userData));
-  store.dispatch(changeImage(path, type));
-  history.push("/");
+  try {
+    const response = await axiosInstance.post("/upload", bodyFormData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const { path } = response.data;
+    const userData = JSON.parse(window.localStorage.getItem("user"));
+    userData[type] = path;
+    window.localStorage.setItem("user", JSON.stringify(userData));
+    store.dispatch(changeImage(path, type));
+    history.push("/");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const EditImage = ({ history, type }) => {

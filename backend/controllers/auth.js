@@ -124,7 +124,7 @@ const refreshToken = async (req, res) => {
   const { token } = req.cookies;
   const { userData } = req.body;
   if (!token) {
-    return res.json({ accessToken: "" });
+    return res.status(403).json({ accessToken: "" });
   }
   verify(token, process.env.REFRESH_TOKEN_SECRET, (err) => {
     if (err && err.expiredAt) {

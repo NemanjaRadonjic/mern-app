@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, connect } from "react-redux";
 import { logout } from "@actions/userActions";
@@ -13,14 +13,21 @@ import {
   Button,
   LinkContainer,
 } from "./styles";
+import Dropdown from "./Dropdown";
 
 function Authbar({ logout }) {
   const user = useSelector((state) => state.user);
-  const avatar = useSelector((state) => state.user?.avatar); // making a component re-render
+  useSelector((state) => state.user?.avatar); // making a component re-render
+  const [dropdown, setDropdown] = useState(false);
+
   const handleLogout = () => {
     logout();
     window.localStorage.removeItem("user");
     window.localStorage.removeItem("accessToken");
+  };
+
+  const toggleDropdown = () => {
+    setDropdown(!dropdown);
   };
 
   return (
@@ -29,9 +36,12 @@ function Authbar({ logout }) {
         {user ? (
           <>
             <Avatar src={avatarSrc(user)} />
-            <Settings className="fas fa-cog" />
+            <Settings
+              className="fas fa-cog"
+              onClick={toggleDropdown}
+              id="open-dropdown"
+            />
             <Name>{user.username}</Name>
-            <Button onClick={handleLogout}>Log out</Button>
           </>
         ) : (
           <>
@@ -44,6 +54,9 @@ function Authbar({ logout }) {
           </>
         )}
       </AuthContainer>
+      {dropdown && (
+        <Dropdown handleLogout={handleLogout} toggleDropdown={toggleDropdown} />
+      )}
     </Container>
   );
 }

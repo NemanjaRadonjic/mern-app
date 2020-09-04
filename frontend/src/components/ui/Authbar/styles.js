@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { primary } from "@styles/theme";
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 100%;
   width: 30%;
   position: fixed;
@@ -10,9 +12,9 @@ export const Container = styled.div`
 `;
 
 export const AuthContainer = styled.div`
-  margin: 1rem 2rem 0 0;
+  margin-top: 1rem;
   height: 3rem;
-  width: 40%;
+  width: 8rem;
   float: left;
   display: flex;
   justify-content: space-around;
@@ -65,7 +67,9 @@ export const Button = styled.a`
   cursor: pointer;
   transition: color 0.1s ease-in-out;
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     color: ${primary};
   }
 `;
