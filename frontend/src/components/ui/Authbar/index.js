@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, connect } from "react-redux";
 import { logout } from "@actions/userActions";
-import avatarSrc from "@helpers/avatarSrc";
+import getImageSrc from "@helpers/imageSrc";
 
 import {
   Container,
@@ -35,7 +35,7 @@ function Authbar({ logout }) {
       <AuthContainer>
         {user ? (
           <>
-            <Avatar src={avatarSrc(user)} />
+            <Avatar src={getImageSrc(user, "avatar")} />
             <Settings
               className="fas fa-cog"
               onClick={toggleDropdown}
@@ -55,7 +55,11 @@ function Authbar({ logout }) {
         )}
       </AuthContainer>
       {dropdown && (
-        <Dropdown handleLogout={handleLogout} toggleDropdown={toggleDropdown} />
+        <Dropdown
+          user={user}
+          handleLogout={handleLogout}
+          toggleDropdown={toggleDropdown}
+        />
       )}
     </Container>
   );

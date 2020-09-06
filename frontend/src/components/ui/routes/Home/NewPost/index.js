@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axiosInstance from "@axios";
-import avatarSrc from "@helpers/avatarSrc";
+import getImageSrc from "@helpers/imageSrc";
 import {
   Container,
   TopSection,
@@ -52,7 +52,7 @@ const NewPost = ({ posts, setPosts }) => {
       {user ? (
         <>
           <TopSection>
-            <Avatar src={avatarSrc(user)} />
+            <Avatar src={getImageSrc(user, "avatar")} />
             <TextArea
               maxLength={maxLength}
               rows="1"

@@ -70,7 +70,7 @@ const register = async (req, res) => {
   ) {
     return res.json(errors);
   } else {
-    user.avatar = "uploads/profile/AvatarDefault.jpg";
+    user.avatar = "uploads/AvatarDefault.jpg";
     try {
       await user.save();
       return res.status(201).send();

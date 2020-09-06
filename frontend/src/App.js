@@ -54,7 +54,7 @@ function App({ login }) {
           <Route exact path="/posts/:postId" component={Post} />
           <ProtectedRoute
             exact
-            path="/profile"
+            path="/user/:username"
             component={Profile}
             redirectTo="/home"
             redirectMsg="You have to log in to see that page"

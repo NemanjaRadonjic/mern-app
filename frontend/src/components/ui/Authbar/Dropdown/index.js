@@ -9,7 +9,7 @@ import {
   Item,
 } from "./styles";
 
-const Dropdown = ({ toggleDropdown, handleLogout }) => {
+const Dropdown = ({ user, toggleDropdown, handleLogout }) => {
   const handleClick = (event) => {
     if (
       event.target.parentElement.id === "dropdown" ||
@@ -30,27 +30,36 @@ const Dropdown = ({ toggleDropdown, handleLogout }) => {
       <DropdownConnectorShadow>
         <DropdownConnector />
       </DropdownConnectorShadow>
-      <Link to="/profile" onClick={toggleDropdown}>
-        <Item>Profile</Item>
-      </Link>
+      <Item>
+        <Link to={`/user/${user.username}`} onClick={toggleDropdown}>
+          Profile
+        </Link>
+      </Item>
       <Group>Account Settings</Group>
-      <Link onClick={toggleDropdown} to="/profile/settings/email">
-        <Item>Change Your Email</Item>
-      </Link>
-      <Link onClick={toggleDropdown} to="/profile/settings/password">
-        <Item>Change Your Password</Item>
-      </Link>
-
+      <Item>
+        <Link onClick={toggleDropdown} to="/profile/settings/email">
+          Change Your Email
+        </Link>
+      </Item>
+      <Item>
+        <Link onClick={toggleDropdown} to="/profile/settings/password">
+          Change Your Password
+        </Link>
+      </Item>
       <Group>Profile Settings</Group>
-      <Link to="/profile/edit/background" onClick={toggleDropdown}>
-        <Item>Change Background</Item>
-      </Link>
-      <Link to="/profile/edit/avatar" onClick={toggleDropdown}>
-        <Item>Change Avatar</Item>
-      </Link>
-      <Link onClick={toggleDropdown}>
-        <Item onClick={handleLogout}>Log out</Item>
-      </Link>
+      <Item>
+        <Link to="/profile/edit/background" onClick={toggleDropdown}>
+          Change Background
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/profile/edit/avatar" onClick={toggleDropdown}>
+          Change Avatar
+        </Link>
+      </Item>
+      <Item onClick={handleLogout}>
+        <Link onClick={toggleDropdown}>Log out</Link>
+      </Item>
     </Container>
   );
 };

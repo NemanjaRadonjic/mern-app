@@ -15,16 +15,17 @@ export const globalStyles = css`
 
   a:-webkit-any-link {
     text-decoration: none;
-    height: inherit;
+    height: 100%;
+    padding-left: 1rem;
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    // justify-content: space-around;
     align-items: center;
+    color: inherit;
 
-    transition: color 0.1s ease-in-out;
-
-    &:hover {
-      color: ${primary};
+    &.text-align__center {
+      justify-content: space-around;
+      padding-left: 0;
     }
   }
 

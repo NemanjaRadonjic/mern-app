@@ -1,0 +1,53 @@
+import styled from "styled-components";
+import { primary, backgroundWhite } from "@styles/theme";
+
+export const ProfileContainer = styled.div`
+  width: 100%;
+  height: 15rem;
+  background-image: url(${(props) => props.image});
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-bottom: 0px solid ${primary};
+`;
+
+export const AccountContainer = styled.div``;
+
+export const AvatarContainer = styled.img`
+  border: 5px solid ${backgroundWhite};
+  height: 7rem;
+  width: 7rem;
+  border-radius: 50%;
+  position: absolute;
+  bottom: -5%;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+
+export const Username = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 20%;
+  font-weight: bold;
+`;
+
+export const NavbarContainer = styled.div`
+  width: 100%;
+  height: 2.7rem;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid ${primary};
+`;
+
+export const NavbarItem = styled.div`
+  height: 2.7rem;
+  width: 20%;
+  box-shadow: inset 0 -2px 1px ${primary};
+  transition: box-shadow 0.2s ease-in-out, color 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: inset 0 -5.4rem 0 ${primary};
+    color: ${backgroundWhite};
+  }
+`;

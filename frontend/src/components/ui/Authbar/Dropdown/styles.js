@@ -32,8 +32,7 @@ export const Group = styled.div`
 `;
 
 export const Item = styled.div`
-  padding: 1rem;
-  width: 100%;
+  height: 2.7rem;
   box-shadow: inset 2px 0 1px ${primary};
   transition: box-shadow 0.2s ease-in-out, color 0.3s ease-in-out;
 

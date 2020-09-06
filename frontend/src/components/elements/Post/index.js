@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import { toast } from "react-toastify";
-import avatarSrc from "@helpers/avatarSrc";
+import getImageSrc from "@helpers/imageSrc";
 
 import {
   PostContainer,
@@ -23,6 +23,7 @@ import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
 
 const Post = ({ post, history }) => {
+  console.log(post);
   const user = useSelector((state) => state.user);
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
   const [votes, setVotes] = useState({
@@ -99,7 +100,7 @@ const Post = ({ post, history }) => {
   return (
     <PostContainer onClick={postModal} background={background}>
       <PostBackground>
-        <Avatar src={avatarSrc(post.author)} />
+        <Avatar src={getImageSrc(post.author, "avatar")} />
         <PostHead>
           <PostInfo>
             <Author>{post.author.username}</Author>

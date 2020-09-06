@@ -8,6 +8,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/users");
 const postRoutes = require("./routes/posts");
 const uploadRoutes = require("./routes/upload");
 
@@ -19,9 +20,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use("/upload", uploadRoutes);
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/upload", uploadRoutes);
 
 mongoose
   .connect(process.env.MONGO_CONNECTION, {

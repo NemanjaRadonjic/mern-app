@@ -35,7 +35,6 @@ function Login({ login, history }) {
     } else if (inputs.password.length === 0) {
       setErrors({ ...errors, password: "Please enter your password." });
     } else {
-      let accessToken;
       let userData = {};
       try {
         const response = await axiosInstance.post("/auth/login", inputs);
