@@ -31,4 +31,58 @@ const fetchUserPosts = async (req, res) => {
   }
 };
 
-module.exports = { fetchUser, fetchUserPosts };
+const fetchLikedUserPosts = async (req, res) => {
+  const { username } = req.params;
+  let userId;
+  try {
+    const user = await User.findOne({ username });
+    userId = user._id;
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+  try {
+    const posts = await Post.find({}).populate(
+      "author",
+      "username avatar background -_id"
+    );
+    console.log(posts);
+    const likedPosts = posts.filter((post) =>
+      post.votes.likes.includes(userId)
+    );
+    console.log("liked: ", likedPosts);
+    return res.json(likedPosts);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(404);
+  }
+};
+
+const fetchDislikedUserPosts = async (req, res) => {
+  const { username } = req.params;
+  let userId;
+  try {
+    const user = await User.findOne({ username });
+    userId = user._id;
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+  try {
+    const posts = await Post.find({}).populate(
+      "author",
+      "username avatar background -_id"
+    );
+    const dislikedPosts = posts.filter((post) =>
+      post.votes.dislikes.includes(userId)
+    );
+    return res.json(dislikedPosts);
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+};
+
+module.exports = {
+  fetchUser,
+  fetchUserPosts,
+  fetchLikedUserPosts,
+  fetchDislikedUserPosts,
+};

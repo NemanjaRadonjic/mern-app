@@ -4,7 +4,7 @@ import axiosInstance from "@axios";
 import getImageSrc from "@helpers/imageSrc";
 import { Link } from "react-router-dom";
 import Posts from "./Posts";
-
+import VotedPosts from "./VotedPosts";
 import {
   NavContainer,
   ContentContainer,
@@ -36,32 +36,46 @@ const Profile = (props) => {
       </NavContainer>
       <NavbarContainer>
         <NavbarItem>
-          <Link to="posts" className="text-align__center">
+          <Link to={`/user/${username}/posts`} className="text-align__center">
             Posts
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link to="images" className="text-align__center">
+          <Link to={`/user/${username}/images`} className="text-align__center">
             Images
           </Link>
         </NavbarItem>
         <Username>{userInfo.username}</Username>
         <NavbarItem>
-          <Link to="likes" className="text-align__center">
-            Likes
+          <Link to={`/user/${username}/liked`} className="text-align__center">
+            Liked
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link to="dislikes" className="text-align__center">
-            Dislikes
+          <Link
+            to={`/user/${username}/disliked`}
+            className="text-align__center"
+          >
+            Disliked
           </Link>
         </NavbarItem>
       </NavbarContainer>
+
       <ContentContainer>
         <Route path={"/user/:username/posts"} component={Posts} />
         <Route path={"/user/:username/images"} component={() => "images"} />
-        <Route path={"/user/:username/likes"} component={() => "likes"} />
-        <Route path={"/user/:username/dislikes"} component={() => "dislikes"} />
+        <Route
+          path={"/user/:username/liked"}
+          render={() => {
+            return <VotedPosts type="liked" match={props.match} />;
+          }}
+        />
+        <Route
+          path={"/user/:username/disliked"}
+          render={() => {
+            return <VotedPosts type="disliked" match={props.match} />;
+          }}
+        />
       </ContentContainer>
     </>
   );
