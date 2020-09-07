@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { Route } from "react-router-dom";
 import axiosInstance from "@axios";
 import getImageSrc from "@helpers/imageSrc";
 import { Link } from "react-router-dom";
-import { v4 as id } from "uuid";
-import Post from "@components/elements/Post";
+import Posts from "./Posts";
 
 import {
-  ProfileContainer,
-  AccountContainer,
+  NavContainer,
+  ContentContainer,
   AvatarContainer,
   Username,
   NavbarContainer,
@@ -17,27 +16,14 @@ import {
 
 const Profile = (props) => {
   const { username } = props.match.params;
-  const user = useSelector((state) => state.user);
   const [userInfo, setUserInfo] = useState(null);
-  const [userPosts, setUserPosts] = useState(null);
-  console.log(userPosts);
   useEffect(() => {
     const fetchUser = async () => {
       const response = await axiosInstance.get(`/users/${username}`);
       setUserInfo(response.data);
     };
-    const fetchUserPosts = async () => {
-      const response = await axiosInstance.get(`/users/${username}/posts`);
-      setUserPosts(response.data.reverse());
-    };
     fetchUser();
-    fetchUserPosts();
   }, [props.match.params.username]);
-  const renderPosts =
-    userPosts &&
-    userPosts.map((post) => {
-      return <Post key={id()} post={post} user={user} />;
-    });
 
   if (!userInfo) {
     return null;
@@ -45,25 +31,38 @@ const Profile = (props) => {
 
   return (
     <>
-      <ProfileContainer image={getImageSrc(userInfo, "background")}>
+      <NavContainer image={getImageSrc(userInfo, "background")}>
         <AvatarContainer src={getImageSrc(userInfo, "avatar")} />
-      </ProfileContainer>
+      </NavContainer>
       <NavbarContainer>
         <NavbarItem>
-          <Link className="text-align__center">Posts</Link>
+          <Link to="posts" className="text-align__center">
+            Posts
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="text-align__center">Images</Link>
+          <Link to="images" className="text-align__center">
+            Images
+          </Link>
         </NavbarItem>
         <Username>{userInfo.username}</Username>
         <NavbarItem>
-          <Link className="text-align__center">Likes</Link>
+          <Link to="likes" className="text-align__center">
+            Likes
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="text-align__center">Dislikes</Link>
+          <Link to="dislikes" className="text-align__center">
+            Dislikes
+          </Link>
         </NavbarItem>
       </NavbarContainer>
-      <AccountContainer>{renderPosts}</AccountContainer>
+      <ContentContainer>
+        <Route path={"/user/:username/posts"} component={Posts} />
+        <Route path={"/user/:username/images"} component={() => "images"} />
+        <Route path={"/user/:username/likes"} component={() => "likes"} />
+        <Route path={"/user/:username/dislikes"} component={() => "dislikes"} />
+      </ContentContainer>
     </>
   );
 };

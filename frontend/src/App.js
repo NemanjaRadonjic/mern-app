@@ -53,7 +53,6 @@ function App({ login }) {
           />
           <Route exact path="/posts/:postId" component={Post} />
           <ProtectedRoute
-            exact
             path="/user/:username"
             component={Profile}
             redirectTo="/home"

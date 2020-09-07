@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { primary, backgroundWhite } from "@styles/theme";
 
-export const ProfileContainer = styled.div`
+export const NavContainer = styled.div`
   width: 100%;
   height: 15rem;
   background-image: url(${(props) => props.image});
@@ -11,7 +11,7 @@ export const ProfileContainer = styled.div`
   border-bottom: 0px solid ${primary};
 `;
 
-export const AccountContainer = styled.div``;
+export const ContentContainer = styled.div``;
 
 export const AvatarContainer = styled.img`
   border: 5px solid ${backgroundWhite};
@@ -42,7 +42,7 @@ export const NavbarContainer = styled.div`
 
 export const NavbarItem = styled.div`
   height: 2.7rem;
-  width: 20%;
+  width: 21%;
   box-shadow: inset 0 -2px 1px ${primary};
   transition: box-shadow 0.2s ease-in-out, color 0.3s ease-in-out;
 
