@@ -4,6 +4,7 @@ import getImageSrc from "@helpers/imageSrc";
 import { v4 as id } from "uuid";
 
 import { Avatars, Avatar, Backgrounds, Background, Header } from "./styles";
+import { Loader } from "@styles/common";
 
 const Images = (props) => {
   const { username } = props.match.params;
@@ -50,8 +51,10 @@ const Images = (props) => {
   };
   return (
     <>
-      <Avatars>{renderAvatars()}</Avatars>
-      <Backgrounds>{renderBackgrounds()}</Backgrounds>
+      <Avatars>{images.avatars ? renderAvatars() : <Loader />}</Avatars>
+      <Backgrounds>
+        {images.backgrounds ? renderBackgrounds() : <Loader />}
+      </Backgrounds>
     </>
   );
 };

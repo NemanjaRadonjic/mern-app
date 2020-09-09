@@ -7,6 +7,5 @@ export const Container = styled.div`
 export const PostSection = styled.div``;
 
 export const CommentSection = styled.div`
-  background: grey;
   width: 100%;
 `;
