@@ -14,6 +14,7 @@ export const InputContainer = styled.div`
 `;
 
 export const Input = styled.input`
+  position: relative;
   float: right;
   margin: 1rem auto 0 auto;
   font-size: 1.1rem;
@@ -31,7 +32,6 @@ export const Input = styled.input`
   &:focus {
     box-shadow: 0 3px 10px rgb(0, 0, 0, 0.1);
   }
-  position: relative;
 `;
 
 export const SearchIcon = styled.i`

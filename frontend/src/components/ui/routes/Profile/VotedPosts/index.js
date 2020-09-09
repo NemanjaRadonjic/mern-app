@@ -20,7 +20,6 @@ const VotedPosts = (props) => {
     };
     fetchVotedPostsByUser();
   }, []);
-  console.log(votedPosts);
   return (
     votedPosts &&
     votedPosts.map((post) => {

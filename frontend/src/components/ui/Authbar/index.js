@@ -35,7 +35,7 @@ function Authbar({ logout }) {
       <AuthContainer>
         {user ? (
           <>
-            <Avatar src={getImageSrc(user, "avatar")} />
+            <Avatar src={getImageSrc(user.avatar, "avatar")} />
             <Settings
               className="fas fa-cog"
               onClick={toggleDropdown}

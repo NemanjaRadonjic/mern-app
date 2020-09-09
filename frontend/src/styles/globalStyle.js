@@ -6,11 +6,30 @@ export const globalStyles = css`
   html {
     font-family: "Baloo Da 2", cursive;
     color: ${textDark};
+    overflow-y: scroll;
   }
 
   * {
     color: ${textDark};
     outline: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${backgroundWhite};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: grey;
+    border-radius: 8px;
+    transition: background 0.2s ease-in-out;
+
+    &:hover {
+      background: ${primary};
+    }
   }
 
   a:-webkit-any-link {

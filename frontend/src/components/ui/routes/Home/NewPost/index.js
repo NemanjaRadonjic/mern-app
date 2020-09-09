@@ -52,7 +52,7 @@ const NewPost = ({ posts, setPosts }) => {
       {user ? (
         <>
           <TopSection>
-            <Avatar src={getImageSrc(user, "avatar")} />
+            <Avatar src={getImageSrc(user.avatar, "avatar")} />
             <TextArea
               maxLength={maxLength}
               rows="1"

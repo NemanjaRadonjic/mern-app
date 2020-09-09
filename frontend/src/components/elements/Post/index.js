@@ -91,19 +91,32 @@ const Post = ({ post, history }) => {
     }
   };
 
-  const postModal = () => {
+  const redirectToPost = () => {
     history.push({
       pathname: `/posts/${post._id}`,
       post,
     });
   };
   return (
-    <PostContainer onClick={postModal} background={background}>
+    <PostContainer onClick={redirectToPost} background={background}>
       <PostBackground>
-        <Avatar src={getImageSrc(post.author, "avatar")} />
+        <Avatar
+          src={getImageSrc(post.author.avatar, "avatar")}
+          onClick={(event) => {
+            event.stopPropagation();
+            history.push(`/user/${post.author.username}`);
+          }}
+        />
         <PostHead>
           <PostInfo>
-            <Author>{post.author.username}</Author>
+            <Author
+              onClick={(event) => {
+                event.stopPropagation();
+                history.push(`/user/${post.author.username}`);
+              }}
+            >
+              {post.author.username}
+            </Author>
             <Time>{post.createdAt.fromNow()}</Time>
           </PostInfo>
           <PostContent>

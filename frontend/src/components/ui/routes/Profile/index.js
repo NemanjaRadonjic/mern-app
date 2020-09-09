@@ -5,6 +5,7 @@ import getImageSrc from "@helpers/imageSrc";
 import { Link } from "react-router-dom";
 import Posts from "./Posts";
 import VotedPosts from "./VotedPosts";
+import Images from "./Images";
 import {
   NavContainer,
   ContentContainer,
@@ -31,8 +32,8 @@ const Profile = (props) => {
 
   return (
     <>
-      <NavContainer image={getImageSrc(userInfo, "background")}>
-        <AvatarContainer src={getImageSrc(userInfo, "avatar")} />
+      <NavContainer image={getImageSrc(userInfo.background, "background")}>
+        <AvatarContainer src={getImageSrc(userInfo.avatar, "avatar")} />
       </NavContainer>
       <NavbarContainer>
         <NavbarItem>
@@ -63,7 +64,7 @@ const Profile = (props) => {
 
       <ContentContainer>
         <Route path={"/user/:username/posts"} component={Posts} />
-        <Route path={"/user/:username/images"} component={() => "images"} />
+        <Route path={"/user/:username/images"} component={Images} />
         <Route
           path={"/user/:username/liked"}
           render={() => {

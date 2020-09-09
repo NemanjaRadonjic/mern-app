@@ -80,9 +80,22 @@ const fetchDislikedUserPosts = async (req, res) => {
   }
 };
 
+const fetchUserImages = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await User.findOne({ username });
+    const { avatars, backgrounds } = user;
+    return res.json({ avatars, backgrounds });
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(404);
+  }
+};
+
 module.exports = {
   fetchUser,
   fetchUserPosts,
   fetchLikedUserPosts,
   fetchDislikedUserPosts,
+  fetchUserImages,
 };
