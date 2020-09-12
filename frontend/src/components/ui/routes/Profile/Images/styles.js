@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { primary, backgroundWhite } from "@styles/theme";
 
 export const Avatars = styled.div`
   width: 45%;
@@ -14,7 +13,7 @@ export const Avatar = styled.img`
   width: 5rem;
   height: 5rem;
   margin: 1rem;
-  border: 4px solid ${backgroundWhite};
+  border: 4px solid rgb(${(props) => props.theme.background});
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.3);
   border-radius: 50%;
   transition: box-shadow 0.2s ease-in-out;

@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import { primary } from "@styles/theme";
-
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -27,7 +25,7 @@ export const Name = styled.p`
   transition: color 0.1s ease-in-out;
 
   &:hover {
-    color: ${primary};
+    color: rgb(${(props) => props.theme.primary});
   }
 `;
 
@@ -39,7 +37,7 @@ export const Settings = styled.div`
   transition: color 0.1s ease-in-out;
 
   &:hover {
-    color: ${primary};
+    color: rgb(${(props) => props.theme.primary});
   }
 `;
 
@@ -54,7 +52,7 @@ export const Avatar = styled.img`
   transition: color 0.1s ease-in-out;
 
   &:hover {
-    color: ${primary};
+    color: rgb(${(props) => props.theme.primary});
   }
 `;
 
@@ -70,7 +68,7 @@ export const Button = styled.a`
   &:hover,
   &:focus,
   &:active {
-    color: ${primary};
+    color: rgb(${(props) => props.theme.primary});
   }
 `;
 

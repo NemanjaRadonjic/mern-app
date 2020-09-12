@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { primary, backgroundWhite } from "@styles/theme";
 
 export const Container = styled.div`
   margin-top: 1rem;
   margin-left: -1.67rem;
-  border-left: 1px solid ${primary};
+  border-left: 1px solid rgb(${(props) => props.theme.primary});
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
   width: 12rem;
 `;
@@ -14,7 +13,7 @@ export const DropdownConnectorShadow = styled.div`
 `;
 
 export const DropdownConnector = styled.div`
-  background: ${backgroundWhite};
+  background: rgb(${(props) => props.theme.background});
   border: 1px solid rgba(0, 0, 0, 0.2);
   height: 10px;
   width: 20px;
@@ -33,11 +32,11 @@ export const Group = styled.div`
 
 export const Item = styled.div`
   height: 2.7rem;
-  box-shadow: inset 2px 0 1px ${primary};
+  box-shadow: inset 2px 0 1px rgb(${(props) => props.theme.primary});
   transition: box-shadow 0.2s ease-in-out, color 0.3s ease-in-out;
 
   &:hover {
-    box-shadow: inset 12rem 0 0 ${primary};
-    color: ${backgroundWhite};
+    box-shadow: inset 12rem 0 0 rgb(${(props) => props.theme.primary});
+    color: rgb(${(props) => props.theme.background});
   }
 `;

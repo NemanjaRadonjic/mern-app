@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axiosInstance from "@axios";
+import useFormHook from "@hooks/useFormHook";
 import getImageSrc from "@helpers/imageSrc";
 import {
   Container,
@@ -18,22 +19,28 @@ const maxLength = 400;
 
 const NewPost = ({ posts, setPosts }) => {
   const user = useSelector((state) => state.user);
-  const [input, setInput] = useState("");
-  const [error, setError] = useState("");
-  const onChange = (event) => {
-    setInput(event.target.value);
-    setError("");
-  };
+
+  const {
+    inputs,
+    onChange,
+    setInputs,
+    errors,
+    setErrors,
+    fields,
+  } = useFormHook({
+    post: "",
+  });
+
   const createPost = async (event) => {
     event.preventDefault();
-    if (input.length === 0) {
-      setError("What do you want to post?");
+    if (inputs.post.length === 0) {
+      setErrors({ post: "What do you want to post?" });
     } else {
       const accessToken = JSON.parse(
         window.localStorage.getItem("accessToken")
       );
       const requestBody = {
-        content: input,
+        content: inputs.post,
         id: user.id,
       };
       try {
@@ -43,7 +50,7 @@ const NewPost = ({ posts, setPosts }) => {
       } catch (error) {
         console.log(error);
       }
-      setInput("");
+      setInputs({ ...fields });
     }
   };
 
@@ -54,16 +61,17 @@ const NewPost = ({ posts, setPosts }) => {
           <TopSection>
             <Avatar src={getImageSrc(user.avatar, "avatar")} />
             <TextArea
+              name="post"
               maxLength={maxLength}
               rows="1"
               onChange={onChange}
-              value={input}
+              value={inputs.post}
               placeholder="Post something..."
             />
-            {maxLength + "/" + input.length}
+            {maxLength + "/" + inputs.post.length}
           </TopSection>
           <BottomSection>
-            <Error>{error}</Error>
+            <Error>{errors.post}</Error>
             <Button type="submit" onClick={createPost}>
               Post
             </Button>

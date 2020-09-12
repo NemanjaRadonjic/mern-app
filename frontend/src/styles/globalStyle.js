@@ -1,16 +1,14 @@
 import { css, createGlobalStyle } from "styled-components";
 
-import { textDark, primary, backgroundWhite } from "@styles/theme";
-
 export const globalStyles = css`
   html {
     font-family: "Baloo Da 2", cursive;
-    color: ${textDark};
+    color: rgb(${(props) => props.theme.text});
     overflow-y: scroll;
   }
 
   * {
-    color: ${textDark};
+    color: rgb(${(props) => props.theme.text}));
     outline: none;
   }
 
@@ -19,7 +17,7 @@ export const globalStyles = css`
   }
 
   ::-webkit-scrollbar-track {
-    background: ${backgroundWhite};
+    background: rgb(${(props) => props.theme.background});
   }
 
   ::-webkit-scrollbar-thumb {
@@ -28,7 +26,7 @@ export const globalStyles = css`
     transition: background 0.2s ease-in-out;
 
     &:hover {
-      background: ${primary};
+      background: rgb(${(props) => props.theme.primary});
     }
   }
 
@@ -38,7 +36,6 @@ export const globalStyles = css`
     padding-left: 1rem;
     width: 100%;
     display: flex;
-    // justify-content: space-around;
     align-items: center;
     color: inherit;
 
@@ -49,22 +46,22 @@ export const globalStyles = css`
   }
 
   .Toastify__toast--error {
-    background: ${backgroundWhite};
+    background: rgb(${(props) => props.theme.background});
   }
   .Toastify__toast-body {
-    color: ${primary};
+    color: rgb(${(props) => props.theme.primary});
     text-align: center;
   }
 
   .Toastify__close-button > svg {
-    fill: ${primary};
+    fill: rgb(${(props) => props.theme.primary});
   }
   .Toastify__close-button:hover > svg,
   .Toastify__close-button:focus > svg {
-    fill: ${textDark};
+    fill: rgb(${(props) => props.theme.text});
   }
   .Toastify__progress-bar {
-    background: ${primary};
+    background: rgb(${(props) => props.theme.primary});
   }
   .fa-thumbs-down {
     transform: translateY(0.13rem);
@@ -82,10 +79,14 @@ export const globalStyles = css`
   }
 
   .ReactCrop__crop-selection {
-    border: 2px dotted ${primary};
+    border: 2px dotted rgb(${(props) => props.theme.primary});;
   }
   input[type="file"] {
     display: none;
+  }
+  .NavLink-active {
+    transition: box-shadow 0.2s ease-in-out;
+    box-shadow: inset 0 -5.4rem 0 rgb(${(props) => props.theme.primary});;
   }
 `;
 

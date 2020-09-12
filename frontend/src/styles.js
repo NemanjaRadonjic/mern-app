@@ -1,10 +1,8 @@
 import styled from "styled-components";
 
-import { backgroundWhite } from "@styles/theme";
-
 export const MainContainer = styled.div`
   display: flex;
-  background: ${backgroundWhite};
+  background: rgb(${(props) => props.theme.background});
   width: 100%;
 `;
 

@@ -6,11 +6,17 @@ const PostControllers = require("../controllers/posts");
 
 router.route("/").get(PostControllers.fetchPosts);
 
-router.route("/:postId").get(PostControllers.fetchPost);
-
 router
   .route("/create")
   .post(authenticateAccessToken, PostControllers.createPost);
+
+router.route("/:postId").get(PostControllers.fetchPost);
+
+router
+  .route("/:postId/comment")
+  .post(authenticateAccessToken, PostControllers.createComment);
+
+router.route("/:postId/comments").get(PostControllers.fetchComments);
 
 router
   .route("/:postId/vote")

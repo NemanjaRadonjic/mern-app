@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Route } from "react-router-dom";
 import axiosInstance from "@axios";
 import getImageSrc from "@helpers/imageSrc";
-import { Link } from "react-router-dom";
+import { Route, NavLink, Redirect } from "react-router-dom";
 import Posts from "./Posts";
 import VotedPosts from "./VotedPosts";
 import Images from "./Images";
@@ -37,28 +36,41 @@ const Profile = (props) => {
       </NavContainer>
       <NavbarContainer>
         <NavbarItem>
-          <Link to={`/user/${username}/posts`} className="text-align__center">
+          <NavLink
+            to={`/user/${username}/posts`}
+            className="text-align__center"
+            activeClassName="NavLink-active"
+          >
             Posts
-          </Link>
+          </NavLink>
         </NavbarItem>
         <NavbarItem>
-          <Link to={`/user/${username}/images`} className="text-align__center">
+          <NavLink
+            to={`/user/${username}/images`}
+            className="text-align__center"
+            activeClassName="NavLink-active"
+          >
             Images
-          </Link>
+          </NavLink>
         </NavbarItem>
         <Username>{userInfo.username}</Username>
         <NavbarItem>
-          <Link to={`/user/${username}/liked`} className="text-align__center">
+          <NavLink
+            to={`/user/${username}/liked`}
+            className="text-align__center"
+            activeClassName="NavLink-active"
+          >
             Liked
-          </Link>
+          </NavLink>
         </NavbarItem>
         <NavbarItem>
-          <Link
+          <NavLink
             to={`/user/${username}/disliked`}
             className="text-align__center"
+            activeClassName="NavLink-active"
           >
             Disliked
-          </Link>
+          </NavLink>
         </NavbarItem>
       </NavbarContainer>
 
@@ -77,6 +89,7 @@ const Profile = (props) => {
             return <VotedPosts type="disliked" match={props.match} />;
           }}
         />
+        <Redirect to={`/user/${username}/posts`} />
       </ContentContainer>
     </>
   );

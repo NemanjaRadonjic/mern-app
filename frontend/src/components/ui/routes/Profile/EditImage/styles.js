@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { primary } from "@styles/theme";
 
 export const Container = styled.div`
   height: 100vh;
@@ -22,7 +21,7 @@ export const ReactCropContainer = styled.div`
   padding: 1rem;
   height: 40%;
   width: ${(props) => (props.background ? "80%" : "60%")};
-  border: 2px dotted ${primary};
+  border: 2px dotted rgb(${(props) => props.theme.primary});
   box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.1);
 `;
 
@@ -44,9 +43,9 @@ export const Label = styled.label`
     border 0.2s ease-in-out;
 
   &:hover {
-    border: 1px solid ${primary};
+    border: 1px solid rgb(${(props) => props.theme.primary});
     color: white;
-    box-shadow: inset -8rem 0 0 ${primary};
+    box-shadow: inset -8rem 0 0 rgb(${(props) => props.theme.primary});
   }
 `;
 
@@ -62,14 +61,14 @@ export const Button = styled.button`
     border 0.2s ease-in-out;
 
   &:hover {
-    border: 1px solid ${primary};
+    border: 1px solid rgb(${(props) => props.theme.primary});
     color: white;
-    box-shadow: inset -8rem 0 0 ${primary};
+    box-shadow: inset -8rem 0 0 rgb(${(props) => props.theme.primary});
   }
 `;
 
 export const Preview = styled.canvas`
-  border: 1px solid ${primary};
+  border: 1px solid rgb(${(props) => props.theme.primary});
   border-radius: ${(props) => (props.type === "background" ? "0" : "50%")};
   margin: 2rem auto 0 auto;
   height: ${(props) => (props.type === "background" ? "10rem " : "7rem")};

@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 
 const moment = require("moment");
 
@@ -18,10 +19,9 @@ const fetchPosts = async (req, res) => {
 const fetchPost = async (req, res) => {
   const { postId } = req.params;
   try {
-    const post = await Post.findById(postId).populate(
-      "author",
-      "username avatar background -_id"
-    );
+    const post = await Post.findById(postId)
+      .populate("author", "username avatar background -_id")
+      .populate("comments", "content author -_id");
     res.json(post);
   } catch (error) {
     console.log(error);
@@ -75,6 +75,62 @@ const createPost = async (req, res) => {
   }
 
   res.status(201).json({ ...post });
+};
+
+const fetchComments = async (req, res) => {
+  const { postId } = req.params;
+  let comments;
+  try {
+    comments = await Comment.find({ post: postId }).populate(
+      "author",
+      "username avatar background -_id"
+    );
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+  return res.json([...comments]);
+};
+
+const createComment = async (req, res) => {
+  const { content, userId, postId } = req.body;
+  if (content.length === 0) {
+    return res.status(422).json("Please enter content of your comment.");
+  }
+
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+
+  let post;
+  try {
+    post = await Post.findById(postId);
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+
+  const comment = new Comment({ content });
+
+  comment.author = user;
+  comment.post = post;
+  comment.createdAt = moment().format("MM/DD/YYYY, h:mm:ss A");
+
+  try {
+    await comment.save();
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  post.comments.push(comment);
+
+  try {
+    await post.save();
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+  return res.status(201).json({ ...comment });
 };
 
 const vote = async (req, res) => {
@@ -198,4 +254,11 @@ const vote = async (req, res) => {
   }
 };
 
-module.exports = { createPost, fetchPosts, fetchPost, vote };
+module.exports = {
+  createPost,
+  createComment,
+  fetchPosts,
+  fetchPost,
+  fetchComments,
+  vote,
+};

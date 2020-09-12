@@ -1,7 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-import { primary, backgroundWhite } from "@styles/theme";
-
 export const FormContainer = styled.div`
   height: 100vh;
   width: 100%;
@@ -20,7 +18,7 @@ export const Header = styled.div`
   font-size: 2rem;
   text-align: center;
   margin-bottom: 3rem;
-  color: ${primary};
+  color: rgb(${(props) => props.theme.primary}); ;
 `;
 
 export const Input = styled.input`
@@ -29,7 +27,7 @@ export const Input = styled.input`
   font-size: 1.1rem;
   padding: 0.5rem 1rem;
   border: none;
-  border-bottom: 2px solid ${primary};
+  border-bottom: 2px solid rgb(${(props) => props.theme.primary});
   background-color: transparent;
   box-shadow: inset 0 0px 0px rgb(0, 0, 0, 0.2);
   transition: box-shadow 0.2s ease-in-out;
@@ -56,7 +54,7 @@ export const Message = styled.div`
   margin: 3rem auto 1rem auto;
   text-decoration: underline;
   &:hover {
-    color: ${primary};
+    color: rgb(${(props) => props.theme.primary});
   }
 `;
 
@@ -68,22 +66,27 @@ export const NoContentMessage = styled.div`
 `;
 
 export const Button = styled.button`
-  font-size: 1.2rem;
-  width: 50%;
-  margin: 1rem auto;
-  background: ${primary};
-  border: none;
-  color: white;
+  width: 7rem;
+  height: 2rem;
+  display: block;
   padding: 0.5rem 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 0 rgb(${(props) => props.theme.primary});
   cursor: pointer;
-
-  transition: box-shadow 0.2s ease-in-out;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out,
+    border 0.2s ease-in-out;
 
   &:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgb(${(props) => props.theme.primary});
+    color: white;
+    box-shadow: inset 8rem 0 0 rgb(${(props) => props.theme.primary});
+  }
+
+  & .align-center {
+    margin: 2rem auto 5rem auto;
   }
 `;
+
 const loaderAnimation = keyframes`
   0% {
     -webkit-transform: rotate(0deg);
@@ -105,7 +108,7 @@ export const Loader = styled.div`
   border-top: 1.1em solid rgba(255, 255, 255, 0.2);
   border-right: 1.1em solid rgba(255, 255, 255, 0.2);
   border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
-  border-left: 1.1em solid ${primary};
+  border-left: 1.1em solid rgb(${(props) => props.theme.primary});
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);

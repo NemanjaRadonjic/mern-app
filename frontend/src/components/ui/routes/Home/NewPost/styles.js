@@ -1,11 +1,9 @@
 import styled from "styled-components";
 
-import { primary } from "@styles/theme";
-
 export const Container = styled.form`
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid ${primary};
+  border-bottom: 1px solid rgb(${(props) => props.theme.primary});
   padding: 3rem 5rem 1rem 5rem;
 `;
 
@@ -35,7 +33,7 @@ export const TextArea = styled.textarea`
   background: none;
   resize: none;
   border: none;
-  border-bottom: 1px solid ${primary};
+  border-bottom: 1px solid rgb(${(props) => props.theme.primary});
 `;
 
 export const Error = styled.div`
@@ -46,7 +44,7 @@ export const Error = styled.div`
 
 export const Button = styled.button`
   float: right;
-  background: ${primary};
+  background: rgb(${(props) => props.theme.primary});
   border: none;
   color: white;
   padding: 0.5rem 2rem;

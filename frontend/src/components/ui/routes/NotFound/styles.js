@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import { textGray } from "@styles/theme";
-
 export const Container = styled.div`
   width: 100%;
   display: flex;
@@ -12,10 +10,10 @@ export const Container = styled.div`
 export const Image = styled.div`
   font-size: 2.5rem;
   margin: 6rem 0 3rem 0;
-  color: ${textGray};
+  color: rgb(${(props) => props.theme.lightText});
 `;
 
 export const Message = styled.div`
   font-size: 1.5rem;
-  color: ${textGray};
+  color: rgb(${(props) => props.theme.lightText});
 `;

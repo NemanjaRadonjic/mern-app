@@ -4,7 +4,6 @@ import { render } from "react-dom";
 import App from "./App";
 
 import { Reset } from "@styles/cssReset";
-import { GlobalStyle } from "@styles/globalStyle";
 
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -20,7 +19,6 @@ const store = createStore(reducers, composeWithDevTools());
 render(
   <StrictMode>
     <Reset />
-    <GlobalStyle />
     <Router>
       <Provider store={store}>
         <App />

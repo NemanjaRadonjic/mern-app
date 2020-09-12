@@ -5,33 +5,38 @@ import { toast } from "react-toastify";
 import getImageSrc from "@helpers/imageSrc";
 
 import {
-  PostContainer,
-  PostBackground,
-  PostHead,
-  PostInfo,
-  PostContent,
+  Container,
+  Background,
   Author,
+  Info,
+  Head,
   Time,
   VoteContainer,
-  LikeContainer,
-  DislikeContainer,
+  ItemContainer,
   Button,
-  VoteCount,
-} from "./styles";
+  Count,
+} from "../common/styles";
+import { PostContent } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
 
-const Post = ({ post, history }) => {
-  console.log(post);
+const Post = ({ post, history, location }) => {
+  const postCopy = location.post;
   const user = useSelector((state) => state.user);
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
+
   const [votes, setVotes] = useState({
-    likes: post.votes.likes.length,
-    dislikes: post.votes.dislikes.length,
-    liked: post.votes.likes.includes(user?.id),
-    disliked: post.votes.dislikes.includes(user?.id),
+    likes: postCopy ? postCopy.votes.likes : post.votes.likes.length,
+    dislikes: postCopy ? postCopy.votes.dislikes : post.votes.dislikes.length,
+    liked: postCopy
+      ? postCopy.votes.liked
+      : post.votes.likes.includes(user?.id),
+    disliked: postCopy
+      ? postCopy.votes.disliked
+      : post.votes.dislikes.includes(user?.id),
   });
+
   const background = `http://localhost:4000/uploads/${
     post.author.background?.split("\\")[1]
   }`;
@@ -90,26 +95,36 @@ const Post = ({ post, history }) => {
       toast.error("You have to login to vote.");
     }
   };
+  const updatedPost = { ...post, votes };
 
   const redirectToPost = () => {
     history.push({
       pathname: `/posts/${post._id}`,
-      post,
+      post: updatedPost,
     });
   };
+
+  const redirectToProfile = (event) => {
+    event.stopPropagation();
+    history.push(`/user/${post.author.username}`);
+  };
+
+  const redirectToComment = (event) => {
+    event.stopPropagation();
+    history.push({ pathname: `/posts/${post._id}/comment`, post: updatedPost });
+  };
+
   return (
-    <PostContainer onClick={redirectToPost} background={background}>
-      <PostBackground>
-        <Avatar
-          src={getImageSrc(post.author.avatar, "avatar")}
-          onClick={(event) => {
-            event.stopPropagation();
-            history.push(`/user/${post.author.username}`);
-          }}
-        />
-        <PostHead>
-          <PostInfo>
+    <Container onClick={redirectToPost} background={background}>
+      <Background post>
+        <Head>
+          <Info>
+            <Avatar
+              src={getImageSrc(post.author.avatar, "avatar")}
+              onClick={redirectToProfile}
+            />
             <Author
+              post
               onClick={(event) => {
                 event.stopPropagation();
                 history.push(`/user/${post.author.username}`);
@@ -118,31 +133,38 @@ const Post = ({ post, history }) => {
               {post.author.username}
             </Author>
             <Time>{post.createdAt.fromNow()}</Time>
-          </PostInfo>
+          </Info>
           <PostContent>
             <p>{post.content}</p>
           </PostContent>
           <VoteContainer>
-            <LikeContainer>
+            <ItemContainer>
+              <Button
+                className={`far fa-comment`}
+                onClick={redirectToComment}
+              />
+              <Count>0</Count>
+            </ItemContainer>
+            <ItemContainer>
               <Button
                 name="likes"
                 onClick={vote}
                 className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
-              ></Button>
-              <VoteCount>{votes.likes}</VoteCount>
-            </LikeContainer>
-            <DislikeContainer>
+              />
+              <Count>{votes.likes}</Count>
+            </ItemContainer>
+            <ItemContainer>
               <Button
                 name="dislikes"
                 onClick={vote}
                 className={`fa${votes.disliked ? "s" : "r"} fa-thumbs-down`}
-              ></Button>
-              <VoteCount>{votes.dislikes}</VoteCount>
-            </DislikeContainer>
+              />
+              <Count>{votes.dislikes}</Count>
+            </ItemContainer>
           </VoteContainer>
-        </PostHead>
-      </PostBackground>
-    </PostContainer>
+        </Head>
+      </Background>
+    </Container>
   );
 };
 
