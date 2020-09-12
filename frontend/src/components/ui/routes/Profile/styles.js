@@ -21,6 +21,7 @@ export const AvatarContainer = styled.img`
   bottom: -5%;
   left: 50%;
   transform: translateX(-50%);
+  transition: border 0.4s ease-in-out;
 `;
 
 export const Username = styled.div`

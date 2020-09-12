@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { v4 as id } from "uuid";
 import Post from "@components/elements/Post";
 import NewPost from "./NewPost";
 import axiosInstance from "@axios";
@@ -22,7 +21,7 @@ function Home() {
   const renderPosts = () => {
     return posts?.length > 0 ? (
       posts.map((post) => {
-        return <Post key={id()} post={post} user={user} />;
+        return <Post key={post._id} post={post} user={user} />;
       })
     ) : (
       <NoContentMessage>No one made any posts yet :(</NoContentMessage>

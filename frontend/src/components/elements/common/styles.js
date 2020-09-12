@@ -23,7 +23,7 @@ export const Background = styled.div`
   padding: 1.5rem 1.5rem 0 1.5rem;
   display: flex;
   background: rgba(${(props) => props.theme.background}, 0.3);
-  transition: background 0.3s ease-in-out;
+  transition: background 0.4s ease-in-out;
   &:hover {
     background: rgba(${(props) => props.theme.background}, 0);
   }

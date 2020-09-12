@@ -4,6 +4,7 @@ export const MainContainer = styled.div`
   display: flex;
   background: rgb(${(props) => props.theme.background});
   width: 100%;
+  transition: background 0.4s ease-in-out;
 `;
 
 export const RoutesContainer = styled.div`

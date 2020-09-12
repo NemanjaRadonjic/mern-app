@@ -16,7 +16,7 @@ export const Avatar = styled.img`
   border: 4px solid rgb(${(props) => props.theme.background});
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.3);
   border-radius: 50%;
-  transition: box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out, border 0.4s ease-in-out;
 
   &:hover {
     box-shadow: 0 3px 10px rgb(0, 0, 0, 0.4);

@@ -12,6 +12,7 @@ const Images = (props) => {
     avatars: null,
     backgrounds: null,
   });
+  console.log(images);
   useEffect(() => {
     const fetchUserImages = async () => {
       const response = await axiosInstance.get(`users/${username}/images`);
@@ -29,7 +30,7 @@ const Images = (props) => {
         <Header>Avatars</Header>
         {images.avatars &&
           images.avatars.map((avatar) => (
-            <Avatar key={id()} src={getImageSrc(avatar)} />
+            <Avatar key={avatar} src={getImageSrc(avatar)} />
           ))}
       </>
     ) : (

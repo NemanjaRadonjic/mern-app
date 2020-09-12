@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import axiosInstance from "@axios";
-import { v4 as id } from "uuid";
 
 import PostComponent from "@components/elements/Post";
 import CommentComponent from "@components/elements/Comment";
 
-import { Container, PostSection, CommentSection } from "./styles";
+import { Container, CommentSection } from "./styles";
 import { NoContentMessage, Loader } from "@styles/common";
 
 const Post = (props) => {
@@ -32,18 +31,16 @@ const Post = (props) => {
   const renderComments = () => {
     return (
       comments &&
-      comments.map((comment) => (
-        <CommentComponent key={id()} comment={comment} />
-      ))
+      comments.map((comment) => {
+        return <CommentComponent key={comment._id} comment={comment} />;
+      })
     );
   };
 
   if (post) {
     return (
       <Container>
-        <PostSection>
-          <PostComponent post={post} />
-        </PostSection>
+        <PostComponent post={post} />
         <CommentSection>
           {comments === null ? (
             <Loader />

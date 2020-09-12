@@ -1,6 +1,7 @@
 import { css, createGlobalStyle } from "styled-components";
 
 export const globalStyles = css`
+  
   html {
     font-family: "Baloo Da 2", cursive;
     color: rgb(${(props) => props.theme.text});
