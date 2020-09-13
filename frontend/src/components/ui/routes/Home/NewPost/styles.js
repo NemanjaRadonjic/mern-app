@@ -4,7 +4,7 @@ export const Container = styled.form`
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid rgb(${(props) => props.theme.primary});
-  padding: 3rem 5rem 1rem 5rem;
+  padding: 3rem 5rem 3rem 5rem;
 `;
 
 export const TopSection = styled.div`
@@ -16,6 +16,7 @@ export const BottomSection = styled.div`
   display: flex;
   justify-content: space-between;
   padding-top: 1rem;
+  flex-direction: column;
 `;
 
 export const Avatar = styled.img`
@@ -59,7 +60,17 @@ export const Button = styled.button`
 `;
 
 export const Message = styled.div`
-  text-align: center;
-  width: 100%;
+  margin: auto;
   padding: 0.5rem 0;
+  color: rgb(${(props) => props.theme.lightText});
+  font-size: 1.1rem;
+`;
+
+export const RedirectLink = styled.div`
+  margin: auto;
+  padding: 0.5rem 0;
+  text-decoration: underline;
+  &:hover {
+    color: rgb(${(props) => props.theme.primary});
+  }
 `;

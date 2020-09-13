@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
 import getImageSrc from "@helpers/imageSrc";
+
+import { Button } from "@styles/common";
 import {
   Container,
   TopSection,
@@ -11,7 +13,6 @@ import {
   Avatar,
   TextArea,
   Error,
-  Button,
   Message,
 } from "./styles";
 
@@ -72,7 +73,7 @@ const NewPost = ({ posts, setPosts }) => {
           </TopSection>
           <BottomSection>
             <Error>{errors.post}</Error>
-            <Button type="submit" onClick={createPost}>
+            <Button className="align-center" type="submit" onClick={createPost}>
               Post
             </Button>
           </BottomSection>
@@ -82,16 +83,6 @@ const NewPost = ({ posts, setPosts }) => {
           <TopSection>
             <Message>You have to be logged in to post something</Message>
           </TopSection>
-          <BottomSection>
-            <Message>
-              <Link to="/login">
-                - If you do have an account click here to login
-              </Link>
-              <Link to="/register">
-                - If you dont have an account you can register here.
-              </Link>
-            </Message>
-          </BottomSection>
         </>
       )}
     </Container>

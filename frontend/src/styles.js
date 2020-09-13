@@ -14,3 +14,17 @@ export const RoutesContainer = styled.div`
   width: 35%;
   align-items: center;
 `;
+
+export const BackToHome = styled.div`
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgb(${(props) => props.theme.primary});
+  height: 3rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: rgb(${(props) => props.theme.lightText});
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: rgb(${(props) => props.theme.primary});
+  }
+`;

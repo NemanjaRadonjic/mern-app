@@ -5,7 +5,10 @@ const fetchUser = async (req, res) => {
   const { username } = req.params;
   try {
     const user = await User.findOne({ username });
-    return res.json(user);
+    if (user) {
+      return res.json(user);
+    }
+    return res.sendStatus(404);
   } catch (error) {
     return res.sendStatus(404);
   }

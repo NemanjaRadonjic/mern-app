@@ -91,7 +91,7 @@ function Login({ login, history }) {
             Don't have an account? Click here to Register!
           </Link>
         </Message>
-        <Button>Login</Button>
+        <Button className="align-center">Login</Button>
       </Form>
     </FormContainer>
   );

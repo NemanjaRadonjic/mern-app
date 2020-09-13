@@ -66,24 +66,24 @@ export const NoContentMessage = styled.div`
 `;
 
 export const Button = styled.button`
-  width: 7rem;
-  height: 2rem;
+  width: 8rem;
+  font-size: 1rem;
+  background: transparent;
   display: block;
   padding: 0.5rem 1rem;
+  border: 1px solid rgb(${(props) => props.theme.primary});
   box-shadow: inset 0 0 0 rgb(${(props) => props.theme.primary});
   cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out,
-    border 0.2s ease-in-out;
+
+  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
 
   &:hover {
-    border: 1px solid rgb(${(props) => props.theme.primary});
     color: white;
-    box-shadow: inset 8rem 0 0 rgb(${(props) => props.theme.primary});
+    box-shadow: inset 0 -3rem 0 rgb(${(props) => props.theme.primary});
   }
 
-  & .align-center {
-    margin: 2rem auto 5rem auto;
+  &.align-center {
+    margin: 0 auto;
   }
 `;
 

@@ -40,7 +40,7 @@ const Images = (props) => {
   const renderBackgrounds = () => {
     return images.backgrounds?.length > 0 ? (
       <>
-        <Header>Avatars</Header>
+        <Header>Backgrounds</Header>
         {images.backgrounds &&
           images.backgrounds.map((background) => (
             <Background key={id()} src={getImageSrc(background)} />

@@ -19,7 +19,11 @@ router
 router.route("/:postId/comments").get(PostControllers.fetchComments);
 
 router
-  .route("/:postId/vote")
-  .post(authenticateAccessToken, PostControllers.vote);
+  .route("/:postId/like")
+  .post(authenticateAccessToken, PostControllers.like);
+
+router
+  .route("/:postId/dislike")
+  .post(authenticateAccessToken, PostControllers.dislike);
 
 module.exports = router;

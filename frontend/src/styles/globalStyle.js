@@ -1,7 +1,6 @@
 import { css, createGlobalStyle } from "styled-components";
 
 export const globalStyles = css`
-  
   html {
     font-family: "Baloo Da 2", cursive;
     color: rgb(${(props) => props.theme.text});
@@ -9,7 +8,7 @@ export const globalStyles = css`
   }
 
   * {
-    color: rgb(${(props) => props.theme.text}));
+    color: rgb(${(props) => props.theme.text});
     outline: none;
   }
 
@@ -80,14 +79,14 @@ export const globalStyles = css`
   }
 
   .ReactCrop__crop-selection {
-    border: 2px dotted rgb(${(props) => props.theme.primary});;
+    border: 2px dotted rgb(${(props) => props.theme.primary});
   }
   input[type="file"] {
     display: none;
   }
   .NavLink-active {
     transition: box-shadow 0.2s ease-in-out;
-    box-shadow: inset 0 -5.4rem 0 rgb(${(props) => props.theme.primary});;
+    box-shadow: inset 0 -5.4rem 0 rgb(${(props) => props.theme.primary});
   }
 `;
 

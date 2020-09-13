@@ -21,7 +21,7 @@ import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
 
-const Post = ({ post, history, location }) => {
+const Post = ({ post, history, location, commentActive }) => {
   const postCopy = location.post;
   const user = useSelector((state) => state.user);
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
@@ -41,60 +41,75 @@ const Post = ({ post, history, location }) => {
     post.author.background?.split("\\")[1]
   }`;
 
-  const vote = async (event) => {
+  const like = async (event) => {
     event.stopPropagation();
-    const type = event.target.name;
     if (user) {
       const accessToken = JSON.parse(
         window.localStorage.getItem("accessToken")
       );
       try {
         axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
-        const response = await axiosInstance.post(`/posts/${post._id}/vote`, {
-          type,
+        const response = await axiosInstance.post(`/posts/${post._id}/like`, {
           userId: user.id,
         });
 
-        let updatedVotes = {
-          ...votes,
-          liked: response.data.liked,
-          disliked: response.data.disliked,
-        };
-        if (votes.liked || votes.disliked) {
-          if (updatedVotes.liked) {
-            if (votes.liked) {
-              updatedVotes.likes = updatedVotes.likes - 1;
-            } else {
-              updatedVotes.likes = updatedVotes.likes + 1;
-              updatedVotes.dislikes = updatedVotes.dislikes - 1;
-            }
-          } else if (updatedVotes.disliked) {
-            if (votes.disliked) {
-              updatedVotes.dislikes = updatedVotes.dislikes - 1;
-            } else {
-              updatedVotes.likes = updatedVotes.likes - 1;
-              updatedVotes.dislikes = updatedVotes.dislikes + 1;
-            }
-          } else {
-            if (type === "likes") {
-              updatedVotes.likes = updatedVotes.likes - 1;
-            } else {
-              updatedVotes.dislikes = updatedVotes.dislikes - 1;
-            }
-          }
+        const { liked, disliked } = response.data;
+        let updatedVotes = { ...votes, liked, disliked };
+
+        if (votes.liked) {
+          updatedVotes.likes--;
         } else {
-          if (updatedVotes.liked) {
-            updatedVotes.likes = updatedVotes.likes + 1;
+          if (votes.disliked) {
+            updatedVotes.dislikes--;
+            updatedVotes.likes++;
           } else {
-            updatedVotes.dislikes = updatedVotes.dislikes + 1;
+            updatedVotes.likes++;
           }
         }
-        setVotes(updatedVotes);
-      } catch (error) {}
+        setVotes({ ...updatedVotes });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const dislike = async (event) => {
+    event.stopPropagation();
+    if (user) {
+      const accessToken = JSON.parse(
+        window.localStorage.getItem("accessToken")
+      );
+      try {
+        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
+        const response = await axiosInstance.post(
+          `/posts/${post._id}/dislike`,
+          {
+            userId: user.id,
+          }
+        );
+
+        const { liked, disliked } = response.data;
+        let updatedVotes = { ...votes, liked, disliked };
+
+        if (votes.disliked) {
+          updatedVotes.dislikes--;
+        } else {
+          if (votes.liked) {
+            updatedVotes.likes--;
+            updatedVotes.dislikes++;
+          } else {
+            updatedVotes.dislikes++;
+          }
+        }
+        setVotes({ ...updatedVotes });
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       toast.error("You have to login to vote.");
     }
   };
+
   const updatedPost = { ...post, votes };
 
   const redirectToPost = () => {
@@ -140,23 +155,21 @@ const Post = ({ post, history, location }) => {
           <VoteContainer>
             <ItemContainer>
               <Button
-                className={`far fa-comment`}
+                className={`fa${commentActive ? "s" : "r"} fa-comment`}
                 onClick={redirectToComment}
               />
-              <Count>0</Count>
+              <Count>{post.comments.length}</Count>
             </ItemContainer>
             <ItemContainer>
               <Button
-                name="likes"
-                onClick={vote}
+                onClick={like}
                 className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
               />
               <Count>{votes.likes}</Count>
             </ItemContainer>
             <ItemContainer>
               <Button
-                name="dislikes"
-                onClick={vote}
+                onClick={dislike}
                 className={`fa${votes.disliked ? "s" : "r"} fa-thumbs-down`}
               />
               <Count>{votes.dislikes}</Count>

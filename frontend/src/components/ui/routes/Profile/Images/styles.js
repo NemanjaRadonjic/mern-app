@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Avatars = styled.div`
   width: 45%;
+  margin-left: 2rem;
   margin-top: 3rem;
   float: left;
   display: flex;
@@ -29,6 +30,7 @@ export const Avatar = styled.img`
 
 export const Backgrounds = styled.div`
   width: 45%;
+  margin-right: 2rem;
   margin-top: 3rem;
   float: right;
   display: flex;

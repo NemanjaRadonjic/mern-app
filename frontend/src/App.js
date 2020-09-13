@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, Link } from "react-router-dom";
+import axiosInstance from "@axios";
 
 import Searchbar from "@components/ui/Searchbar";
 import Authbar from "@components/ui/Authbar";
@@ -20,7 +21,7 @@ import { login } from "@actions/userActions";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { MainContainer, RoutesContainer } from "./styles";
+import { MainContainer, RoutesContainer, BackToHome } from "./styles";
 
 import { GlobalStyle } from "@styles/globalStyle";
 
@@ -31,7 +32,16 @@ function App({ login }) {
   const user = JSON.parse(window.localStorage.getItem("user"));
   const [theme, setTheme] = useState(light);
   useEffect(() => {
-    user && login(user);
+    const fetchUser = async () => {
+      try {
+        const response =
+          user && (await axiosInstance.get(`/users/${user.username}`));
+        response.data && login(user);
+      } catch (error) {
+        window.localStorage.removeItem("user");
+      }
+    };
+    fetchUser();
   });
 
   return (
@@ -40,6 +50,11 @@ function App({ login }) {
       <MainContainer>
         <Searchbar theme={theme} setTheme={setTheme} themes={{ light, dark }} />
         <RoutesContainer>
+          <BackToHome>
+            <Link className="text-align__center" to="/home">
+              Home
+            </Link>
+          </BackToHome>
           <Switch>
             <Route exact path="/">
               <Redirect to="/home" />

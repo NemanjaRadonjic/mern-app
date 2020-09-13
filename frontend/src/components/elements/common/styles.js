@@ -29,6 +29,11 @@ export const Background = styled.div`
   }
 `;
 
+export const AvatarContainer = styled.div`
+  width: 2rem;
+  margin-left: 1rem;
+`;
+
 export const Author = styled.div`
   font-weight: bold;
   width: 10rem;
@@ -38,7 +43,7 @@ export const Head = styled.div`
   width: 100%;
   letter-spacing: 0.5px;
   font-size: 1.05rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 `;
 
 export const Info = styled.div`

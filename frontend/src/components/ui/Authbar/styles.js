@@ -33,7 +33,7 @@ export const Settings = styled.div`
   font-size: 1.5rem;
   margin: auto;
   cursor: pointer;
-  color: grey;
+  color: rgb(${(props) => props.theme.text});
   transition: color 0.1s ease-in-out;
 
   &:hover {
@@ -75,4 +75,10 @@ export const Button = styled.a`
 export const LinkContainer = styled.div`
   height: 100%;
   width: 100%;
+  transition: color 0.2s ease-in-out;
+  font-size: 1.1rem;
+
+  &:hover {
+    color: rgb(${(props) => props.theme.primary});
+  }
 `;

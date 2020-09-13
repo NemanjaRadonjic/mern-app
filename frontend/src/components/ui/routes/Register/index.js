@@ -144,7 +144,7 @@ function Register({ history }) {
         <Message>
           <Link to="/login">Already have an account? Click here to Login!</Link>
         </Message>
-        <Button>Register</Button>
+        <Button className="align-center">Register</Button>
       </Form>
     </FormContainer>
   );

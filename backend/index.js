@@ -10,6 +10,7 @@ require("dotenv").config();
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const postRoutes = require("./routes/posts");
+const commentRoutes = require("./routes/comments");
 const uploadRoutes = require("./routes/upload");
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/comments", commentRoutes);
 app.use("/upload", uploadRoutes);
 
 mongoose

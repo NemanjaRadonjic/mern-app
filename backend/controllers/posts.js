@@ -130,13 +130,79 @@ const createComment = async (req, res) => {
   } catch (error) {
     return res.sendStatus(500);
   }
+
   return res.status(201).json({ ...comment });
 };
 
-const vote = async (req, res) => {
+const like = async (req, res) => {
   const { postId } = req.params;
-  // type is either likes or dislikes
-  const { type, userId } = req.body;
+  const { userId } = req.body;
+
+  let post;
+  try {
+    post = await Post.findById(postId);
+  } catch (error) {
+    return res.status(404).json({ message: "Couldn't find a post." });
+  }
+
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (error) {
+    return res.status(404).json({ message: "Couldn't find a user." });
+  }
+  // cheking if a user has already liked a post
+  if (post.votes.likes.some((user) => user == userId)) {
+    // filter from post likes
+    post.votes.likes = post.votes.likes.filter((id) => id != userId);
+    // filter from user likes
+    user.votedPosts.likes = user.votedPosts.likes.filter((id) => id != postId);
+    // save
+    try {
+      await post.save();
+    } catch (error) {
+      return res.status(500).json("Couldn't save the post.");
+    }
+    try {
+      await user.save();
+    } catch (error) {
+      return res.status(500).json("Couldn't save the user.");
+    }
+    return res.status(201).json({ liked: false, disliked: false });
+  } else {
+    // deleting a user from dislikes if he wants to like and saving the user to that posts likes
+    post.votes.dislikes = post.votes.dislikes.filter((id) => {
+      id != userId;
+    });
+    post.votes.likes.push(user);
+
+    try {
+      await post.save();
+    } catch (error) {
+      return res.status(500).json("Couldn't save the post.");
+    }
+
+    // deleting a post from a users votedPosts dislikes and saving it to likes
+    user.votedPosts.dislikes = user.votedPosts.dislikes.filter(
+      (id) => id != postId
+    );
+    user.votedPosts.likes.push(post);
+
+    try {
+      await user.save();
+    } catch (error) {
+      return res.status(500).json("Couldn't save the post.");
+    }
+    return res.status(201).json({
+      liked: true,
+      disliked: false,
+    });
+  }
+};
+
+const dislike = async (req, res) => {
+  const { postId } = req.params;
+  const { userId } = req.body;
 
   let post;
   try {
@@ -152,105 +218,49 @@ const vote = async (req, res) => {
     return res.status(404).json({ message: "Couldn't find a user." });
   }
 
-  // checking if a user already voted on a post
-  if (type === "likes") {
-    // check if a user has already liked a post
-    if (post.votes.likes.some((user) => user == userId)) {
-      // filter from post likes
-      post.votes.likes = post.votes.likes.filter((id) => id != userId);
-      // filter from user likes
-      user.votedPosts.likes = user.votedPosts.likes.filter(
-        (id) => id != postId
-      );
-      // save
-      try {
-        await post.save();
-      } catch (error) {
-        return res.status(500).json("Couldn't save the post.");
-      }
-      try {
-        await user.save();
-      } catch (error) {
-        return res.status(500).json("Couldn't save the user.");
-      }
-      return res.status(201).json({ liked: false, disliked: false });
-    } else {
-      // deleting a user from dislikes if he wants to like and saving the user to that posts likes
-      post.votes.dislikes = post.votes.dislikes.filter((id) => {
-        id != userId;
-      });
-      post.votes[type].push(user);
-
-      try {
-        await post.save();
-      } catch (error) {
-        return res.status(500).json("Couldn't save the post.");
-      }
-
-      // deleting a post from a users votedPosts dislikes and saving it to likes
-      user.votedPosts.dislikes = user.votedPosts.dislikes.filter(
-        (id) => id != postId
-      );
-      user.votedPosts[type].push(post);
-
-      try {
-        await user.save();
-      } catch (error) {
-        return res.status(500).json("Couldn't save the post.");
-      }
-      return res.status(201).json({
-        liked: true,
-        disliked: false,
-      });
+  if (post.votes.dislikes.some((user) => user == userId)) {
+    // filter from post dislikes
+    post.votes.dislikes = post.votes.dislikes.filter((id) => id != userId);
+    // filter from user dislikes
+    user.votedPosts.dislikes = user.votedPosts.dislikes.filter(
+      (id) => id != postId
+    );
+    // save
+    try {
+      await post.save();
+    } catch (error) {
+      return res.status(500).json("Couldn't save the post.");
     }
+    try {
+      await user.save();
+    } catch (error) {
+      return res.status(500).json("Couldn't save the user.");
+    }
+    return res.status(201).json({ liked: false, disliked: false });
   } else {
-    // check if a user has already disliked a post
-    if (post.votes.dislikes.some((user) => user == userId)) {
-      // filter from post dislikes
-      post.votes.dislikes = post.votes.dislikes.filter((id) => id != userId);
-      // filter from user dislikes
-      user.votedPosts.dislikes = user.votedPosts.dislikes.filter(
-        (id) => id != postId
-      );
-      // save
-      try {
-        await post.save();
-      } catch (error) {
-        return res.status(500).json("Couldn't save the post.");
-      }
-      try {
-        await user.save();
-      } catch (error) {
-        return res.status(500).json("Couldn't save the user.");
-      }
-      return res.status(201).json({ liked: false, disliked: false });
-    } else {
-      // deleting a user from likes if he wants to dislike and saving the user to that posts dislikes
-      post.votes.likes = post.votes.likes.filter((id) => id != userId);
+    // deleting a user from likes if he wants to dislike and saving the user to that posts dislikes
+    post.votes.likes = post.votes.likes.filter((id) => id != userId);
 
-      post.votes[type].push(user);
+    post.votes.dislikes.push(user);
 
-      try {
-        await post.save();
-      } catch (error) {
-        return res.status(500).json("Couldn't save the post.");
-      }
-
-      // deleting a post from a users votedPosts likes and saving it to dislikes
-      user.votedPosts.likes = user.votedPosts.likes.filter(
-        (id) => id != postId
-      );
-      user.votedPosts[type].push(post);
-      try {
-        await user.save();
-      } catch (error) {
-        return res.status(500).json("Couldn't save the user.");
-      }
-      return res.status(201).json({
-        liked: false,
-        disliked: true,
-      });
+    try {
+      await post.save();
+    } catch (error) {
+      return res.status(500).json("Couldn't save the post.");
     }
+
+    // deleting a post from a users votedPosts likes and saving it to dislikes
+    user.votedPosts.likes = user.votedPosts.likes.filter((id) => id != postId);
+    user.votedPosts.dislikes.push(post);
+    try {
+      await user.save();
+    } catch (error) {
+      return res.status(500).json("Couldn't save the user.");
+    }
+    return res.status(201).json({
+      liked: false,
+      disliked: true,
+    });
   }
 };
 
@@ -260,5 +270,6 @@ module.exports = {
   fetchPosts,
   fetchPost,
   fetchComments,
-  vote,
+  like,
+  dislike,
 };

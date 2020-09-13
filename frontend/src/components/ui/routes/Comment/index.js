@@ -24,7 +24,7 @@ const Comment = (props) => {
   if (post) {
     return (
       <>
-        <PostComponent post={post} />
+        <PostComponent post={post} commentActive />
         <NewComment
           avatar={user.avatar}
           postId={postId}

@@ -7,6 +7,7 @@ import getImageSrc from "@helpers/imageSrc";
 import {
   Container,
   Background,
+  AvatarContainer,
   Author,
   Head,
   Info,
@@ -22,81 +23,94 @@ import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
 
 const Comment = ({ comment, history }) => {
-  //   const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
   const convertedDate = moment(comment.createdAt, "MM/DD/YYYY, h:mm:ss A");
 
-  //   const [votes, setVotes] = useState({
-  //     likes: postCopy ? postCopy.votes.likes : post.votes.likes.length,
-  //     dislikes: postCopy ? postCopy.votes.dislikes : post.votes.dislikes.length,
-  //     liked: postCopy
-  //       ? postCopy.votes.liked
-  //       : post.votes.likes.includes(user?.id),
-  //     disliked: postCopy
-  //       ? postCopy.votes.disliked
-  //       : post.votes.dislikes.includes(user?.id),
-  //   });
-
+  const [votes, setVotes] = useState({
+    likes: comment.votes.likes.length,
+    dislikes: comment.votes.dislikes.length,
+    liked: comment.votes.likes.includes(user?.id),
+    disliked: comment.votes.dislikes.includes(user?.id),
+  });
   const background = `http://localhost:4000/uploads/${
     comment.author.background?.split("\\")[1]
   }`;
 
-  //   const vote = async (event) => {
-  //     event.stopPropagation();
-  //     const type = event.target.name;
-  //     if (user) {
-  //       const accessToken = JSON.parse(
-  //         window.localStorage.getItem("accessToken")
-  //       );
-  //       try {
-  //         axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
-  //         const response = await axiosInstance.post(`/posts/${post._id}/vote`, {
-  //           type,
-  //           userId: user.id,
-  //         });
+  const like = async (event) => {
+    if (user) {
+      const accessToken = JSON.parse(
+        window.localStorage.getItem("accessToken")
+      );
+      try {
+        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
+        const response = await axiosInstance.post(
+          `comments/${comment._id}/${type}`,
+          { userId: user.id }
+        );
 
-  //         let updatedVotes = {
-  //           ...votes,
-  //           liked: response.data.liked,
-  //           disliked: response.data.disliked,
-  //         };
-  //         if (votes.liked || votes.disliked) {
-  //           if (updatedVotes.liked) {
-  //             if (votes.liked) {
-  //               updatedVotes.likes = updatedVotes.likes - 1;
-  //             } else {
-  //               updatedVotes.likes = updatedVotes.likes + 1;
-  //               updatedVotes.dislikes = updatedVotes.dislikes - 1;
-  //             }
-  //           } else if (updatedVotes.disliked) {
-  //             if (votes.disliked) {
-  //               updatedVotes.dislikes = updatedVotes.dislikes - 1;
-  //             } else {
-  //               updatedVotes.likes = updatedVotes.likes - 1;
-  //               updatedVotes.dislikes = updatedVotes.dislikes + 1;
-  //             }
-  //           } else {
-  //             if (type === "likes") {
-  //               updatedVotes.likes = updatedVotes.likes - 1;
-  //             } else {
-  //               updatedVotes.dislikes = updatedVotes.dislikes - 1;
-  //             }
-  //           }
-  //         } else {
-  //           if (updatedVotes.liked) {
-  //             updatedVotes.likes = updatedVotes.likes + 1;
-  //           } else {
-  //             updatedVotes.dislikes = updatedVotes.dislikes + 1;
-  //           }
-  //         }
-  //         setVotes(updatedVotes);
-  //       } catch (error) {}
-  //     } else {
-  //       toast.error("You have to login to vote.");
-  //     }
-  //   };
-  //   const updatedPost = { ...post, votes };
+        let updatedVotes = {
+          ...votes,
+          ...response.data,
+        };
 
-  const vote = () => {};
+        if (votes.liked) {
+          updatedVotes.likes--;
+        } else {
+          if (votes.disliked) {
+            updatedVotes.dislikes--;
+            updatedVotes.likes++;
+          } else {
+            updatedVotes.likes++;
+          }
+        }
+
+        setVotes(updatedVotes);
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong...");
+      }
+    } else {
+      toast.error("You have to login to vote.");
+    }
+  };
+
+  const dislike = async () => {
+    if (user) {
+      const accessToken = JSON.parse(
+        window.localStorage.getItem("accessToken")
+      );
+      try {
+        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
+        const response = await axiosInstance.post(
+          `comments/${comment._id}/dislike`,
+          { userId: user.id }
+        );
+
+        let updatedVotes = {
+          ...votes,
+          ...response.data,
+        };
+
+        if (votes.disliked) {
+          updatedVotes.dislikes--;
+        } else {
+          if (votes.liked) {
+            updatedVotes.likes--;
+            updatedVotes.dislikes++;
+          } else {
+            updatedVotes.dislikes++;
+          }
+        }
+
+        setVotes(updatedVotes);
+      } catch (error) {
+        toast.error("Something went wrong...");
+      }
+    } else {
+      toast.error("You have to login to vote.");
+    }
+  };
+
   const redirectToProfile = (event) => {
     event.stopPropagation();
     history.push(`/user/${comment.author.username}`);
@@ -105,10 +119,12 @@ const Comment = ({ comment, history }) => {
   return (
     <Container background={background}>
       <Background>
-        <Avatar
-          src={getImageSrc(comment.author.avatar, "avatar")}
-          onClick={redirectToProfile}
-        />
+        <AvatarContainer>
+          <Avatar
+            src={getImageSrc(comment.author.avatar, "avatar")}
+            onClick={redirectToProfile}
+          />
+        </AvatarContainer>
         <Head>
           <Info>
             <Author
@@ -126,25 +142,20 @@ const Comment = ({ comment, history }) => {
           </CommentContent>
           <VoteContainer>
             <ItemContainer>
-              {/* <Button
-                name="likes"
-                onClick={vote}
-                className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
-              /> */}
               <Button
-                name="likes"
-                onClick={vote}
-                className={`far fa-thumbs-up`}
+                name="like"
+                onClick={like}
+                className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
               />
-              <Count>0</Count>
+              <Count>{votes.likes}</Count>
             </ItemContainer>
             <ItemContainer>
               <Button
-                name="dislikes"
-                onClick={vote}
-                className={`far fa-thumbs-down`}
+                name="dislike"
+                onClick={dislike}
+                className={`fa${votes.disliked ? "s" : "r"} fa-thumbs-down`}
               />
-              <Count>0</Count>
+              <Count>{votes.dislikes}</Count>
             </ItemContainer>
           </VoteContainer>
         </Head>
