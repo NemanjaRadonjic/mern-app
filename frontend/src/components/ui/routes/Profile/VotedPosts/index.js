@@ -24,7 +24,15 @@ const VotedPosts = (props) => {
   const renderPosts = () => {
     return votedPosts.length > 0 ? (
       votedPosts.map((post) => {
-        return <Post key={post._id} post={post} user={user} />;
+        return (
+          <Post
+            key={post._id}
+            post={post}
+            user={user}
+            posts={votedPosts}
+            setPosts={setVotedPosts}
+          />
+        );
       })
     ) : (
       <NoContentMessage>

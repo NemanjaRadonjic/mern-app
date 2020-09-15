@@ -264,6 +264,16 @@ const dislike = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  const { postId } = req.params;
+  try {
+    await Post.findById(postId).deleteOne();
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+};
+
 module.exports = {
   createPost,
   createComment,
@@ -272,4 +282,5 @@ module.exports = {
   fetchComments,
   like,
   dislike,
+  remove,
 };

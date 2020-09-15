@@ -15,15 +15,29 @@ import {
   ItemContainer,
   Button,
   Count,
+  Settings,
+  Setting,
 } from "../common/styles";
 import { PostContent } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
+
 import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
 
-const Post = ({ post, history, location, commentActive }) => {
+const Post = ({
+  post,
+  history,
+  location,
+  commentActive,
+  posts,
+  setPosts,
+  comments,
+}) => {
   const postCopy = location.post;
   const user = useSelector((state) => state.user);
+  const authorSelf = post.author.username == user?.username;
+  const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
+  axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
 
   const [votes, setVotes] = useState({
@@ -44,11 +58,7 @@ const Post = ({ post, history, location, commentActive }) => {
   const like = async (event) => {
     event.stopPropagation();
     if (user) {
-      const accessToken = JSON.parse(
-        window.localStorage.getItem("accessToken")
-      );
       try {
-        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
         const response = await axiosInstance.post(`/posts/${post._id}/like`, {
           userId: user.id,
         });
@@ -76,11 +86,7 @@ const Post = ({ post, history, location, commentActive }) => {
   const dislike = async (event) => {
     event.stopPropagation();
     if (user) {
-      const accessToken = JSON.parse(
-        window.localStorage.getItem("accessToken")
-      );
       try {
-        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
         const response = await axiosInstance.post(
           `/posts/${post._id}/dislike`,
           {
@@ -107,6 +113,17 @@ const Post = ({ post, history, location, commentActive }) => {
       }
     } else {
       toast.error("You have to login to vote.");
+    }
+  };
+
+  const handleClickRemove = async (event) => {
+    event.stopPropagation();
+    try {
+      await axiosInstance.delete(`/posts/${post._id}/remove`);
+      setPosts(posts.filter((p) => p._id != post._id));
+      toast.error("The post is removed");
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -158,7 +175,7 @@ const Post = ({ post, history, location, commentActive }) => {
                 className={`fa${commentActive ? "s" : "r"} fa-comment`}
                 onClick={redirectToComment}
               />
-              <Count>{post.comments.length}</Count>
+              <Count>{comments?.length || 0}</Count>
             </ItemContainer>
             <ItemContainer>
               <Button
@@ -177,6 +194,12 @@ const Post = ({ post, history, location, commentActive }) => {
           </VoteContainer>
         </Head>
       </Background>
+      {authorSelf && (
+        <Settings>
+          <Setting className="fas fa-edit" />
+          <Setting onClick={handleClickRemove} className="fas fa-trash-alt" />
+        </Settings>
+      )}
     </Container>
   );
 };

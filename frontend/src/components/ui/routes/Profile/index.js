@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import axiosInstance from "@axios";
 import getImageSrc from "@helpers/imageSrc";
 import { Route, NavLink, Redirect } from "react-router-dom";
@@ -15,8 +16,11 @@ import {
 } from "./styles";
 
 const Profile = (props) => {
+  const user = useSelector((state) => state.user);
   const { username } = props.match.params;
   const [userInfo, setUserInfo] = useState(null);
+  const isSelf = user?.username == username;
+
   useEffect(() => {
     const fetchUser = async () => {
       const response = await axiosInstance.get(`/users/${username}`);
@@ -24,7 +28,6 @@ const Profile = (props) => {
     };
     fetchUser();
   }, [props.match.params.username]);
-
   if (!userInfo) {
     return null;
   }

@@ -12,4 +12,8 @@ router
   .route("/:commentId/dislike")
   .post(authenticateAccessToken, CommentControllers.dislike);
 
+router
+  .route("/:commentId/remove")
+  .delete(authenticateAccessToken, CommentControllers.remove);
+
 module.exports = router;

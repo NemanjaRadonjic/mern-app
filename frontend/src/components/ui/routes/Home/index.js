@@ -21,7 +21,15 @@ function Home() {
   const renderPosts = () => {
     return posts?.length > 0 ? (
       posts.map((post) => {
-        return <Post key={post._id} post={post} user={user} />;
+        return (
+          <Post
+            key={post._id}
+            post={post}
+            user={user}
+            posts={posts}
+            setPosts={setPosts}
+          />
+        );
       })
     ) : (
       <NoContentMessage>No one made any posts yet :(</NoContentMessage>

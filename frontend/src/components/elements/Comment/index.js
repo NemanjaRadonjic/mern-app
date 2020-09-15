@@ -16,14 +16,20 @@ import {
   ItemContainer,
   Button,
   Count,
+  Settings,
+  Setting,
 } from "../common/styles";
 import { CommentContent } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
+
 import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
 
-const Comment = ({ comment, history }) => {
+const Comment = ({ comment, history, comments, setComments }) => {
   const user = useSelector((state) => state.user);
+  const authorSelf = comment.author.username == user?.username;
+  const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
+  axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
   const convertedDate = moment(comment.createdAt, "MM/DD/YYYY, h:mm:ss A");
 
   const [votes, setVotes] = useState({
@@ -36,15 +42,11 @@ const Comment = ({ comment, history }) => {
     comment.author.background?.split("\\")[1]
   }`;
 
-  const like = async (event) => {
+  const like = async () => {
     if (user) {
-      const accessToken = JSON.parse(
-        window.localStorage.getItem("accessToken")
-      );
       try {
-        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
         const response = await axiosInstance.post(
-          `comments/${comment._id}/${type}`,
+          `comments/${comment._id}/like`,
           { userId: user.id }
         );
 
@@ -76,11 +78,7 @@ const Comment = ({ comment, history }) => {
 
   const dislike = async () => {
     if (user) {
-      const accessToken = JSON.parse(
-        window.localStorage.getItem("accessToken")
-      );
       try {
-        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
         const response = await axiosInstance.post(
           `comments/${comment._id}/dislike`,
           { userId: user.id }
@@ -108,6 +106,16 @@ const Comment = ({ comment, history }) => {
       }
     } else {
       toast.error("You have to login to vote.");
+    }
+  };
+
+  const handleClickRemove = async () => {
+    try {
+      await axiosInstance.delete(`/comments/${comment._id}/remove`);
+      setComments(comments.filter((c) => c._id != comment._id));
+      toast.error("The comment is removed");
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -160,6 +168,12 @@ const Comment = ({ comment, history }) => {
           </VoteContainer>
         </Head>
       </Background>
+      {authorSelf && (
+        <Settings>
+          <Setting className="fas fa-edit" />
+          <Setting onClick={handleClickRemove} className="fas fa-trash-alt" />
+        </Settings>
+      )}
     </Container>
   );
 };

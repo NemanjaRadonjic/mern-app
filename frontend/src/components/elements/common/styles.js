@@ -89,3 +89,27 @@ export const Button = styled.button`
 
   transition: color 0.2s ease-in-out;
 `;
+
+export const Settings = styled.div`
+  position: absolute;
+  border-radius: 4px;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  width: 4rem;
+  display: flex;
+  justify-content: space-around;
+`;
+
+export const Setting = styled.i`
+  font-size: 1.15rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  color: rgb(${(props) => props.theme.text});
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+  &:hover {
+    background: rgba(${(props) => props.theme.text}, 0.2);
+    color: rgb(${(props) => props.theme.primary});
+  }
+`;

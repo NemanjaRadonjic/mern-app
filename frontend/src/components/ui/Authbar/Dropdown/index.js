@@ -58,7 +58,9 @@ const Dropdown = ({ user, toggleDropdown, handleLogout }) => {
         </Link>
       </Item>
       <Item onClick={handleLogout}>
-        <Link onClick={toggleDropdown}>Log out</Link>
+        <Link to="/home" onClick={toggleDropdown}>
+          Log out
+        </Link>
       </Item>
     </Container>
   );

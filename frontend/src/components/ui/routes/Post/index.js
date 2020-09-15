@@ -32,7 +32,14 @@ const Post = (props) => {
     return (
       comments &&
       comments.map((comment) => {
-        return <CommentComponent key={comment._id} comment={comment} />;
+        return (
+          <CommentComponent
+            key={comment._id}
+            comment={comment}
+            comments={comments}
+            setComments={setComments}
+          />
+        );
       })
     );
   };
@@ -40,7 +47,7 @@ const Post = (props) => {
   if (post) {
     return (
       <Container>
-        <PostComponent post={post} />
+        <PostComponent post={post} comments={comments} />
         <CommentSection>
           {comments === null ? (
             <Loader />
