@@ -5,12 +5,39 @@ const Comment = require("../models/Comment");
 const moment = require("moment");
 
 const fetchPosts = async (req, res) => {
+  const amount = JSON.parse(req.query.amount);
+  const postsPerFetch = 10;
+  let numOfDocuments;
   try {
-    const posts = await Post.find().populate(
-      "author",
-      "username avatar background -_id"
-    );
-    return res.json(posts);
+    numOfDocuments = await Post.countDocuments();
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    if (numOfDocuments < postsPerFetch) {
+      const posts = await Post.find().populate(
+        "author",
+        "username avatar background -_id"
+      );
+      return res.json(posts);
+    } else if (amount > numOfDocuments) {
+      if (amount - postsPerFetch >= numOfDocuments) {
+        return res.json([]);
+      } else {
+        const limit = postsPerFetch - (amount - numOfDocuments);
+        const posts = await Post.find()
+          .populate("author", "username avatar background -_id")
+          .limit(limit);
+        return res.json(posts);
+      }
+    } else {
+      const posts = await Post.find()
+        .populate("author", "username avatar background -_id")
+        .skip(numOfDocuments - amount)
+        .limit(postsPerFetch);
+      return res.json(posts);
+    }
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong." });
   }
@@ -93,25 +120,20 @@ const fetchComments = async (req, res) => {
 
 const createComment = async (req, res) => {
   const { content, userId, postId } = req.body;
-  if (content.length === 0) {
-    return res.status(422).json("Please enter content of your comment.");
-  }
-
+  const comment = new Comment({ content });
   let user;
   try {
     user = await User.findById(userId);
   } catch (error) {
-    return res.sendStatus(404);
+    return res.sendStatus(500);
   }
 
   let post;
   try {
     post = await Post.findById(postId);
   } catch (error) {
-    return res.sendStatus(404);
+    return res.sendStatus(500);
   }
-
-  const comment = new Comment({ content });
 
   comment.author = user;
   comment.post = post;
@@ -119,14 +141,6 @@ const createComment = async (req, res) => {
 
   try {
     await comment.save();
-  } catch (error) {
-    return res.sendStatus(500);
-  }
-
-  post.comments.push(comment);
-
-  try {
-    await post.save();
   } catch (error) {
     return res.sendStatus(500);
   }

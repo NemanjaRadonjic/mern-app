@@ -117,12 +117,12 @@ const remove = async (req, res) => {
   let post;
   try {
     post = await Post.findById(postId);
-    post.comments.filter((id) => id != commentId);
   } catch (error) {
     return res.sendStatus(500);
   }
 
   try {
+    post.comments = post.comments.filter((id) => id != commentId);
     await post.save();
   } catch (error) {
     return res.sendStatus(500);

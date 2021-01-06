@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ReactCrop from "react-image-crop";
 import axiosInstance from "@axios";
 import store from "../../../../../";
-import { changeImage } from "@actions/userActions";
+import { changeImage, setPreviewCanvas } from "@actions/userActions";
 import {
   Container,
   PositionContainer,
@@ -10,7 +10,6 @@ import {
   Header,
   Label,
   Button,
-  Preview,
 } from "./styles";
 
 import "react-image-crop/dist/ReactCrop.css";
@@ -98,6 +97,8 @@ const EditImage = ({ history, type }) => {
     if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
       return;
     }
+    store.dispatch(setPreviewCanvas({ ref: previewCanvasRef, type }));
+
     const image = imgRef.current;
     const canvas = previewCanvasRef.current;
     const crop = completedCrop;
@@ -119,6 +120,10 @@ const EditImage = ({ history, type }) => {
       crop.width,
       crop.height
     );
+
+    return () => {
+      store.dispatch(setPreviewCanvas(null));
+    };
   }, [completedCrop]);
   const onFileChange = (event) => {
     event.persist();
@@ -140,14 +145,19 @@ const EditImage = ({ history, type }) => {
       <Container>
         <PositionContainer>
           <Header>{`Change your profile ${type}`}</Header>
-          <ReactCropContainer>
+          <ReactCropContainer type={type}>
             {src && (
               <>
                 <ReactCrop
                   src={src}
                   crop={crop}
                   onImageLoaded={onImageLoaded}
-                  onChange={(c) => setCrop(c)}
+                  onChange={(c) => {
+                    setCrop(c);
+                    store.dispatch(
+                      setPreviewCanvas({ ref: previewCanvasRef, type })
+                    );
+                  }}
                   onComplete={(c) => setCompletedCrop(c)}
                 />
               </>
@@ -162,7 +172,6 @@ const EditImage = ({ history, type }) => {
               onChange={onFileChange}
             />
           </Label>
-          <Preview type={type} ref={previewCanvasRef}></Preview>
           <Button
             type="submit"
             onClick={(event) => {

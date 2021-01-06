@@ -10,6 +10,16 @@ export const NavContainer = styled.div`
   border-bottom: 0px solid rgb(${(props) => props.theme.primary});
 `;
 
+export const NavContainerPreview = styled.canvas`
+  width: 100%;
+  height: 15rem;
+  background-image: url(${(props) => props.image});
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-bottom: 0px solid rgb(${(props) => props.theme.primary});
+`;
+
 export const ContentContainer = styled.div``;
 
 export const AvatarContainer = styled.img`
@@ -18,8 +28,20 @@ export const AvatarContainer = styled.img`
   width: 7rem;
   border-radius: 50%;
   position: absolute;
-  bottom: -5%;
   left: 50%;
+  bottom: 75%;
+  transform: translateX(-50%);
+  transition: border 0.4s ease-in-out;
+`;
+
+export const AvatarPreview = styled.canvas`
+  border: 5px solid rgb(${(props) => props.theme.background});
+  height: 7rem;
+  width: 7rem;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  bottom: 75%;
   transform: translateX(-50%);
   transition: border 0.4s ease-in-out;
 `;
@@ -36,6 +58,7 @@ export const NavbarContainer = styled.div`
   width: 100%;
   height: 2.7rem;
   display: flex;
+  position: relative;
   justify-content: space-between;
   border-bottom: 1px solid rgb(${(props) => props.theme.primary});
 `;

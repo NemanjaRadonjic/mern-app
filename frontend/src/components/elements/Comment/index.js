@@ -15,6 +15,10 @@ import {
   VoteContainer,
   ItemContainer,
   Button,
+  RemoveButton,
+  Message,
+  ButtonContainer,
+  RemoveModal,
   Count,
   Settings,
   Setting,
@@ -26,12 +30,13 @@ import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
 
 const Comment = ({ comment, history, comments, setComments }) => {
+  console.log("comment: ", comment);
   const user = useSelector((state) => state.user);
-  const authorSelf = comment.author.username == user?.username;
+  const authorSelf = comment.author?.username == user?.username;
   const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
   axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
   const convertedDate = moment(comment.createdAt, "MM/DD/YYYY, h:mm:ss A");
-
+  const [deleteModal, setDeleteModal] = useState(false);
   const [votes, setVotes] = useState({
     likes: comment.votes.likes.length,
     dislikes: comment.votes.dislikes.length,
@@ -108,7 +113,10 @@ const Comment = ({ comment, history, comments, setComments }) => {
       toast.error("You have to login to vote.");
     }
   };
-
+  const toggleRemoveModal = (event) => {
+    event.stopPropagation();
+    setDeleteModal(!deleteModal);
+  };
   const handleClickRemove = async () => {
     try {
       await axiosInstance.delete(`/comments/${comment._id}/remove`);
@@ -171,8 +179,17 @@ const Comment = ({ comment, history, comments, setComments }) => {
       {authorSelf && (
         <Settings>
           <Setting className="fas fa-edit" />
-          <Setting onClick={handleClickRemove} className="fas fa-trash-alt" />
+          <Setting onClick={toggleRemoveModal} className="fas fa-trash-alt" />
         </Settings>
+      )}{" "}
+      {deleteModal && (
+        <RemoveModal>
+          <Message>Are you sure you want to delete this comment ?</Message>
+          <ButtonContainer>
+            <RemoveButton onClick={toggleRemoveModal}>No</RemoveButton>
+            <RemoveButton onClick={handleClickRemove}>Yes</RemoveButton>
+          </ButtonContainer>
+        </RemoveModal>
       )}
     </Container>
   );

@@ -14,9 +14,13 @@ import {
   VoteContainer,
   ItemContainer,
   Button,
+  RemoveButton,
   Count,
   Settings,
   Setting,
+  RemoveModal,
+  Message,
+  ButtonContainer,
 } from "../common/styles";
 import { PostContent } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
@@ -32,6 +36,8 @@ const Post = ({
   posts,
   setPosts,
   comments,
+  toggleNewCommentActive,
+  newCommentActive,
 }) => {
   const postCopy = location.post;
   const user = useSelector((state) => state.user);
@@ -39,6 +45,8 @@ const Post = ({
   const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
   axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
+
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const [votes, setVotes] = useState({
     likes: postCopy ? postCopy.votes.likes : post.votes.likes.length,
@@ -115,7 +123,10 @@ const Post = ({
       toast.error("You have to login to vote.");
     }
   };
-
+  const toggleRemoveModal = (event) => {
+    event.stopPropagation();
+    setDeleteModal(!deleteModal);
+  };
   const handleClickRemove = async (event) => {
     event.stopPropagation();
     try {
@@ -125,6 +136,7 @@ const Post = ({
     } catch (error) {
       console.log(error);
     }
+    history.push("/home");
   };
 
   const updatedPost = { ...post, votes };
@@ -139,11 +151,6 @@ const Post = ({
   const redirectToProfile = (event) => {
     event.stopPropagation();
     history.push(`/user/${post.author.username}`);
-  };
-
-  const redirectToComment = (event) => {
-    event.stopPropagation();
-    history.push({ pathname: `/posts/${post._id}/comment`, post: updatedPost });
   };
 
   return (
@@ -172,10 +179,14 @@ const Post = ({
           <VoteContainer>
             <ItemContainer>
               <Button
-                className={`fa${commentActive ? "s" : "r"} fa-comment`}
-                onClick={redirectToComment}
+                className={`fa${newCommentActive ? "s" : "r"} fa-comment`}
+                onClick={toggleNewCommentActive}
               />
-              <Count>{comments?.length || 0}</Count>
+              <Count>
+                {comments?.length === undefined
+                  ? post.comments.length
+                  : comments.length}
+              </Count>
             </ItemContainer>
             <ItemContainer>
               <Button
@@ -197,8 +208,17 @@ const Post = ({
       {authorSelf && (
         <Settings>
           <Setting className="fas fa-edit" />
-          <Setting onClick={handleClickRemove} className="fas fa-trash-alt" />
+          <Setting onClick={toggleRemoveModal} className="fas fa-trash-alt" />
         </Settings>
+      )}
+      {deleteModal && (
+        <RemoveModal>
+          <Message>Are you sure you want to delete this post ?</Message>
+          <ButtonContainer>
+            <RemoveButton onClick={toggleRemoveModal}>No</RemoveButton>
+            <RemoveButton onClick={handleClickRemove}>Yes</RemoveButton>
+          </ButtonContainer>
+        </RemoveModal>
       )}
     </Container>
   );

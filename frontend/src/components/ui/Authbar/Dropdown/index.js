@@ -37,23 +37,35 @@ const Dropdown = ({ user, toggleDropdown, handleLogout }) => {
       </Item>
       <Group>Account Settings</Group>
       <Item>
-        <Link onClick={toggleDropdown} to="/profile/settings/email">
+        <Link
+          onClick={toggleDropdown}
+          to={`/user/${user.username}/settings/email`}
+        >
           Change Your Email
         </Link>
       </Item>
       <Item>
-        <Link onClick={toggleDropdown} to="/profile/settings/password">
+        <Link
+          onClick={toggleDropdown}
+          to={`/user/${user.username}/settings/password`}
+        >
           Change Your Password
         </Link>
       </Item>
       <Group>Profile Settings</Group>
       <Item>
-        <Link to="/profile/edit/background" onClick={toggleDropdown}>
+        <Link
+          to={`/user/${user.username}/settings/background`}
+          onClick={toggleDropdown}
+        >
           Change Background
         </Link>
       </Item>
       <Item>
-        <Link to="/profile/edit/avatar" onClick={toggleDropdown}>
+        <Link
+          to={`/user/${user.username}/settings/avatar`}
+          onClick={toggleDropdown}
+        >
           Change Avatar
         </Link>
       </Item>

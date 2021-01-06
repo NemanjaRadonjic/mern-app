@@ -8,6 +8,9 @@ const userReducer = (state = null, action) => {
     case "CHANGE_IMAGE":
       newState[action.imgType] = action.payload;
       return newState;
+    case "SET_PREVIEW_CANVAS":
+      newState.previewCanvas = action.payload;
+      return newState;
     default:
       return state;
   }

@@ -23,7 +23,15 @@ const Posts = (props) => {
   const renderPosts = () => {
     return userPosts.length > 0 ? (
       userPosts.map((post) => {
-        return <Post key={post._id} post={post} user={user} />;
+        return (
+          <Post
+            key={post._id}
+            post={post}
+            user={user}
+            posts={userPosts}
+            setPosts={setUserPosts}
+          />
+        );
       })
     ) : (
       <NoContentMessage>User didn't made any posts yet :(</NoContentMessage>

@@ -23,7 +23,8 @@ const login = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong." });
   }
-  const { id, username, avatar } = matchedUser;
+  const { id, username, avatar, background } = matchedUser;
+  console.log(matchedUser);
   const userData = {
     username,
     email,
@@ -32,7 +33,7 @@ const login = async (req, res) => {
   const accessToken = generateAccessToken(userData);
   const refreshToken = generateRefreshToken(userData);
   res.cookie("token", refreshToken);
-  return res.json({ accessToken, avatar });
+  return res.json({ accessToken, avatar, background });
 };
 
 const register = async (req, res) => {

@@ -9,9 +9,7 @@ import Register from "@routes/Register";
 import Login from "@routes/Login";
 import Home from "@routes/Home";
 import Post from "@routes/Post";
-import Comment from "@routes/Comment";
 import Profile from "@routes/Profile";
-import EditImage from "@routes/Profile/EditImage";
 import NotFound from "@routes/NotFound";
 
 import ProtectedRoute from "@routes/ProtectedRoute";
@@ -76,34 +74,8 @@ function App({ login }) {
             />
             <Route exact path="/posts/:postId" component={Post} />
             <ProtectedRoute
-              exact
-              path="/posts/:postId/comment"
-              component={Comment}
-              redirectTo="/home"
-              redirectMsg="You have to log in to comment"
-              userPrivilege
-            />
-            <ProtectedRoute
               path="/user/:username"
               component={Profile}
-              redirectTo="/home"
-              redirectMsg="You have to log in to see that page"
-              userPrivilege
-            />
-            <ProtectedRoute
-              exact
-              path="/profile/edit/avatar"
-              component={EditImage}
-              type="avatar"
-              redirectTo="/home"
-              redirectMsg="You have to log in to see that page"
-              userPrivilege
-            />
-            <ProtectedRoute
-              exact
-              path="/profile/edit/background"
-              component={EditImage}
-              type="background"
               redirectTo="/home"
               redirectMsg="You have to log in to see that page"
               userPrivilege

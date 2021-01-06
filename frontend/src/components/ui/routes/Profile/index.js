@@ -6,10 +6,15 @@ import { Route, NavLink, Redirect } from "react-router-dom";
 import Posts from "./Posts";
 import VotedPosts from "./VotedPosts";
 import Images from "./Images";
+import EditImage from "@routes/Profile/EditImage";
+import ProtectedRoute from "@routes/ProtectedRoute";
+
 import {
   NavContainer,
+  NavContainerPreview,
   ContentContainer,
   AvatarContainer,
+  AvatarPreview,
   Username,
   NavbarContainer,
   NavbarItem,
@@ -17,6 +22,7 @@ import {
 
 const Profile = (props) => {
   const user = useSelector((state) => state.user);
+  useSelector((state) => state.user?.previewCanvas);
   const { username } = props.match.params;
   const [userInfo, setUserInfo] = useState(null);
   const isSelf = user?.username == username;
@@ -34,9 +40,16 @@ const Profile = (props) => {
 
   return (
     <>
-      <NavContainer image={getImageSrc(userInfo.background, "background")}>
-        <AvatarContainer src={getImageSrc(userInfo.avatar, "avatar")} />
-      </NavContainer>
+      {user?.previewCanvas && user?.previewCanvas.type == "background" ? (
+        <NavContainerPreview
+          type="background"
+          ref={user.previewCanvas.ref}
+        ></NavContainerPreview>
+      ) : (
+        <NavContainer
+          image={getImageSrc(userInfo.background, "background")}
+        ></NavContainer>
+      )}
       <NavbarContainer>
         <NavbarItem>
           <NavLink
@@ -56,6 +69,11 @@ const Profile = (props) => {
             Images
           </NavLink>
         </NavbarItem>
+        {user?.previewCanvas && user?.previewCanvas.type === "avatar" ? (
+          <AvatarPreview type="avatar" ref={user.previewCanvas.ref} />
+        ) : (
+          <AvatarContainer src={getImageSrc(userInfo.avatar, "avatar")} />
+        )}
         <Username>{userInfo.username}</Username>
         <NavbarItem>
           <NavLink
@@ -76,9 +94,8 @@ const Profile = (props) => {
           </NavLink>
         </NavbarItem>
       </NavbarContainer>
-
       <ContentContainer>
-        <Route path={"/user/:username/posts"} component={Posts} />
+        <Route exact path={"/user/:username/posts"} component={Posts} />
         <Route path={"/user/:username/images"} component={Images} />
         <Route
           path={"/user/:username/liked"}
@@ -91,6 +108,22 @@ const Profile = (props) => {
           render={() => {
             return <VotedPosts type="disliked" match={props.match} />;
           }}
+        />
+        <ProtectedRoute
+          path={`/user/:username/settings/avatar`}
+          component={EditImage}
+          type="avatar"
+          redirectTo="/home"
+          redirectMsg="You have to log in to see that page"
+          userPrivilege
+        />
+        <ProtectedRoute
+          path={`/user/:username/settings/background`}
+          component={EditImage}
+          type="background"
+          redirectTo="/home"
+          redirectMsg="You have to log in to see that page"
+          userPrivilege
         />
         <Redirect to={`/user/${username}/posts`} />
       </ContentContainer>

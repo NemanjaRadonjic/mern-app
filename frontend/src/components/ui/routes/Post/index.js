@@ -7,11 +7,16 @@ import CommentComponent from "@components/elements/Comment";
 
 import { Container, CommentSection } from "./styles";
 import { NoContentMessage, Loader } from "@styles/common";
+import NewComment from "../../../elements/NewComment";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Post = (props) => {
+  const user = useSelector((state) => state.user);
   const { postId } = props.match.params;
   const [post, setPost] = useState(props.location.post);
   const [comments, setComments] = useState(null);
+  const [newCommentActive, setNewCommentActive] = useState(false);
   useEffect(() => {
     const fetchPost = async () => {
       const response = await axiosInstance.get(`/posts/${postId}`);
@@ -27,6 +32,12 @@ const Post = (props) => {
     !post && fetchPost();
     fetchComments();
   }, []);
+
+  const toggleNewCommentActive = () => {
+    user
+      ? setNewCommentActive(!newCommentActive)
+      : toast.error("You have to log in to comment");
+  };
 
   const renderComments = () => {
     return (
@@ -47,7 +58,21 @@ const Post = (props) => {
   if (post) {
     return (
       <Container>
-        <PostComponent post={post} comments={comments} />
+        <PostComponent
+          post={post}
+          comments={comments}
+          toggleNewCommentActive={toggleNewCommentActive}
+          newCommentActive={newCommentActive}
+        />
+        {newCommentActive && (
+          <NewComment
+            user={user}
+            postId={post._id}
+            comments={comments}
+            setComments={setComments}
+            toggleNewCommentActive={toggleNewCommentActive}
+          />
+        )}
         <CommentSection>
           {comments === null ? (
             <Loader />

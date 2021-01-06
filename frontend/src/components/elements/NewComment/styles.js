@@ -9,6 +9,7 @@ export const Container = styled.div`
 `;
 
 export const TextArea = styled.textarea`
+  margin-left: 1.5rem;
   padding: 0.5rem 1rem;
   font-size: inherit;
   font-family: inherit;
@@ -22,4 +23,17 @@ export const Avatar = styled.img`
   height: 3rem;
   width: 3rem;
   border-radius: 50%;
+`;
+
+export const NewCommentHead = styled.div`
+  width: 100%;
+  letter-spacing: 0.5px;
+  font-size: 1.05rem;
+  margin-bottom: 0.26rem;
+`;
+
+export const ButtonContainer = styled.div`
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
 `;

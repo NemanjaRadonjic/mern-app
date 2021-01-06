@@ -38,13 +38,14 @@ function Login({ login, history }) {
       let userData = {};
       try {
         const response = await axiosInstance.post("/auth/login", inputs);
-        const { avatar, accessToken } = response.data;
+        const { avatar, background, accessToken } = response.data;
         const { email, id, username } = jwtDecode(accessToken);
         userData = {
           email,
           id,
           username,
           avatar,
+          background,
         };
         console.log("response: ", response);
         window.localStorage.setItem("user", JSON.stringify(userData));

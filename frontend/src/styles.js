@@ -13,6 +13,7 @@ export const RoutesContainer = styled.div`
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   width: 35%;
   align-items: center;
+  overflow: hidden;
 `;
 
 export const BackToHome = styled.div`

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useSelector, connect } from "react-redux";
 import { logout } from "@actions/userActions";
 import getImageSrc from "@helpers/imageSrc";
@@ -41,7 +41,9 @@ function Authbar({ logout }) {
               onClick={toggleDropdown}
               id="open-dropdown"
             />
-            <Name>{user.username}</Name>
+            <Name>
+              <Link to={`/user/${user.username}/posts`}>{user.username}</Link>
+            </Name>
           </>
         ) : (
           <>

@@ -113,3 +113,42 @@ export const Setting = styled.i`
     color: rgb(${(props) => props.theme.primary});
   }
 `;
+
+export const RemoveModal = styled.div`
+  background: rgba(${(props) => props.theme.background}, 0.8);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+`;
+
+export const RemoveButton = styled.div`
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: rgb(${(props) => props.theme.text});
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+  &:hover {
+    background: rgba(${(props) => props.theme.text}, 0.2);
+    color: rgb(${(props) => props.theme.primary});
+  }
+`;
+
+export const Message = styled.div`
+  font-size: 1.2rem;
+  margin-top: 2rem;
+`;
+
+export const ButtonContainer = styled.div`
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-around;
+  width: 15%;
+`;

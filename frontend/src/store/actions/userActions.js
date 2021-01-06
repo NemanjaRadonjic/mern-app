@@ -9,3 +9,7 @@ export const logout = () => {
 export const changeImage = (image, imgType) => {
   return { type: "CHANGE_IMAGE", payload: image, imgType };
 };
+
+export const setPreviewCanvas = (previewCanvas) => {
+  return { type: "SET_PREVIEW_CANVAS", payload: previewCanvas };
+};
