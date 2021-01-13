@@ -6,7 +6,7 @@ const moment = require("moment");
 
 const fetchPosts = async (req, res) => {
   const amount = JSON.parse(req.query.amount);
-  const postsPerFetch = 10;
+  const postsPerFetch = JSON.parse(req.query.postsPerFetch);
   let numOfDocuments;
   try {
     numOfDocuments = await Post.countDocuments();

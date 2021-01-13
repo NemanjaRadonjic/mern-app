@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import useAmount from "@hooks/useAmount";
+import useLoader from "@hooks/useLoader";
+
 import Post from "@components/elements/Post";
 import NewPost from "./NewPost";
 import axiosInstance from "@axios";
@@ -7,17 +10,18 @@ import { Container, Posts } from "./styles";
 import { NoContentMessage, Loader } from "@styles/common";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const numberOfPostsToDisplay = 10;
-
 function Home() {
   const user = useSelector((state) => state.user);
   const [posts, setPosts] = useState(null);
-  const [loaderActive, setLoaderActive] = useState(true);
-  const [numOfPosts, setNumOfPosts] = useState(numberOfPostsToDisplay);
+  const { loaderActive, setLoaderActive } = useLoader();
+
+  const { amountOfPosts, setAmountOfPosts, postsPerFetch } = useAmount();
+
   const fetchPosts = async () => {
-    setNumOfPosts(numOfPosts + numberOfPostsToDisplay);
+    console.log("request");
+    setAmountOfPosts(amountOfPosts + postsPerFetch);
     const response = await axiosInstance.get("/posts", {
-      params: { amount: numOfPosts },
+      params: { amount: amountOfPosts, postsPerFetch },
     });
     if (response.data.length === 0) {
       setLoaderActive(false);
