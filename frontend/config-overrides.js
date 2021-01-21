@@ -14,6 +14,7 @@ module.exports = function override(config, env) {
     "@axios": path.resolve(__dirname, `${paths.appSrc}/axios`),
     "@actions": path.resolve(__dirname, `${paths.appSrc}/store/actions`),
     "@helpers": path.resolve(__dirname, `${paths.appSrc}/helpers`),
+    "@store": path.resolve(__dirname, `${paths.appSrc}`),
   })(config, env);
   return config;
 };

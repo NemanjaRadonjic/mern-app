@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 
 export const FormContainer = styled.div`
-  height: 100vh;
+  height: ${(props) => (props.smaller ? "50vh" : "100vh")};
   width: 100%;
   display: flex;
   justify-content: space-around;

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactCrop from "react-image-crop";
 import axiosInstance from "@axios";
-import store from "../../../../../";
+import store from "@store";
 import { changeImage, setPreviewCanvas } from "@actions/userActions";
 import {
   Container,

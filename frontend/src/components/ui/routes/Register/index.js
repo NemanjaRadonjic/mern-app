@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import useFormHook from "@hooks/useFormHook";
-import { validateRegister } from "@helpers/validations/register";
+import validateInputs from "@helpers/validations";
 import axios from "@axios";
 
 import {
@@ -48,7 +48,7 @@ function Register({ history }) {
       const { name, value } = event.target;
       return {
         ...prevErrors,
-        [name]: validateRegister[name](value),
+        [name]: validateInputs[name](value),
       };
     });
   };
@@ -59,7 +59,7 @@ function Register({ history }) {
       const { value } = event.target;
       return {
         ...prevErrors,
-        repeatPassword: validateRegister.comparePasswords(value, compareTo),
+        repeatPassword: validateInputs.comparePasswords(value, compareTo),
       };
     });
   };
@@ -68,17 +68,15 @@ function Register({ history }) {
     event.preventDefault();
 
     const validateFields = {
-      username: validateRegister.username(inputs.username) || errors.username,
-      email: validateRegister.email(inputs.email) || errors.email,
-      password: validateRegister.password(inputs.password) || errors.password,
+      username: validateInputs.username(inputs.username) || errors.username,
+      email: validateInputs.email(inputs.email) || errors.email,
+      password: validateInputs.password(inputs.password) || errors.password,
       repeatPassword:
-        validateRegister.repeatPassword(
-          inputs.repeatPassword,
-          inputs.password
-        ) || errors.repeatPassword,
+        validateInputs.repeatPassword(inputs.repeatPassword, inputs.password) ||
+        errors.repeatPassword,
     };
 
-    const newErrors = validateRegister.setDefaultErrors(inputs, validateFields);
+    const newErrors = validateInputs.setDefaultErrors(inputs, validateFields);
     setErrors(newErrors);
 
     const finalErrors = new Array(Object.values(newErrors))[0];

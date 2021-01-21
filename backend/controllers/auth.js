@@ -24,7 +24,6 @@ const login = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
   const { id, username, avatar, background } = matchedUser;
-  console.log(matchedUser);
   const userData = {
     username,
     email,
@@ -43,7 +42,6 @@ const register = async (req, res) => {
 
   let errors = validateRegister(req.body);
 
-  // validate username
   try {
     const matchedUser = await User.findOne({ username });
     if (matchedUser) {
@@ -53,7 +51,6 @@ const register = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 
-  // validate email
   try {
     const matchedUser = await User.findOne({ email });
     if (matchedUser) {

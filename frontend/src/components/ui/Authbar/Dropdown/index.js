@@ -9,7 +9,7 @@ import {
   Item,
 } from "./styles";
 
-const Dropdown = ({ user, toggleDropdown, handleLogout }) => {
+const Dropdown = ({ username, toggleDropdown, handleLogout }) => {
   const handleClick = (event) => {
     if (
       event.target.parentElement.id === "dropdown" ||
@@ -31,7 +31,7 @@ const Dropdown = ({ user, toggleDropdown, handleLogout }) => {
         <DropdownConnector />
       </DropdownConnectorShadow>
       <Item>
-        <Link to={`/user/${user.username}`} onClick={toggleDropdown}>
+        <Link to={`/user/${username}`} onClick={toggleDropdown}>
           Profile
         </Link>
       </Item>
@@ -39,15 +39,20 @@ const Dropdown = ({ user, toggleDropdown, handleLogout }) => {
       <Item>
         <Link
           onClick={toggleDropdown}
-          to={`/user/${user.username}/settings/email`}
+          to={`/user/${username}/settings/username`}
         >
+          Change Your Username
+        </Link>
+      </Item>
+      <Item>
+        <Link onClick={toggleDropdown} to={`/user/${username}/settings/email`}>
           Change Your Email
         </Link>
       </Item>
       <Item>
         <Link
           onClick={toggleDropdown}
-          to={`/user/${user.username}/settings/password`}
+          to={`/user/${username}/settings/password`}
         >
           Change Your Password
         </Link>
@@ -55,17 +60,14 @@ const Dropdown = ({ user, toggleDropdown, handleLogout }) => {
       <Group>Profile Settings</Group>
       <Item>
         <Link
-          to={`/user/${user.username}/settings/background`}
+          to={`/user/${username}/settings/background`}
           onClick={toggleDropdown}
         >
           Change Background
         </Link>
       </Item>
       <Item>
-        <Link
-          to={`/user/${user.username}/settings/avatar`}
-          onClick={toggleDropdown}
-        >
+        <Link to={`/user/${username}/settings/avatar`} onClick={toggleDropdown}>
           Change Avatar
         </Link>
       </Item>

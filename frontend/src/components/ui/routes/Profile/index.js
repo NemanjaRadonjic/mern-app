@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axiosInstance from "@axios";
 import getImageSrc from "@helpers/imageSrc";
-import { Route, NavLink, Redirect } from "react-router-dom";
+import { Route, NavLink } from "react-router-dom";
 import Posts from "./Posts";
 import VotedPosts from "./VotedPosts";
 import Images from "./Images";
 import EditImage from "@routes/Profile/EditImage";
+import ChangeUsername from "@routes/Profile/EditInfo/ChangeUsername";
+import ChangeEmail from "@routes/Profile/EditInfo/ChangeEmail";
+import ChangePassword from "@routes/Profile/EditInfo/ChangePassword";
 import ProtectedRoute from "@routes/ProtectedRoute";
 
 import {
@@ -25,7 +28,7 @@ const Profile = (props) => {
   useSelector((state) => state.user?.previewCanvas);
   const { username } = props.match.params;
   const [userInfo, setUserInfo] = useState(null);
-  const isSelf = user?.username == username;
+  const isSelf = user?.username == username; // ?
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -125,7 +128,30 @@ const Profile = (props) => {
           redirectMsg="You have to log in to see that page"
           userPrivilege
         />
-        <Redirect to={`/user/${username}/posts`} />
+        <ProtectedRoute
+          path={`/user/:username/settings/username`}
+          component={ChangeUsername}
+          type="username"
+          redirectTo="/home"
+          redirectMsg="You have to log in to see that page"
+          userPrivilege
+        />
+        <ProtectedRoute
+          path={`/user/:username/settings/email`}
+          component={ChangeEmail}
+          type="email"
+          redirectTo="/home"
+          redirectMsg="You have to log in to see that page"
+          userPrivilege
+        />
+        <ProtectedRoute
+          path={`/user/:username/settings/password`}
+          component={ChangePassword}
+          type="password"
+          redirectTo="/home"
+          redirectMsg="You have to log in to see that page"
+          userPrivilege
+        />
       </ContentContainer>
     </>
   );

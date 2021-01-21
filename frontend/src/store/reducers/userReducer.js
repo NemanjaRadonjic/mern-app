@@ -1,5 +1,5 @@
 const userReducer = (state = null, action) => {
-  const newState = state;
+  const newState = { ...state };
   switch (action.type) {
     case "LOGIN":
       return action.payload;
@@ -10,6 +10,9 @@ const userReducer = (state = null, action) => {
       return newState;
     case "SET_PREVIEW_CANVAS":
       newState.previewCanvas = action.payload;
+      return newState;
+    case "CHANGE_USERNAME":
+      newState.username = action.payload;
       return newState;
     default:
       return state;

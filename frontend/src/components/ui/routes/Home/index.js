@@ -18,7 +18,6 @@ function Home() {
   const { amountOfPosts, setAmountOfPosts, postsPerFetch } = useAmount();
 
   const fetchPosts = async () => {
-    console.log("request");
     setAmountOfPosts(amountOfPosts + postsPerFetch);
     const response = await axiosInstance.get("/posts", {
       params: { amount: amountOfPosts, postsPerFetch },

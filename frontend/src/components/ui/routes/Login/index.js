@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 
 import useFormHook from "@hooks/useFormHook";
 import axiosInstance from "@axios";
 import { login } from "@actions/userActions";
+import store from "@store";
 
 import {
   FormContainer,
@@ -17,7 +17,7 @@ import {
 } from "@styles/common";
 import jwtDecode from "jwt-decode";
 
-function Login({ login, history }) {
+function Login({ history }) {
   const { inputs, onChange, errors, setErrors, fields } = useFormHook({
     email: "",
     password: "",
@@ -47,15 +47,13 @@ function Login({ login, history }) {
           avatar,
           background,
         };
-        console.log("response: ", response);
         window.localStorage.setItem("user", JSON.stringify(userData));
         window.localStorage.setItem("accessToken", JSON.stringify(accessToken));
         history.push("/home");
-        login(userData);
+        store.dispatch(login(userData));
       } catch (error) {
         if (error.response) {
-          const response = error.response;
-          const { field, message } = response.data;
+          const { field, message } = error.response.data;
           setErrors({
             ...errors,
             [field]: message,
@@ -98,4 +96,4 @@ function Login({ login, history }) {
   );
 }
 
-export default connect(null, { login })(Login);
+export default Login;

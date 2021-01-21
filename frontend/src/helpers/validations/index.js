@@ -1,4 +1,4 @@
-export const validateRegister = {
+const validateInputs = {
   username: (username) => {
     let error = "";
     const re = /[^A-Za-z0-9]+/g;
@@ -64,3 +64,5 @@ export const validateRegister = {
     return errors;
   },
 };
+
+export default validateInputs;

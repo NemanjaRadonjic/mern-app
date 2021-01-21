@@ -175,10 +175,78 @@ const fetchUserImages = async (req, res) => {
   }
 };
 
+const changeUsername = async (req, res) => {
+  const { username, newUsername } = req.body;
+  let user;
+  try {
+    user = await User.findOne({ username });
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+
+  try {
+    user.username = newUsername;
+    await user.save();
+    return res.json({ username: user.username });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+};
+
+const changeEmail = async (req, res) => {
+  const { username, newEmail, password } = req.body;
+  let user;
+  try {
+    user = await User.findOne({ username });
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+
+  if (user.password !== password) {
+    return res.status(422).json({
+      field: "password",
+      message: "Password is not correct.",
+    });
+  }
+
+  try {
+    user.email = newEmail;
+    await user.save();
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+};
+
+const changePassword = async (req, res) => {
+  const { username, password, newPassword } = req.body;
+  let user;
+  try {
+    user = await User.findOne({ username });
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+  if (user.password !== password) {
+    return res
+      .status(422)
+      .json({ field: "currentPassword", message: "Password is not corrent." });
+  }
+  try {
+    user.password = newPassword;
+    await user.save();
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+};
+
 module.exports = {
   fetchUser,
   fetchUserPosts,
   fetchLikedUserPosts,
   fetchDislikedUserPosts,
   fetchUserImages,
+  changeUsername,
+  changeEmail,
+  changePassword,
 };

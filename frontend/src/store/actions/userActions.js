@@ -13,3 +13,7 @@ export const changeImage = (image, imgType) => {
 export const setPreviewCanvas = (previewCanvas) => {
   return { type: "SET_PREVIEW_CANVAS", payload: previewCanvas };
 };
+
+export const changeUsername = (newUsername) => {
+  return { type: "CHANGE_USERNAME", payload: newUsername };
+};

@@ -17,7 +17,6 @@ import Dropdown from "./Dropdown";
 
 function Authbar({ logout }) {
   const user = useSelector((state) => state.user);
-  useSelector((state) => state.user?.avatar); // making a component re-render
   const [dropdown, setDropdown] = useState(false);
 
   const handleLogout = () => {
@@ -58,7 +57,7 @@ function Authbar({ logout }) {
       </AuthContainer>
       {dropdown && (
         <Dropdown
-          user={user}
+          username={user.username}
           handleLogout={handleLogout}
           toggleDropdown={toggleDropdown}
         />

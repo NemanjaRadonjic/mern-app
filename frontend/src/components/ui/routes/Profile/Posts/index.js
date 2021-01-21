@@ -17,8 +17,6 @@ const Posts = (props) => {
   const { amountOfPosts, setAmountOfPosts, postsPerFetch } = useAmount();
 
   const fetchUserPosts = async () => {
-    console.log("fetching...");
-    console.log(amountOfPosts);
     setAmountOfPosts(amountOfPosts + postsPerFetch);
     const response = await axiosInstance.get(`/users/${username}/posts`, {
       params: { amount: amountOfPosts, postsPerFetch },
@@ -29,13 +27,6 @@ const Posts = (props) => {
     }
     response &&
       setUserPosts([...(userPosts || []), ...response.data.reverse()]);
-    // if (!userPosts) {
-    //   console.log("no posts");
-    //   response && setUserPosts([...response.data.reverse()]);
-    // } else {
-    //   console.log("yes posts");
-    //   response && setUserPosts([...userPosts, ...response.data.reverse()]);
-    // }
   };
 
   useEffect(() => {

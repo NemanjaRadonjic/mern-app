@@ -15,4 +15,14 @@ router
   .route("/:username/posts/disliked")
   .get(UserControllers.fetchDislikedUserPosts);
 
+router
+  .route("/:username/settings/username")
+  .patch(UserControllers.changeUsername);
+
+router.route("/:username/settings/email").patch(UserControllers.changeEmail);
+
+router
+  .route("/:username/settings/password")
+  .patch(UserControllers.changePassword);
+
 module.exports = router;
