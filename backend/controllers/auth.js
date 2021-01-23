@@ -2,6 +2,7 @@ const User = require("../models/User");
 const { validateRegister } = require("../helpers/validate");
 const { verify } = require("jsonwebtoken");
 const { generateAccessToken, generateRefreshToken } = require("../jwt");
+const bcrypt = require("bcrypt");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -14,14 +15,24 @@ const login = async (req, res) => {
         message: "No account under that email.",
       });
     }
-    if (password !== matchedUser.password) {
-      return res.status(422).json({
-        field: "password",
-        message: "Password is not correct.",
-      });
-    }
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong." });
+  }
+
+  let validPassword;
+  try {
+    validPassword = await bcrypt.compare(password, matchedUser.password);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong with comparing passwords." });
+  }
+
+  if (!validPassword) {
+    return res.status(422).json({
+      field: "password",
+      message: "Password is not correct.",
+    });
   }
   const { id, username, avatar, background } = matchedUser;
   const userData = {
@@ -38,7 +49,7 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   const { username, email, password } = req.body;
 
-  const user = new User({ username, email, password });
+  const user = new User({ username, email });
 
   let errors = validateRegister(req.body);
 
@@ -69,6 +80,11 @@ const register = async (req, res) => {
     return res.json(errors);
   } else {
     user.avatar = "uploads/AvatarDefault.jpg";
+    try {
+      user.password = await bcrypt.hash(password, 10);
+    } catch (error) {
+      return res.status(500).json({ message: "Couldn't hash a password." });
+    }
     try {
       await user.save();
       return res.status(201).send();

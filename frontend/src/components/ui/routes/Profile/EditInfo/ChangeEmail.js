@@ -53,6 +53,11 @@ const ChangeEmail = ({ history }) => {
           newEmail: inputs.email,
           password: inputs.password,
         });
+        store.dispatch(logout());
+        window.localStorage.removeItem("user");
+        window.localStorage.removeItem("accessToken");
+        toast("Your email has been changed. Please login with your new email.");
+        history.push(`/login`);
       } catch (error) {
         if (error.response) {
           const { field, message } = error.response.data;
@@ -64,11 +69,6 @@ const ChangeEmail = ({ history }) => {
           console.log(error);
         }
       }
-      store.dispatch(logout());
-      window.localStorage.removeItem("user");
-      window.localStorage.removeItem("accessToken");
-      toast("Your email has been changed. Please login with your new email.");
-      history.push(`/login`);
     }
   };
 

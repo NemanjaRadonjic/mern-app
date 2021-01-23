@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
+const bcrypt = require("bcrypt");
 
 const fetchUser = async (req, res) => {
   const { username } = req.params;
@@ -201,8 +202,17 @@ const changeEmail = async (req, res) => {
   } catch (error) {
     return res.sendStatus(404);
   }
-
-  if (user.password !== password) {
+  console.log("user password:", user.password);
+  console.log(password);
+  let validPassword;
+  try {
+    validPassword = await bcrypt.compare(password, user.password);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong with comparing passwords." });
+  }
+  if (!validPassword) {
     return res.status(422).json({
       field: "password",
       message: "Password is not correct.",
@@ -226,13 +236,23 @@ const changePassword = async (req, res) => {
   } catch (error) {
     return res.sendStatus(404);
   }
-  if (user.password !== password) {
+
+  let validPassword;
+  try {
+    validPassword = await bcrypt.compare(password, user.password);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong with comparing passwords." });
+  }
+  if (!validPassword) {
     return res
       .status(422)
       .json({ field: "currentPassword", message: "Password is not corrent." });
   }
+
   try {
-    user.password = newPassword;
+    user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
     return res.sendStatus(200);
   } catch (error) {
