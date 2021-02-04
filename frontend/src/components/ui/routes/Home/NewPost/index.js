@@ -62,6 +62,7 @@ const NewPost = ({ posts, setPosts }) => {
           <TopSection>
             <Avatar src={getImageSrc(user.avatar, "avatar")} />
             <TextArea
+              spellCheck="false"
               name="post"
               maxLength={maxLength}
               rows="1"

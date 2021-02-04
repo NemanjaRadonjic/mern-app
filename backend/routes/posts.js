@@ -26,6 +26,8 @@ router
   .route("/:postId/dislike")
   .post(authenticateAccessToken, PostControllers.dislike);
 
+router.route("/:postId/edit").patch(PostControllers.edit); // accesstoken
+
 router
   .route("/:postId/remove")
   .delete(authenticateAccessToken, PostControllers.remove);

@@ -16,13 +16,16 @@ const fetchPosts = async (req, res) => {
 
   try {
     if (numOfDocuments < postsPerFetch) {
+      console.log("numOfDocuments < postsPerFetch");
       const posts = await Post.find().populate(
         "author",
         "username avatar background -_id"
       );
       return res.json(posts);
     } else if (amount > numOfDocuments) {
+      console.log("amount > numOfDocuments");
       if (amount - postsPerFetch >= numOfDocuments) {
+        console.log("amount - postsPerFetch >= numOfDocuments");
         return res.json([]);
       } else {
         const limit = postsPerFetch - (amount - numOfDocuments);
@@ -278,6 +281,26 @@ const dislike = async (req, res) => {
   }
 };
 
+const edit = async (req, res) => {
+  const { postId } = req.params;
+  const { newContent } = req.body;
+  let post;
+  try {
+    post = await Post.findById(postId);
+  } catch (error) {
+    return res.sendStatus(404);
+  }
+
+  post.content = newContent;
+
+  try {
+    await post.save();
+    return res.status(200).json({ newContent });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+};
+
 const remove = async (req, res) => {
   const { postId } = req.params;
   try {
@@ -296,5 +319,6 @@ module.exports = {
   fetchComments,
   like,
   dislike,
+  edit,
   remove,
 };

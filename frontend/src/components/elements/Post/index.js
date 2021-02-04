@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import { toast } from "react-toastify";
 import getImageSrc from "@helpers/imageSrc";
+import EditPost from "./edit";
+import axios from "@axios";
 
 import {
   Container,
@@ -39,13 +41,16 @@ const Post = ({
   toggleNewCommentActive,
   newCommentActive,
 }) => {
+  const postRef = useRef();
   const postCopy = location.post;
   const user = useSelector((state) => state.user);
   const authorSelf = post.author.username == user?.username;
   const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
   axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
+  const [postHeight, setPostHeight] = useState();
 
+  const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
   const [votes, setVotes] = useState({
@@ -62,6 +67,23 @@ const Post = ({
   const background = `http://localhost:4000/uploads/${
     post.author.background?.split("\\")[1]
   }`;
+
+  useEffect(() => {
+    setPostHeight(postRef.current.offsetHeight);
+  }, []);
+
+  const handleEdit = async (newContent) => {
+    if (newContent.length > 0) {
+      const { data } = await axios.patch(`/posts/${post._id}/edit`, {
+        newContent,
+      });
+      post.content = data.newContent;
+      setEditModal(false);
+      toast("Post has been updated.");
+    } else {
+      console.log("prompt modal for deleting.");
+    }
+  };
 
   const like = async (event) => {
     event.stopPropagation();
@@ -123,6 +145,12 @@ const Post = ({
       toast.error("You have to login to vote.");
     }
   };
+
+  const toggleEditModal = (event) => {
+    event.stopPropagation();
+    setEditModal(!editModal);
+  };
+
   const toggleRemoveModal = (event) => {
     event.stopPropagation();
     setDeleteModal(!deleteModal);
@@ -141,7 +169,7 @@ const Post = ({
 
   const updatedPost = { ...post, votes };
 
-  const redirectToPost = () => {
+  const redirectToPost = (event) => {
     history.push({
       pathname: `/posts/${post._id}`,
       post: updatedPost,
@@ -173,9 +201,19 @@ const Post = ({
             </Author>
             <Time>{post.createdAt.fromNow()}</Time>
           </Info>
-          <PostContent>
-            <p>{post.content}</p>
-          </PostContent>
+          {editModal ? (
+            <EditPost
+              postHeight={postHeight}
+              content={post.content}
+              id={post._id}
+              handleEdit={handleEdit}
+            />
+          ) : (
+            <PostContent>
+              <p ref={postRef}>{post.content}</p>
+            </PostContent>
+          )}
+
           <VoteContainer>
             <ItemContainer>
               <Button
@@ -207,7 +245,7 @@ const Post = ({
       </Background>
       {authorSelf && (
         <Settings>
-          <Setting className="fas fa-edit" />
+          <Setting onClick={toggleEditModal} className="fas fa-edit" />
           <Setting onClick={toggleRemoveModal} className="fas fa-trash-alt" />
         </Settings>
       )}

@@ -10,6 +10,7 @@ export const globalStyles = css`
   * {
     color: rgb(${(props) => props.theme.text});
     outline: none;
+    font-family: "Baloo Da 2", cursive;
   }
 
   ::-webkit-scrollbar {
@@ -17,7 +18,8 @@ export const globalStyles = css`
   }
 
   ::-webkit-scrollbar-track {
-    background: rgb(${(props) => props.theme.background});
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -80,6 +82,9 @@ export const globalStyles = css`
 
   .ReactCrop__crop-selection {
     border: 2px dotted rgb(${(props) => props.theme.primary});
+  }
+  input {
+    letter-spacing: 0.5px;
   }
   input[type="file"] {
     display: none;
