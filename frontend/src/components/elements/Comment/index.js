@@ -1,9 +1,15 @@
-import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import axiosInstance from "@axios";
 import moment from "moment";
 import { toast } from "react-toastify";
+
 import getImageSrc from "@helpers/imageSrc";
 
+import EditComment from "./edit";
+
+import { CommentContent } from "./styles";
+import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 import {
   Container,
   Background,
@@ -14,7 +20,7 @@ import {
   Time,
   VoteContainer,
   ItemContainer,
-  Button,
+  VoteButton,
   RemoveButton,
   Message,
   ButtonContainer,
@@ -23,20 +29,18 @@ import {
   Settings,
   Setting,
 } from "../common/styles";
-import { CommentContent } from "./styles";
-import { Avatar } from "../../ui/routes/Home/NewPost/styles";
-
-import axiosInstance from "@axios";
-import { useSelector } from "react-redux";
 
 const Comment = ({ comment, history, comments, setComments }) => {
-  console.log("comment: ", comment);
   const user = useSelector((state) => state.user);
   const authorSelf = comment.author?.username == user?.username;
-  const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
-  axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
   const convertedDate = moment(comment.createdAt, "MM/DD/YYYY, h:mm:ss A");
+
+  const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+
+  const commentRef = useRef();
+  const [commentHeight, setCommentHeight] = useState();
+
   const [votes, setVotes] = useState({
     likes: comment.votes.likes.length,
     dislikes: comment.votes.dislikes.length,
@@ -46,6 +50,13 @@ const Comment = ({ comment, history, comments, setComments }) => {
   const background = `http://localhost:4000/uploads/${
     comment.author.background?.split("\\")[1]
   }`;
+
+  const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
+  axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
+
+  useEffect(() => {
+    setCommentHeight(commentRef.current.offsetHeight);
+  }, []);
 
   const like = async () => {
     if (user) {
@@ -113,10 +124,31 @@ const Comment = ({ comment, history, comments, setComments }) => {
       toast.error("You have to login to vote.");
     }
   };
+
+  const toggleEditModal = (event) => {
+    event.stopPropagation();
+    setEditModal(!editModal);
+  };
+
   const toggleRemoveModal = (event) => {
     event.stopPropagation();
     setDeleteModal(!deleteModal);
   };
+
+  const handleEdit = async (newContent) => {
+    if (newContent.length > 0) {
+      const { data } = await axiosInstance.patch(
+        `/comments/${comment._id}/edit`,
+        {
+          newContent,
+        }
+      );
+      comment.content = data.newContent;
+      setEditModal(false);
+      toast("Comment has been updated.");
+    }
+  };
+
   const handleClickRemove = async () => {
     try {
       await axiosInstance.delete(`/comments/${comment._id}/remove`);
@@ -153,12 +185,21 @@ const Comment = ({ comment, history, comments, setComments }) => {
             </Author>
             <Time>{convertedDate.fromNow()}</Time>
           </Info>
-          <CommentContent>
-            <p>{comment.content}</p>
-          </CommentContent>
+          {editModal ? (
+            <EditComment
+              commentHeight={commentHeight}
+              content={comment.content}
+              id={comment._id}
+              handleEdit={handleEdit}
+            />
+          ) : (
+            <CommentContent>
+              <p ref={commentRef}>{comment.content}</p>
+            </CommentContent>
+          )}
           <VoteContainer>
             <ItemContainer>
-              <Button
+              <VoteButton
                 name="like"
                 onClick={like}
                 className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
@@ -166,7 +207,7 @@ const Comment = ({ comment, history, comments, setComments }) => {
               <Count>{votes.likes}</Count>
             </ItemContainer>
             <ItemContainer>
-              <Button
+              <VoteButton
                 name="dislike"
                 onClick={dislike}
                 className={`fa${votes.disliked ? "s" : "r"} fa-thumbs-down`}
@@ -178,7 +219,7 @@ const Comment = ({ comment, history, comments, setComments }) => {
       </Background>
       {authorSelf && (
         <Settings>
-          <Setting className="fas fa-edit" />
+          <Setting onClick={toggleEditModal} className="fas fa-edit" />
           <Setting onClick={toggleRemoveModal} className="fas fa-trash-alt" />
         </Settings>
       )}{" "}

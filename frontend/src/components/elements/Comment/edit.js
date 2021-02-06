@@ -5,9 +5,9 @@ import { EditContainer, TextArea, Button, Counter } from "../common/styles";
 const maxLength = 400;
 const lineHeight = 19; // 1,2rem = 19px
 
-const EditPost = ({ content, handleEdit, postHeight }) => {
+const EditComment = ({ content, handleEdit, commentHeight }) => {
   let inputRef;
-  const rows = postHeight / lineHeight;
+  const rows = commentHeight / lineHeight;
   const [newContent, setNewContent] = useState(content);
   const handleChange = (event) => {
     setNewContent(event.target.value);
@@ -18,8 +18,9 @@ const EditPost = ({ content, handleEdit, postHeight }) => {
   }, []);
 
   return (
-    <EditContainer style={{ height: `${postHeight}px` }}>
+    <EditContainer style={{ height: `${commentHeight}px` }}>
       <TextArea
+        comment
         spellCheck="false"
         maxLength={maxLength}
         rows={rows}
@@ -47,4 +48,4 @@ const EditPost = ({ content, handleEdit, postHeight }) => {
   );
 };
 
-export default EditPost;
+export default EditComment;

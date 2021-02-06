@@ -34,7 +34,13 @@ export const TextArea = styled.textarea`
   background: none;
   resize: none;
   border: none;
-  border-bottom: 1px solid rgb(${(props) => props.theme.primary});
+  border-bottom: 1px solid
+    rgb(
+      ${(props) =>
+        props.notValid ? props.theme.lightText : props.theme.primary}
+    );
+
+  transition: border 0.5s ease-in-out;
 `;
 
 export const Error = styled.div`
@@ -44,19 +50,43 @@ export const Error = styled.div`
 `;
 
 export const Button = styled.button`
-  float: right;
-  background: rgb(${(props) => props.theme.primary});
-  border: none;
-  color: white;
-  padding: 0.5rem 2rem;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  bottom: 1rem;
+  width: 8rem;
+  font-size: 1rem;
+  background: transparent;
+  display: block;
+  padding: 0 1rem;
+  border: 1px solid
+    rgb(
+      ${(props) =>
+        props.disabled ? props.theme.lightText : props.theme.primary}
+    );
+  box-shadow: inset 0 0 0
+    rgb(
+      ${(props) =>
+        props.disabled ? props.theme.lightText : props.theme.primary}
+    );
   cursor: pointer;
 
-  transition: box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out,
+    border 0.5s ease-in-out;
 
   &:hover {
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.4);
+    color: white;
+    box-shadow: inset 0 -3rem 0 rgb(${(props) => (props.disabled ? props.theme.lightText : props.theme.primary)});
   }
+
+  &.align-center {
+    margin: 0 auto;
+  }
+`;
+
+export const Counter = styled.div`
+  color: rgb(
+    ${(props) => (props.filled ? props.theme.primary : props.theme.lightText)}
+  );
+
+  transition: color 0.5s ease-in-out;
 `;
 
 export const Message = styled.div`

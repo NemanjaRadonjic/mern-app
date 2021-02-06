@@ -17,10 +17,83 @@ export const Container = styled.div`
   position: relative;
 `;
 
+export const PostContent = styled.div`
+  margin: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.2rem;
+  word-spacing: 1px;
+  padding: 0.5rem;
+  white-space: pre-line;
+`;
+
+export const EditContainer = styled.div`
+  margin: 1rem;
+  padding: 0.5rem;
+`;
+
+export const TextArea = styled.textarea`
+  position: absolute;
+  width: ${(props) => (props.comment ? "77%" : "85%")};
+  padding: 0.5rem;
+  margin-left: -0.5rem;
+  margin-top: -0.5rem;
+  resize: none;
+  font-size: ${(props) => (props.comment ? "1.05rem" : "1.1rem")};
+  line-height: 1.2rem;
+  word-spacing: 1px;
+  letter-spacing: 0.5px;
+  border: none;
+  transition: box-shadow 0.2s ease-in-out;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+`;
+
+export const Button = styled.button`
+  position: absolute;
+  left: 2.5rem;
+  bottom: 1rem;
+  width: 8rem;
+  font-size: 1rem;
+  background: transparent;
+  display: block;
+  padding: 0 1rem;
+
+  border: 1px solid
+    rgb(
+      ${(props) =>
+        props.disabled ? props.theme.lightText : props.theme.primary}
+    );
+  box-shadow: inset 0 0 0 rgb(${(props) => props.theme.primary});
+  cursor: pointer;
+
+  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+
+  &:hover {
+    color: white;
+    box-shadow: inset 0 -3rem 0 rgb(${(props) => (props.disabled ? props.theme.lightText : props.theme.primary)});
+  }
+
+  &.align-center {
+    margin: 0 auto;
+  }
+`;
+
+export const Counter = styled.div`
+  position: absolute;
+  bottom: 2.3rem;
+  right: 1.5rem;
+  color: rgb(
+    ${(props) => (props.filled ? props.theme.primary : props.theme.lightText)}
+  );
+
+  transition: color 0.5s ease-in-out;
+`;
+
 export const Background = styled.div`
   width: 100%;
   min-height: ${(props) => (props.post ? "7rem" : "5rem")};
-  padding: 1.5rem 1.5rem 0 1.5rem;
+  padding: 1.5rem 1.5rem ${(props) => (props.paddingBottom ? "3rem" : "0")}
+    1.5rem;
   display: flex;
   background: rgba(${(props) => props.theme.background}, 0.3);
   transition: background 0.4s ease-in-out;
@@ -80,7 +153,7 @@ export const Count = styled.div`
   transition: color 0.2s ease-in-out;
 `;
 
-export const Button = styled.button`
+export const VoteButton = styled.button`
   border: none;
   background: transparent;
   cursor: pointer;

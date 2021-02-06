@@ -1,5 +1,3 @@
-// this hook is for keeping track of the amount of posts to be fetched
-
 import { useState } from "react";
 
 const postsPerFetch = 10;

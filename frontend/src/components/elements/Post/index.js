@@ -4,8 +4,11 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import getImageSrc from "@helpers/imageSrc";
 import EditPost from "./edit";
-import axios from "@axios";
+import axiosInstance from "@axios";
+import { useSelector } from "react-redux";
 
+import { PostContent } from "./styles";
+import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 import {
   Container,
   Background,
@@ -15,7 +18,7 @@ import {
   Time,
   VoteContainer,
   ItemContainer,
-  Button,
+  VoteButton,
   RemoveButton,
   Count,
   Settings,
@@ -24,11 +27,6 @@ import {
   Message,
   ButtonContainer,
 } from "../common/styles";
-import { PostContent } from "./styles";
-import { Avatar } from "../../ui/routes/Home/NewPost/styles";
-
-import axiosInstance from "@axios";
-import { useSelector } from "react-redux";
 
 const Post = ({
   post,
@@ -41,6 +39,8 @@ const Post = ({
   toggleNewCommentActive,
   newCommentActive,
 }) => {
+  console.log("comments", comments);
+  console.log("post", post.comments);
   const postRef = useRef();
   const postCopy = location.post;
   const user = useSelector((state) => state.user);
@@ -74,14 +74,12 @@ const Post = ({
 
   const handleEdit = async (newContent) => {
     if (newContent.length > 0) {
-      const { data } = await axios.patch(`/posts/${post._id}/edit`, {
+      const { data } = await axiosInstance.patch(`/posts/${post._id}/edit`, {
         newContent,
       });
       post.content = data.newContent;
       setEditModal(false);
       toast("Post has been updated.");
-    } else {
-      console.log("prompt modal for deleting.");
     }
   };
 
@@ -216,7 +214,7 @@ const Post = ({
 
           <VoteContainer>
             <ItemContainer>
-              <Button
+              <VoteButton
                 className={`fa${newCommentActive ? "s" : "r"} fa-comment`}
                 onClick={toggleNewCommentActive}
               />
@@ -227,14 +225,14 @@ const Post = ({
               </Count>
             </ItemContainer>
             <ItemContainer>
-              <Button
+              <VoteButton
                 onClick={like}
                 className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
               />
               <Count>{votes.likes}</Count>
             </ItemContainer>
             <ItemContainer>
-              <Button
+              <VoteButton
                 onClick={dislike}
                 className={`fa${votes.disliked ? "s" : "r"} fa-thumbs-down`}
               />

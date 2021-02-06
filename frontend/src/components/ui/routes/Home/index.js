@@ -36,7 +36,8 @@ function Home() {
   }, []);
 
   const renderPosts = () => {
-    return posts?.length > 0 ? (
+    return (
+      posts.length > 0 &&
       posts.map((post) => {
         return (
           <Post
@@ -48,8 +49,6 @@ function Home() {
           />
         );
       })
-    ) : (
-      <NoContentMessage>No one made any posts yet :(</NoContentMessage>
     );
   };
 
@@ -65,6 +64,9 @@ function Home() {
           loader={<Loader />}
         >
           {posts && renderPosts()}
+          {posts && posts.length === 0 && (
+            <NoContentMessage>No one made any posts yet :(</NoContentMessage>
+          )}
         </InfiniteScroll>
       </Posts>
     </Container>

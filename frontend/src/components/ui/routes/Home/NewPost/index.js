@@ -5,13 +5,14 @@ import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
 import getImageSrc from "@helpers/imageSrc";
 
-import { Button } from "@styles/common";
 import {
   Container,
   TopSection,
   BottomSection,
   Avatar,
   TextArea,
+  Counter,
+  Button,
   Error,
   Message,
 } from "./styles";
@@ -62,6 +63,7 @@ const NewPost = ({ posts, setPosts }) => {
           <TopSection>
             <Avatar src={getImageSrc(user.avatar, "avatar")} />
             <TextArea
+              notValid={!/[A-Za-z0-9]/g.test(inputs.post)}
               spellCheck="false"
               name="post"
               maxLength={maxLength}
@@ -70,11 +72,18 @@ const NewPost = ({ posts, setPosts }) => {
               value={inputs.post}
               placeholder="Post something..."
             />
-            {maxLength + "/" + inputs.post.length}
+            <Counter filled={inputs.post.length >= maxLength}>
+              {inputs.post.length + "/" + maxLength}
+            </Counter>
           </TopSection>
           <BottomSection>
             <Error>{errors.post}</Error>
-            <Button className="align-center" type="submit" onClick={createPost}>
+            <Button
+              disabled={!/[A-Za-z0-9]/g.test(inputs.post)}
+              className="align-center"
+              type="submit"
+              onClick={createPost}
+            >
               Post
             </Button>
           </BottomSection>

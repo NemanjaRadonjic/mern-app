@@ -36,7 +36,7 @@ const fetchUserPosts = async (req, res) => {
   }
 
   try {
-    if (numOfDocuments < postsPerFetch) {
+    if (numOfDocuments < postsPerFetch && amount === 10) {
       const userPosts = await Post.find({
         author: userId,
       }).populate("author", "username avatar background -_id");
@@ -86,7 +86,7 @@ const fetchLikedUserPosts = async (req, res) => {
   }
 
   try {
-    if (numOfDocuments < postsPerFetch) {
+    if (numOfDocuments < postsPerFetch && amount === 10) {
       const likedPosts = await Post.find({
         "votes.likes": userId,
       }).populate("author", "username avatar background -_id");
@@ -135,7 +135,7 @@ const fetchDislikedUserPosts = async (req, res) => {
   }
 
   try {
-    if (numOfDocuments < postsPerFetch) {
+    if (numOfDocuments < postsPerFetch && amount === 10) {
       const dislikedPosts = await Post.find({
         "votes.dislikes": userId,
       }).populate("author", "username avatar background -_id");

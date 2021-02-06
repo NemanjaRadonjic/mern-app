@@ -102,6 +102,29 @@ const dislike = async (req, res) => {
   return res.status(201).json({ ...votes });
 };
 
+const edit = async (req, res) => {
+  const { commentId } = req.params;
+  const { newContent } = req.body;
+
+  let comment;
+
+  try {
+    comment = await Comment.findById(commentId);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  comment.content = newContent;
+
+  try {
+    await comment.save();
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  return res.status(200).json({ newContent });
+};
+
 const remove = async (req, res) => {
   const { commentId } = req.params;
   let comment;
@@ -131,4 +154,4 @@ const remove = async (req, res) => {
   return res.sendStatus(200);
 };
 
-module.exports = { like, dislike, remove };
+module.exports = { like, dislike, edit, remove };

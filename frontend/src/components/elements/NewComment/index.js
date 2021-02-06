@@ -9,9 +9,9 @@ import {
   AvatarContainer,
   Author,
   Info,
+  Counter,
 } from "../common/styles";
-import { Button } from "@styles/common";
-import { TextArea, NewCommentHead, ButtonContainer } from "./styles";
+import { TextArea, NewCommentHead, ButtonContainer, Button } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 
 const maxLength = 400;
@@ -19,7 +19,6 @@ const maxLength = 400;
 const NewComment = ({
   user,
   postId,
-  userId,
   setComments,
   comments,
   toggleNewCommentActive,
@@ -48,7 +47,7 @@ const NewComment = ({
   };
   return (
     <Container background={getImageSrc(user.background, "background")}>
-      <Background>
+      <Background paddingBottom>
         <AvatarContainer>
           <Avatar
             src={getImageSrc(user.avatar, "avatar")}
@@ -75,9 +74,8 @@ const NewComment = ({
             value={inputs.comment}
             onChange={onChange}
           />
-          <ButtonContainer>
-            <Button onClick={handleClick}>Comment</Button>
-          </ButtonContainer>
+          <Counter>{inputs.comment.length + "/" + maxLength}</Counter>
+          <Button onClick={handleClick}>Comment</Button>
         </NewCommentHead>
       </Background>
     </Container>

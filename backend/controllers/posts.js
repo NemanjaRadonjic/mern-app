@@ -15,7 +15,7 @@ const fetchPosts = async (req, res) => {
   }
 
   try {
-    if (numOfDocuments < postsPerFetch) {
+    if (numOfDocuments < postsPerFetch && amount === 10) {
       console.log("numOfDocuments < postsPerFetch");
       const posts = await Post.find().populate(
         "author",
@@ -144,6 +144,20 @@ const createComment = async (req, res) => {
 
   try {
     await comment.save();
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    post.comments.push(comment);
+    console.log("its oke");
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+  console.log("it went oke");
+  try {
+    await post.save();
   } catch (error) {
     return res.sendStatus(500);
   }
@@ -305,6 +319,12 @@ const remove = async (req, res) => {
   const { postId } = req.params;
   try {
     await Post.findById(postId).deleteOne();
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    await Comment.deleteMany({ post: postId });
     return res.sendStatus(200);
   } catch (error) {
     return res.sendStatus(500);

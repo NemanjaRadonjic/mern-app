@@ -1,22 +1,19 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  border-bottom: 1px solid rgb(${(props) => props.theme.primary});
-  padding: 1rem 0.5rem;
-`;
-
 export const TextArea = styled.textarea`
+  width: 90%;
+  padding: 0.5rem;
   margin-left: 1.5rem;
-  padding: 0.5rem 1rem;
-  font-size: inherit;
-  font-family: inherit;
-  width: 50%;
-  background: none;
+  margin-top: 0.5rem;
   resize: none;
+  font-size: 1.05rem;
+  line-height: 1.2rem;
+  word-spacing: 1px;
+  letter-spacing: 0.5px;
   border: none;
+  transition: box-shadow 0.2s ease-in-out;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 `;
 
 export const Avatar = styled.img`
@@ -32,8 +29,27 @@ export const NewCommentHead = styled.div`
   margin-bottom: 0.26rem;
 `;
 
-export const ButtonContainer = styled.div`
+export const Button = styled.button`
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+  right: 1.5rem;
+  bottom: 0.8rem;
+  width: 8rem;
+  font-size: 1rem;
+  background: transparent;
+  display: block;
+  padding: 0 1rem;
+  border: 1px solid
+    rgb(
+      ${(props) =>
+        props.disabled ? props.theme.lightText : props.theme.primary}
+    );
+  box-shadow: inset 0 0 0 rgb(${(props) => props.theme.primary});
+  cursor: pointer;
+
+  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+
+  &:hover {
+    color: white;
+    box-shadow: inset 0 -3rem 0 rgb(${(props) => (props.disabled ? props.theme.lightText : props.theme.primary)});
+  }
 `;
