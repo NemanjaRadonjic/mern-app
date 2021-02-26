@@ -16,30 +16,51 @@ const fetchPosts = async (req, res) => {
 
   try {
     if (numOfDocuments < postsPerFetch && amount === 10) {
-      console.log("numOfDocuments < postsPerFetch");
       const posts = await Post.find().populate(
         "author",
         "username avatar background -_id"
       );
-      return res.json(posts);
+      const postsWithComments = await Promise.all(
+        posts.map(async (post) => {
+          const numOfComments = await Comment.countDocuments({
+            post: post._id,
+          });
+          return { ...post._doc, comments: numOfComments };
+        })
+      );
+      return res.json(postsWithComments);
     } else if (amount > numOfDocuments) {
-      console.log("amount > numOfDocuments");
       if (amount - postsPerFetch >= numOfDocuments) {
-        console.log("amount - postsPerFetch >= numOfDocuments");
         return res.json([]);
       } else {
         const limit = postsPerFetch - (amount - numOfDocuments);
         const posts = await Post.find()
           .populate("author", "username avatar background -_id")
           .limit(limit);
-        return res.json(posts);
+        const postsWithComments = await Promise.all(
+          posts.map(async (post) => {
+            const numOfComments = await Comment.countDocuments({
+              post: post._id,
+            });
+            return { ...post._doc, comments: numOfComments };
+          })
+        );
+        return res.json(postsWithComments);
       }
     } else {
       const posts = await Post.find()
         .populate("author", "username avatar background -_id")
         .skip(numOfDocuments - amount)
         .limit(postsPerFetch);
-      return res.json(posts);
+      const postsWithComments = await Promise.all(
+        posts.map(async (post) => {
+          const numOfComments = await Comment.countDocuments({
+            post: post._id,
+          });
+          return { ...post._doc, comments: numOfComments };
+        })
+      );
+      return res.json(postsWithComments);
     }
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong." });
@@ -49,12 +70,14 @@ const fetchPosts = async (req, res) => {
 const fetchPost = async (req, res) => {
   const { postId } = req.params;
   try {
-    const post = await Post.findById(postId)
-      .populate("author", "username avatar background -_id")
-      .populate("comments", "content author -_id");
-    res.json(post);
+    const post = await Post.findById(postId).populate(
+      "author",
+      "username avatar background -_id"
+    );
+    return res.json(post);
   } catch (error) {
     console.log(error);
+    return res.sendStatus(500);
   }
 };
 
@@ -83,6 +106,7 @@ const createPost = async (req, res) => {
 
   post.author = user;
   post.createdAt = moment().format("MM/DD/YYYY, h:mm:ss A");
+  post.comments = 0;
 
   try {
     await post.save();
@@ -149,13 +173,12 @@ const createComment = async (req, res) => {
   }
 
   try {
-    post.comments.push(comment);
-    console.log("its oke");
+    console.log(post.comments);
+    post.comments++;
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
   }
-  console.log("it went oke");
   try {
     await post.save();
   } catch (error) {
@@ -317,8 +340,30 @@ const edit = async (req, res) => {
 
 const remove = async (req, res) => {
   const { postId } = req.params;
+
+  let post;
   try {
-    await Post.findById(postId).deleteOne();
+    post = await Post.findById(postId);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    await Post.deleteOne({ _id: postId });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  let user;
+  try {
+    user = await User.findById(post.author);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    user.posts = user.posts.filter((id) => id != postId);
+    await user.save();
   } catch (error) {
     return res.sendStatus(500);
   }

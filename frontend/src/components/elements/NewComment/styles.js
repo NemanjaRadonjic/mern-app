@@ -43,10 +43,15 @@ export const Button = styled.button`
       ${(props) =>
         props.disabled ? props.theme.lightText : props.theme.primary}
     );
-  box-shadow: inset 0 0 0 rgb(${(props) => props.theme.primary});
+  box-shadow: inset 0 0 0
+    rgb(
+      ${(props) =>
+        props.disabled ? props.theme.lightText : props.theme.primary}
+    );
   cursor: pointer;
 
-  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out,
+    border 0.5s ease-in-out;
 
   &:hover {
     color: white;

@@ -13,6 +13,10 @@ const userSchema = mongoose.Schema({
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
     dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
   },
+  votedComments: {
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
+  },
 });
 
 const User = mongoose.model("user", userSchema);

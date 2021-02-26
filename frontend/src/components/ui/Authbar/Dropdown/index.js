@@ -9,7 +9,12 @@ import {
   Item,
 } from "./styles";
 
-const Dropdown = ({ username, toggleDropdown, handleLogout }) => {
+const Dropdown = ({ username, toggleDropdown, toggleModal, handleLogout }) => {
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
   const handleClick = (event) => {
     if (
       event.target.parentElement.id === "dropdown" ||
@@ -20,63 +25,77 @@ const Dropdown = ({ username, toggleDropdown, handleLogout }) => {
       toggleDropdown();
     }
   };
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
 
   return (
-    <Container id="dropdown">
-      <DropdownConnectorShadow>
-        <DropdownConnector />
-      </DropdownConnectorShadow>
-      <Item>
-        <Link to={`/user/${username}`} onClick={toggleDropdown}>
-          Profile
-        </Link>
-      </Item>
-      <Group>Account Settings</Group>
-      <Item>
-        <Link
-          onClick={toggleDropdown}
-          to={`/user/${username}/settings/username`}
-        >
-          Change Your Username
-        </Link>
-      </Item>
-      <Item>
-        <Link onClick={toggleDropdown} to={`/user/${username}/settings/email`}>
-          Change Your Email
-        </Link>
-      </Item>
-      <Item>
-        <Link
-          onClick={toggleDropdown}
-          to={`/user/${username}/settings/password`}
-        >
-          Change Your Password
-        </Link>
-      </Item>
-      <Group>Profile Settings</Group>
-      <Item>
-        <Link
-          to={`/user/${username}/settings/background`}
-          onClick={toggleDropdown}
-        >
-          Change Background
-        </Link>
-      </Item>
-      <Item>
-        <Link to={`/user/${username}/settings/avatar`} onClick={toggleDropdown}>
-          Change Avatar
-        </Link>
-      </Item>
-      <Item onClick={handleLogout}>
-        <Link to="/home" onClick={toggleDropdown}>
-          Log out
-        </Link>
-      </Item>
-    </Container>
+    <>
+      <Container id="dropdown">
+        <DropdownConnectorShadow>
+          <DropdownConnector />
+        </DropdownConnectorShadow>
+        <Item>
+          <Link to={`/user/${username}`} onClick={toggleDropdown}>
+            Profile
+          </Link>
+        </Item>
+        <Group>Account Settings</Group>
+        <Item>
+          <Link
+            onClick={toggleDropdown}
+            to={`/user/${username}/settings/username`}
+          >
+            Change Your Username
+          </Link>
+        </Item>
+        <Item>
+          <Link
+            onClick={toggleDropdown}
+            to={`/user/${username}/settings/email`}
+          >
+            Change Your Email
+          </Link>
+        </Item>
+        <Item>
+          <Link
+            onClick={toggleDropdown}
+            to={`/user/${username}/settings/password`}
+          >
+            Change Your Password
+          </Link>
+        </Item>
+        <Item>
+          <Link
+            onClick={() => {
+              toggleDropdown();
+              toggleModal();
+            }}
+          >
+            Delete Account
+          </Link>
+        </Item>
+        <Group>Profile Settings</Group>
+        <Item>
+          <Link
+            to={`/user/${username}/settings/background`}
+            onClick={toggleDropdown}
+          >
+            Change Background
+          </Link>
+        </Item>
+        <Item>
+          <Link
+            to={`/user/${username}/settings/avatar`}
+            onClick={toggleDropdown}
+          >
+            Change Avatar
+          </Link>
+        </Item>
+        <Item onClick={handleLogout}>
+          <Link to="/home" onClick={toggleDropdown}>
+            Log out
+          </Link>
+        </Item>
+      </Container>
+    </>
   );
 };
 

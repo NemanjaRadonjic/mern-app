@@ -86,7 +86,7 @@ function Register({ history }) {
         await axios.post("/auth/register", inputs);
         history.push("/login");
       } catch (error) {
-        if (error.response.status === 422) {
+        if (error.response?.status === 422) {
           const { field, message } = error.response.data;
           setErrors({ ...errors, [field]: message });
         }

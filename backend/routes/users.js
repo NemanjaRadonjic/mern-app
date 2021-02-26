@@ -25,4 +25,6 @@ router
   .route("/:username/settings/password")
   .patch(UserControllers.changePassword);
 
+router.route("/:username/delete").delete(UserControllers.deleteUser);
+
 module.exports = router;

@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 const bcrypt = require("bcrypt");
 
 const fetchUser = async (req, res) => {
@@ -260,6 +261,71 @@ const changePassword = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const { username } = req.params;
+
+  let user;
+  try {
+    user = await User.findOne({ username });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    user.votedPosts.likes.map(async (id) => {
+      const post = await Post.findById(id);
+      post.votes.likes = post.votes.likes.filter((id) => id != user.id);
+      await post.save();
+    });
+
+    user.votedPosts.dislikes.map(async (id) => {
+      const post = await Post.findById(id);
+      post.votes.dislikes = post.votes.dislikes.filter((id) => id != user.id);
+      await post.save();
+    });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    user.votedComments.likes.map(async (id) => {
+      const comment = await Comment.findById(id);
+      comment.votes.likes = comment.votes.likes.filter((id) => id != user.id);
+      await comment.save();
+    });
+
+    user.votedComments.dislikes.map(async (id) => {
+      const comment = await Comment.findById(id);
+      comment.votes.dislikes = comment.votes.dislikes.filter(
+        (id) => id != user.id
+      );
+      await comment.save();
+    });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    await Post.deleteMany({ author: user.id });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    await Comment.deleteMany({ author: user.id });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    await User.deleteOne({ _id: user.id });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  return res.sendStatus(200);
+};
+
 module.exports = {
   fetchUser,
   fetchUserPosts,
@@ -269,4 +335,5 @@ module.exports = {
   changeUsername,
   changeEmail,
   changePassword,
+  deleteUser,
 };

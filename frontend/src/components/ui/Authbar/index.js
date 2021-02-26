@@ -3,6 +3,8 @@ import { Link, Redirect } from "react-router-dom";
 import { useSelector, connect } from "react-redux";
 import { logout } from "@actions/userActions";
 import getImageSrc from "@helpers/imageSrc";
+import Dropdown from "./Dropdown";
+import DeleteAccountModal from "@modals/DeleteAccount";
 
 import {
   Container,
@@ -13,11 +15,11 @@ import {
   Button,
   LinkContainer,
 } from "./styles";
-import Dropdown from "./Dropdown";
 
 function Authbar({ logout }) {
   const user = useSelector((state) => state.user);
   const [dropdown, setDropdown] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -29,40 +31,53 @@ function Authbar({ logout }) {
     setDropdown(!dropdown);
   };
 
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
-    <Container>
-      <AuthContainer>
-        {user ? (
-          <>
-            <Avatar src={getImageSrc(user.avatar, "avatar")} />
-            <Settings
-              className="fas fa-cog"
-              onClick={toggleDropdown}
-              id="open-dropdown"
-            />
-            <Name>
-              <Link to={`/user/${user.username}/posts`}>{user.username}</Link>
-            </Name>
-          </>
-        ) : (
-          <>
-            <LinkContainer>
-              <Link to="/login">Login</Link>
-            </LinkContainer>
-            <LinkContainer>
-              <Link to="/register">Register</Link>
-            </LinkContainer>
-          </>
-        )}
-      </AuthContainer>
-      {dropdown && (
-        <Dropdown
-          username={user.username}
+    <>
+      {showModal && (
+        <DeleteAccountModal
+          toggleModal={toggleModal}
           handleLogout={handleLogout}
-          toggleDropdown={toggleDropdown}
         />
       )}
-    </Container>
+      <Container>
+        <AuthContainer>
+          {user ? (
+            <>
+              <Avatar src={getImageSrc(user.avatar, "avatar")} />
+              <Settings
+                className="fas fa-cog"
+                onClick={toggleDropdown}
+                id="open-dropdown"
+              />
+              <Name>
+                <Link to={`/user/${user.username}/posts`}>{user.username}</Link>
+              </Name>
+            </>
+          ) : (
+            <>
+              <LinkContainer>
+                <Link to="/login">Login</Link>
+              </LinkContainer>
+              <LinkContainer>
+                <Link to="/register">Register</Link>
+              </LinkContainer>
+            </>
+          )}
+        </AuthContainer>
+        {dropdown && (
+          <Dropdown
+            username={user.username}
+            handleLogout={handleLogout}
+            toggleDropdown={toggleDropdown}
+            toggleModal={toggleModal}
+          />
+        )}
+      </Container>
+    </>
   );
 }
 

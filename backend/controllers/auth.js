@@ -87,7 +87,7 @@ const register = async (req, res) => {
     }
     try {
       await user.save();
-      return res.status(201).send();
+      return res.sendStatus(201);
     } catch (error) {
       return res.status(500).json({ message: "Something went wrong." });
     }

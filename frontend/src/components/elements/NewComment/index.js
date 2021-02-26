@@ -75,7 +75,12 @@ const NewComment = ({
             onChange={onChange}
           />
           <Counter>{inputs.comment.length + "/" + maxLength}</Counter>
-          <Button onClick={handleClick}>Comment</Button>
+          <Button
+            disabled={!/[A-Za-z0-9]/g.test(inputs.comment)}
+            onClick={handleClick}
+          >
+            Comment
+          </Button>
         </NewCommentHead>
       </Background>
     </Container>

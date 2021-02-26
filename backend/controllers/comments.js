@@ -10,7 +10,6 @@ const like = async (req, res) => {
   try {
     comment = await Comment.findById(commentId);
   } catch (error) {
-    console.log(error);
     return res.sendStatus(500);
   }
 
@@ -18,7 +17,6 @@ const like = async (req, res) => {
   try {
     user = await User.findById(userId);
   } catch (error) {
-    console.log(error);
     return res.sendStatus(500);
   }
 
@@ -29,15 +27,24 @@ const like = async (req, res) => {
 
   if (comment.votes.likes.some((id) => id == userId)) {
     comment.votes.likes = comment.votes.likes.filter((id) => id != userId);
+    user.votedComments.likes = user.votedComments.likes.filter(
+      (id) => id != comment.id
+    );
   } else {
     if (comment.votes.dislikes.some((id) => id == userId)) {
       comment.votes.dislikes = comment.votes.dislikes.filter(
         (id) => id != userId
       );
       comment.votes.likes.push(user);
+      user.votedComments.dislikes = user.votedComments.dislikes.filter(
+        (id) => id != comment.id
+      );
+
+      user.votedComments.likes.push(comment);
       votes.liked = true;
     } else {
       comment.votes.likes.push(user);
+      user.votedComments.likes.push(comment);
       votes.liked = true;
     }
   }
@@ -45,7 +52,12 @@ const like = async (req, res) => {
   try {
     await comment.save();
   } catch (error) {
-    console.log(error);
+    return res.sendStatus(500);
+  }
+
+  try {
+    await user.save();
+  } catch (error) {
     return res.sendStatus(500);
   }
 
@@ -81,12 +93,20 @@ const dislike = async (req, res) => {
     comment.votes.dislikes = comment.votes.dislikes.filter(
       (id) => id != userId
     );
+    user.votedComments.dislikes = user.votedComments.dislikes.filter(
+      (id) => id != comment.id
+    );
   } else {
     if (comment.votes.likes.some((id) => id == userId)) {
       comment.votes.likes = comment.votes.likes.filter((id) => id != userId);
       comment.votes.dislikes.push(user);
+      user.votedComments.likes = user.votedComments.likes.filter(
+        (id) => id != comment.id
+      );
+      user.votedComments.dislikes.push(comment);
       votes.disliked = true;
     } else {
+      user.votedComments.dislikes.push(comment);
       comment.votes.dislikes.push(user);
       votes.disliked = true;
     }
@@ -95,7 +115,12 @@ const dislike = async (req, res) => {
   try {
     await comment.save();
   } catch (error) {
-    console.log(error);
+    return res.sendStatus(500);
+  }
+
+  try {
+    await user.save();
+  } catch (error) {
     return res.sendStatus(500);
   }
 
@@ -145,7 +170,7 @@ const remove = async (req, res) => {
   }
 
   try {
-    post.comments = post.comments.filter((id) => id != commentId);
+    post.comments--;
     await post.save();
   } catch (error) {
     return res.sendStatus(500);

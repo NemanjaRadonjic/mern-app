@@ -39,10 +39,9 @@ const Post = ({
   toggleNewCommentActive,
   newCommentActive,
 }) => {
-  console.log("comments", comments);
-  console.log("post", post.comments);
   const postRef = useRef();
   const postCopy = location.post;
+  console.log("postCopy: ", postCopy);
   const user = useSelector((state) => state.user);
   const authorSelf = post.author.username == user?.username;
   const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
@@ -52,10 +51,10 @@ const Post = ({
 
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-
+  console.log(post);
   const [votes, setVotes] = useState({
-    likes: postCopy ? postCopy.votes.likes : post.votes.likes.length,
-    dislikes: postCopy ? postCopy.votes.dislikes : post.votes.dislikes.length,
+    likes: postCopy ? postCopy.votes.likes : post.votes.likes,
+    dislikes: postCopy ? postCopy.votes.dislikes : post.votes.dislikes,
     liked: postCopy
       ? postCopy.votes.liked
       : post.votes.likes.includes(user?.id),
@@ -95,13 +94,15 @@ const Post = ({
         let updatedVotes = { ...votes, liked, disliked };
 
         if (votes.liked) {
-          updatedVotes.likes--;
+          updatedVotes.likes = updatedVotes.likes.filter((id) => id != user.id);
         } else {
           if (votes.disliked) {
-            updatedVotes.dislikes--;
-            updatedVotes.likes++;
+            updatedVotes.dislikes = updatedVotes.dislikes.filter(
+              (id) => id != user.id
+            );
+            updatedVotes.likes.push(user.id);
           } else {
-            updatedVotes.likes++;
+            updatedVotes.likes.push(user.id);
           }
         }
         setVotes({ ...updatedVotes });
@@ -126,13 +127,17 @@ const Post = ({
         let updatedVotes = { ...votes, liked, disliked };
 
         if (votes.disliked) {
-          updatedVotes.dislikes--;
+          updatedVotes.dislikes = updatedVotes.dislikes.filter(
+            (id) => id != user.id
+          );
         } else {
           if (votes.liked) {
-            updatedVotes.likes--;
-            updatedVotes.dislikes++;
+            updatedVotes.likes = updatedVotes.likes.filter(
+              (id) => id != user.id
+            );
+            updatedVotes.dislikes.push(user.id);
           } else {
-            updatedVotes.dislikes++;
+            updatedVotes.dislikes.push(user.id);
           }
         }
         setVotes({ ...updatedVotes });
@@ -220,7 +225,7 @@ const Post = ({
               />
               <Count>
                 {comments?.length === undefined
-                  ? post.comments.length
+                  ? post.comments
                   : comments.length}
               </Count>
             </ItemContainer>
@@ -229,14 +234,14 @@ const Post = ({
                 onClick={like}
                 className={`fa${votes.liked ? "s" : "r"} fa-thumbs-up`}
               />
-              <Count>{votes.likes}</Count>
+              <Count>{votes.likes.length}</Count>
             </ItemContainer>
             <ItemContainer>
               <VoteButton
                 onClick={dislike}
                 className={`fa${votes.disliked ? "s" : "r"} fa-thumbs-down`}
               />
-              <Count>{votes.dislikes}</Count>
+              <Count>{votes.dislikes.length}</Count>
             </ItemContainer>
           </VoteContainer>
         </Head>
