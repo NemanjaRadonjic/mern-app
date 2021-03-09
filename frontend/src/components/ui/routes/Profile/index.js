@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axiosInstance from "@axios";
 import getImageSrc from "@helpers/imageSrc";
-import { Route, NavLink } from "react-router-dom";
+import { Route, NavLink, Redirect, Switch } from "react-router-dom";
 import Posts from "./Posts";
 import VotedPosts from "./VotedPosts";
 import Images from "./Images";
@@ -21,6 +21,9 @@ import {
   Username,
   NavbarContainer,
   NavbarItem,
+  PermissionDenied,
+  Header,
+  Message,
 } from "./styles";
 
 const Profile = (props) => {
@@ -30,13 +33,15 @@ const Profile = (props) => {
   const [userInfo, setUserInfo] = useState(null);
   const isSelf = user?.username == username; // ?
 
+  const fetchUser = async () => {
+    const response = await axiosInstance.get(`/users/${username}`);
+    setUserInfo(response.data);
+  };
+
   useEffect(() => {
-    const fetchUser = async () => {
-      const response = await axiosInstance.get(`/users/${username}`);
-      setUserInfo(response.data);
-    };
     fetchUser();
-  }, [props.match.params.username]);
+  }, [username]);
+
   if (!userInfo) {
     return null;
   }
@@ -77,7 +82,11 @@ const Profile = (props) => {
         ) : (
           <AvatarContainer src={getImageSrc(userInfo.avatar, "avatar")} />
         )}
-        <Username>{userInfo.username}</Username>
+        <Username>
+          <NavLink className="text-align__center" to={`/user/${username}`}>
+            {userInfo.username}
+          </NavLink>
+        </Username>
         <NavbarItem>
           <NavLink
             to={`/user/${username}/liked`}
@@ -98,60 +107,76 @@ const Profile = (props) => {
         </NavbarItem>
       </NavbarContainer>
       <ContentContainer>
-        <Route exact path={"/user/:username/posts"} component={Posts} />
-        <Route path={"/user/:username/images"} component={Images} />
-        <Route
-          path={"/user/:username/liked"}
-          render={() => {
-            return <VotedPosts type="liked" match={props.match} />;
-          }}
-        />
-        <Route
-          path={"/user/:username/disliked"}
-          render={() => {
-            return <VotedPosts type="disliked" match={props.match} />;
-          }}
-        />
-        <ProtectedRoute
-          path={`/user/:username/settings/avatar`}
-          component={EditImage}
-          type="avatar"
-          redirectTo="/home"
-          redirectMsg="You have to log in to see that page"
-          userPrivilege
-        />
-        <ProtectedRoute
-          path={`/user/:username/settings/background`}
-          component={EditImage}
-          type="background"
-          redirectTo="/home"
-          redirectMsg="You have to log in to see that page"
-          userPrivilege
-        />
-        <ProtectedRoute
-          path={`/user/:username/settings/username`}
-          component={ChangeUsername}
-          type="username"
-          redirectTo="/home"
-          redirectMsg="You have to log in to see that page"
-          userPrivilege
-        />
-        <ProtectedRoute
-          path={`/user/:username/settings/email`}
-          component={ChangeEmail}
-          type="email"
-          redirectTo="/home"
-          redirectMsg="You have to log in to see that page"
-          userPrivilege
-        />
-        <ProtectedRoute
-          path={`/user/:username/settings/password`}
-          component={ChangePassword}
-          type="password"
-          redirectTo="/home"
-          redirectMsg="You have to log in to see that page"
-          userPrivilege
-        />
+        <Switch>
+          <Route
+            exact
+            path="/user/:username"
+            render={() => <Redirect to={`/user/${username}/posts`} />}
+          />
+          <Route exact path={"/user/:username/posts"} component={Posts} />
+          <Route path={"/user/:username/images"} component={Images} />
+          <Route
+            path={"/user/:username/liked"}
+            render={() => {
+              return <VotedPosts type="liked" match={props.match} />;
+            }}
+          />
+          <Route
+            path={"/user/:username/disliked"}
+            render={() => {
+              return <VotedPosts type="disliked" match={props.match} />;
+            }}
+          />
+          {user && username === user.username ? (
+            <>
+              <ProtectedRoute
+                path={`/user/:username/settings/avatar`}
+                component={EditImage}
+                type="avatar"
+                redirectTo="/home"
+                redirectMsg="You have to log in to see that page"
+                userPrivilege
+              />
+              <ProtectedRoute
+                path={`/user/:username/settings/background`}
+                component={EditImage}
+                type="background"
+                redirectTo="/home"
+                redirectMsg="You have to log in to see that page"
+                userPrivilege
+              />
+              <ProtectedRoute
+                path={`/user/:username/settings/username`}
+                component={ChangeUsername}
+                type="username"
+                redirectTo="/home"
+                redirectMsg="You have to log in to see that page"
+                userPrivilege
+              />
+              <ProtectedRoute
+                path={`/user/:username/settings/email`}
+                component={ChangeEmail}
+                type="email"
+                redirectTo="/home"
+                redirectMsg="You have to log in to see that page"
+                userPrivilege
+              />
+              <ProtectedRoute
+                path={`/user/:username/settings/password`}
+                component={ChangePassword}
+                type="password"
+                redirectTo="/home"
+                redirectMsg="You have to log in to see that page"
+                userPrivilege
+              />
+            </>
+          ) : (
+            <PermissionDenied>
+              <Header>¯\_(ツ)_/¯</Header>
+              <Message>You dont have permission to access this page.</Message>
+            </PermissionDenied>
+          )}
+        </Switch>
       </ContentContainer>
     </>
   );

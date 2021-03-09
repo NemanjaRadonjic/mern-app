@@ -106,11 +106,20 @@ export const AvatarContainer = styled.div`
   width: 2rem;
   margin-left: 1rem;
 `;
+export const AuthorContainer = styled.div`
+  width: 15rem;
+  display: flex;
+`;
 
 export const Author = styled.div`
   font-weight: bold;
-  width: 10rem;
   margin: ${(props) => (props.post ? "1rem" : "0 1rem")};
+
+  transition: color 0.3s ease-in-out;
+
+  &:hover {
+    color: rgb(${(props) => props.theme.primary});
+  }
 `;
 export const Head = styled.div`
   width: 100%;

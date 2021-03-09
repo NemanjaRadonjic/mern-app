@@ -12,6 +12,7 @@ import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 import {
   Container,
   Background,
+  AuthorContainer,
   Author,
   Info,
   Head,
@@ -32,18 +33,16 @@ const Post = ({
   post,
   history,
   location,
-  commentActive,
   posts,
   setPosts,
   comments,
-  toggleNewCommentActive,
-  newCommentActive,
+  toggleNewCommentModal,
+  newCommentModal,
 }) => {
   const postRef = useRef();
   const postCopy = location.post;
-  console.log("postCopy: ", postCopy);
   const user = useSelector((state) => state.user);
-  const authorSelf = post.author.username == user?.username;
+  const authorSelf = post.author.username == user?.username || false;
   const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
   axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
@@ -51,7 +50,6 @@ const Post = ({
 
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  console.log(post);
   const [votes, setVotes] = useState({
     likes: postCopy ? postCopy.votes.likes : post.votes.likes,
     dislikes: postCopy ? postCopy.votes.dislikes : post.votes.dislikes,
@@ -170,12 +168,11 @@ const Post = ({
     history.push("/home");
   };
 
-  const updatedPost = { ...post, votes };
-
-  const redirectToPost = (event) => {
+  const redirectToPost = (isCommentActive) => {
     history.push({
       pathname: `/posts/${post._id}`,
-      post: updatedPost,
+      post: { ...post, votes },
+      isCommentActive,
     });
   };
 
@@ -185,7 +182,12 @@ const Post = ({
   };
 
   return (
-    <Container onClick={redirectToPost} background={background}>
+    <Container
+      onClick={() => {
+        redirectToPost(false);
+      }}
+      background={background}
+    >
       <Background post>
         <Head>
           <Info>
@@ -193,15 +195,17 @@ const Post = ({
               src={getImageSrc(post.author.avatar, "avatar")}
               onClick={redirectToProfile}
             />
-            <Author
-              post
-              onClick={(event) => {
-                event.stopPropagation();
-                history.push(`/user/${post.author.username}`);
-              }}
-            >
-              {post.author.username}
-            </Author>
+            <AuthorContainer>
+              <Author
+                post
+                onClick={(event) => {
+                  event.stopPropagation();
+                  history.push(`/user/${post.author.username}`);
+                }}
+              >
+                {post.author.username}
+              </Author>
+            </AuthorContainer>
             <Time>{post.createdAt.fromNow()}</Time>
           </Info>
           {editModal ? (
@@ -220,8 +224,13 @@ const Post = ({
           <VoteContainer>
             <ItemContainer>
               <VoteButton
-                className={`fa${newCommentActive ? "s" : "r"} fa-comment`}
-                onClick={toggleNewCommentActive}
+                className={`fa${newCommentModal ? "s" : "r"} fa-comment`}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  redirectToPost(true);
+                  toggleNewCommentModal &&
+                    toggleNewCommentModal(newCommentModal);
+                }}
               />
               <Count>
                 {comments?.length === undefined

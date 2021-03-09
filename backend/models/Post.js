@@ -3,17 +3,14 @@ const mongoose = require("mongoose");
 const postSchema = mongoose.Schema({
   content: String,
   createdAt: Object,
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
-  },
   comments: Number,
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   votes: {
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
 });
 
-const Post = mongoose.model("post", postSchema);
+const Post = mongoose.model("Post", postSchema);
 
 module.exports = Post;

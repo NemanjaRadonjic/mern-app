@@ -3,6 +3,8 @@ const router = express.Router();
 
 const UserControllers = require("../controllers/users");
 
+router.route("/").get(UserControllers.fetchUsers);
+
 router.route("/:username").get(UserControllers.fetchUser);
 
 router.route("/:username/images").get(UserControllers.fetchUserImages);

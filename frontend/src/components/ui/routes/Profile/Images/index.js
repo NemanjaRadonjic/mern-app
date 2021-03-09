@@ -12,7 +12,6 @@ const Images = (props) => {
     avatars: null,
     backgrounds: null,
   });
-  console.log(images);
   useEffect(() => {
     const fetchUserImages = async () => {
       const response = await axiosInstance.get(`users/${username}/images`);

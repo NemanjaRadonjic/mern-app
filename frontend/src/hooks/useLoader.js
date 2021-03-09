@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-const useAmount = () => {
-  const [loaderActive, setLoaderActive] = useState(true);
+const useAmount = (active = true) => {
+  const [loaderActive, setLoaderActive] = useState(active);
 
   return { loaderActive, setLoaderActive };
 };

@@ -2,6 +2,7 @@ import React from "react";
 import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
 import { getImageSrc } from "@helpers/imageSrc";
+import moment from "moment";
 
 import {
   Container,
@@ -21,7 +22,7 @@ const NewComment = ({
   postId,
   setComments,
   comments,
-  toggleNewCommentActive,
+  toggleNewCommentModal,
   history,
 }) => {
   const { inputs, onChange } = useFormHook({ comment: "" });
@@ -38,8 +39,9 @@ const NewComment = ({
       `/posts/${postId}/comment`,
       reqBody
     );
-    setComments([response.data._doc, ...comments]);
-    toggleNewCommentActive();
+
+    setComments([response.data, ...comments]);
+    toggleNewCommentModal();
   };
   const redirectToProfile = (event) => {
     event.stopPropagation();

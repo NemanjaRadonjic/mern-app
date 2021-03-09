@@ -12,7 +12,24 @@ const fetchUser = async (req, res) => {
     }
     return res.sendStatus(404);
   } catch (error) {
-    return res.sendStatus(404);
+    return res.sendStatus(500);
+  }
+};
+
+const fetchUsers = async (req, res) => {
+  const { input } = req.query;
+
+  if (input.length === 0) {
+    return res.status(200).json([]);
+  }
+
+  const regex = new RegExp(`^(${input})`, "i");
+
+  try {
+    const users = await User.find({ username: regex }).limit(15);
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.sendStatus(500);
   }
 };
 
@@ -328,6 +345,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   fetchUser,
+  fetchUsers,
   fetchUserPosts,
   fetchLikedUserPosts,
   fetchDislikedUserPosts,

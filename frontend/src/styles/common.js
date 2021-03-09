@@ -99,11 +99,13 @@ const loaderAnimation = keyframes`
 `;
 export const Loader = styled.div`
   border-radius: 50%;
-  width: 5rem;
-  height: 5rem;
+  width: ${(props) => (props.mini ? "1rem" : "5rem")};
+  height: ${(props) => (props.mini ? "1rem" : "5rem")};
   margin: 60px auto;
-  font-size: 10px;
-  position: relative;
+  font-size: ${(props) => (props.mini ? "4px" : "10px")};
+  position: ${(props) => (props.mini ? "absolute" : "relative")};
+  top: -2.1rem;
+  right: 0.8rem;
   text-indent: -9999em;
   border-top: 1.1em solid rgba(255, 255, 255, 0.2);
   border-right: 1.1em solid rgba(255, 255, 255, 0.2);
@@ -118,8 +120,8 @@ export const Loader = styled.div`
 
   &:after {
     border-radius: 50%;
-    width: 10rem;
-    height: 10rem;
+    width: ${(props) => (props.mini ? "2rem" : "10rem")};
+    height: ${(props) => (props.mini ? "2rem" : "10rem")};
     box-shadow: inset 10px 10px 1px 10px rgba(0, 0, 0, 1);
   }
 `;

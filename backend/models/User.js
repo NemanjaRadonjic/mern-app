@@ -8,17 +8,16 @@ const userSchema = mongoose.Schema({
   username: String,
   email: String,
   password: String,
-  posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
   votedPosts: {
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
-    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   },
   votedComments: {
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
-    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   },
 });
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

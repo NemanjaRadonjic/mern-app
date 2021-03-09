@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
 import getImageSrc from "@helpers/imageSrc";
+import moment from "moment";
 
 import {
   Container,
@@ -48,7 +49,8 @@ const NewPost = ({ posts, setPosts }) => {
       try {
         axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
         const response = await axiosInstance.post("/posts/create", requestBody);
-        setPosts([{ ...response.data._doc }, ...posts]);
+
+        setPosts([response.data, ...posts]);
       } catch (error) {
         console.log(error);
       }

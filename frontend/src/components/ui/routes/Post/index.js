@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
 import axiosInstance from "@axios";
 
 import PostComponent from "@components/elements/Post";
@@ -11,31 +10,40 @@ import NewComment from "../../../elements/NewComment";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
+import NotFound from "@routes/NotFound"; // routes/NotFound ?
+
 const Post = (props) => {
   const user = useSelector((state) => state.user);
   const { postId } = props.match.params;
   const [post, setPost] = useState(props.location.post);
   const [comments, setComments] = useState(null);
-  const [newCommentActive, setNewCommentActive] = useState(false);
-  useEffect(() => {
-    const fetchPost = async () => {
+  const [newCommentModal, setNewCommentModal] = useState(
+    props.location.isCommentActive
+  );
+
+  const fetchPost = async () => {
+    try {
       const response = await axiosInstance.get(`/posts/${postId}`);
-      setPost({
-        ...response.data,
-        createdAt: moment(response.data.createdAt, "MM/DD/YYYY, h:mm:ss A"),
-      });
-    };
-    const fetchComments = async () => {
-      const response = await axiosInstance.get(`/posts/${postId}/comments`);
-      setComments(response.data.reverse());
-    };
+      setPost(response.data);
+    } catch (error) {
+      if (error.response.status === 404) {
+        setPost(null);
+      }
+    }
+  };
+  const fetchComments = async () => {
+    const response = await axiosInstance.get(`/posts/${postId}/comments`);
+    setComments(response.data.reverse());
+  };
+
+  useEffect(() => {
     !post && fetchPost();
-    fetchComments();
+    post && fetchComments();
   }, []);
 
-  const toggleNewCommentActive = () => {
+  const toggleNewCommentModal = () => {
     user
-      ? setNewCommentActive(!newCommentActive)
+      ? setNewCommentModal(!newCommentModal)
       : toast.error("You have to log in to comment");
   };
 
@@ -54,23 +62,25 @@ const Post = (props) => {
       })
     );
   };
-
+  if (post === null) {
+    return <NotFound />;
+  }
   if (post) {
     return (
       <Container>
         <PostComponent
           post={post}
           comments={comments}
-          toggleNewCommentActive={toggleNewCommentActive}
-          newCommentActive={newCommentActive}
+          toggleNewCommentModal={toggleNewCommentModal}
+          newCommentModal={newCommentModal}
         />
-        {newCommentActive && (
+        {newCommentModal && (
           <NewComment
             user={user}
             postId={post._id}
             comments={comments}
             setComments={setComments}
-            toggleNewCommentActive={toggleNewCommentActive}
+            toggleNewCommentModal={toggleNewCommentModal}
           />
         )}
         <CommentSection>

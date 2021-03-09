@@ -34,6 +34,7 @@ const Posts = (props) => {
   }, []);
 
   const renderPosts = () => {
+    // this is bad im checking down and here
     return userPosts.length > 0 ? (
       userPosts.map((post) => {
         return (

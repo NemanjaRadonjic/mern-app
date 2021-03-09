@@ -5,15 +5,15 @@ const commentSchema = mongoose.Schema({
   createdAt: Object,
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: "User",
   },
-  post: { type: mongoose.Schema.Types.ObjectId, ref: "post" },
+  post: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
   votes: {
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
 });
 
-const Comment = mongoose.model("comment", commentSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 module.exports = Comment;

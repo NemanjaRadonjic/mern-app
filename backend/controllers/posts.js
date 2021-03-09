@@ -63,22 +63,27 @@ const fetchPosts = async (req, res) => {
       return res.json(postsWithComments);
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 const fetchPost = async (req, res) => {
   const { postId } = req.params;
+  let post;
   try {
-    const post = await Post.findById(postId).populate(
+    post = await Post.findById(postId).populate(
       "author",
       "username avatar background -_id"
     );
-    return res.json(post);
   } catch (error) {
-    console.log(error);
     return res.sendStatus(500);
   }
+
+  if (!post) {
+    return res.sendStatus(404);
+  }
+  return res.json(post);
 };
 
 const createPost = async (req, res) => {
@@ -96,39 +101,23 @@ const createPost = async (req, res) => {
   try {
     user = await User.findById(id);
   } catch (error) {
-    res.json({
-      success: false,
-      message: "Couldn't find a user with that id.",
-    });
+    return res.sendStatus(404);
   }
 
-  const post = new Post({ content });
-
-  post.author = user;
-  post.createdAt = moment().format("MM/DD/YYYY, h:mm:ss A");
-  post.comments = 0;
+  const post = new Post({
+    content,
+    author: user,
+    createdAt: moment().format("MM/DD/YYYY, h:mm:ss A"),
+    comments: 0,
+  });
 
   try {
     await post.save();
   } catch (error) {
-    res.json({
-      success: false,
-      message: "Couldn't save the post.",
-    });
+    return res.status(500);
   }
 
-  user.posts.push(post);
-
-  try {
-    await user.save();
-  } catch (error) {
-    res.json({
-      success: false,
-      message: "Couldn't save the user.",
-    });
-  }
-
-  res.status(201).json({ ...post });
+  return res.status(201).json(post);
 };
 
 const fetchComments = async (req, res) => {
@@ -147,7 +136,7 @@ const fetchComments = async (req, res) => {
 
 const createComment = async (req, res) => {
   const { content, userId, postId } = req.body;
-  const comment = new Comment({ content });
+
   let user;
   try {
     user = await User.findById(userId);
@@ -162,9 +151,12 @@ const createComment = async (req, res) => {
     return res.sendStatus(500);
   }
 
-  comment.author = user;
-  comment.post = post;
-  comment.createdAt = moment().format("MM/DD/YYYY, h:mm:ss A");
+  const comment = new Comment({
+    content,
+    author: user,
+    post,
+    createdAt: moment().format("MM/DD/YYYY, h:mm:ss A"),
+  });
 
   try {
     await comment.save();
@@ -172,20 +164,14 @@ const createComment = async (req, res) => {
     return res.sendStatus(500);
   }
 
-  try {
-    console.log(post.comments);
-    post.comments++;
-  } catch (error) {
-    console.log(error);
-    return res.sendStatus(500);
-  }
+  post.comments++;
+
   try {
     await post.save();
   } catch (error) {
     return res.sendStatus(500);
   }
-
-  return res.status(201).json({ ...comment });
+  return res.status(201).json(comment);
 };
 
 const like = async (req, res) => {
@@ -362,18 +348,11 @@ const remove = async (req, res) => {
   }
 
   try {
-    user.posts = user.posts.filter((id) => id != postId);
-    await user.save();
-  } catch (error) {
-    return res.sendStatus(500);
-  }
-
-  try {
     await Comment.deleteMany({ post: postId });
-    return res.sendStatus(200);
   } catch (error) {
     return res.sendStatus(500);
   }
+  return res.sendStatus(200);
 };
 
 module.exports = {
