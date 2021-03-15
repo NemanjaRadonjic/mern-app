@@ -6,6 +6,9 @@ import getImageSrc from "@helpers/imageSrc";
 import { v4 as uuid } from "uuid";
 import useLoader from "@hooks/useLoader";
 import { Loader } from "@styles/common";
+
+import ThemeMenu from "./ThemeMenu";
+
 import {
   Container,
   SearchContainer,
@@ -19,9 +22,10 @@ import {
   ChangeTheme,
 } from "./styles";
 
-function Searchbar(props) {
+function Searchbar() {
   const [input, setInput] = useState("");
   const [users, setUsers] = useState(null);
+  const [dropdownActive, setDropdownActive] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const { loaderActive, setLoaderActive } = useLoader(false);
 
@@ -42,28 +46,44 @@ function Searchbar(props) {
     setInput(value);
   };
 
-  const changeTheme = () => {
-    if (props.theme === props.themes.dark) {
-      return props.setTheme(props.themes.light);
-    }
-    return props.setTheme(props.themes.dark);
+  const toggleDropdown = () => {
+    setDropdownActive(!dropdownActive);
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("mousedown", handleCloseResults);
+    document.addEventListener("mousedown", handleCloseThemes);
+    return () => {
+      document.removeEventListener("mousedown", handleCloseResults);
+      document.removeEventListener("mousedown", handleCloseThemes);
+    };
   }, []);
 
-  const handleClick = (event) => {
+  const handleCloseResults = (event) => {
     if (
       event.target.className === "debounce-input" ||
       event.target.parentElement?.className === "text-align__center" ||
       event.target.parentElement?.parentElement?.className ===
         "text-align__center" ||
-      event.target.className.includes("fa-search")
+      (typeof event.target.className === "string" &&
+        event.target.className.includes("fa-search"))
     ) {
     } else {
       setShowResults(false);
+    }
+  };
+
+  const handleCloseThemes = (event) => {
+    if (
+      (typeof event.target.className === "string" &&
+        event.target.className.includes("fas fa-palette")) ||
+      event.target.id === "themeDropdown" ||
+      event.target.parentElement.id === "themeDropdown" ||
+      (typeof event.target.className === "string" &&
+        event.target.className.includes("fa-search"))
+    ) {
+    } else {
+      setDropdownActive(false);
     }
   };
 
@@ -97,7 +117,8 @@ function Searchbar(props) {
 
   return (
     <Container>
-      <ChangeTheme className="fas fa-palette" onClick={changeTheme} />
+      {dropdownActive && <ThemeMenu />}
+      <ChangeTheme className="fas fa-palette" onClick={toggleDropdown} />
       <SearchContainer>
         <Input
           onFocus={() => setShowResults(true)}
@@ -106,6 +127,7 @@ function Searchbar(props) {
             onChange(event.target.value);
             debounced(event.target.value);
           }}
+          spellCheck="false"
           type="text"
           placeholder="Search..."
           maxLength={12}

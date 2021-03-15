@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import { toast } from "react-toastify";
@@ -6,8 +6,9 @@ import getImageSrc from "@helpers/imageSrc";
 import EditPost from "./edit";
 import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
+import ThemeContext from "@context/theme";
 
-import { PostContent } from "./styles";
+import { PostContentContainer, PostContent } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 import {
   Container,
@@ -39,12 +40,13 @@ const Post = ({
   toggleNewCommentModal,
   newCommentModal,
 }) => {
+  const {
+    themeInfo: { mode },
+  } = useContext(ThemeContext);
   const postRef = useRef();
   const postCopy = location.post;
   const user = useSelector((state) => state.user);
   const authorSelf = post.author.username == user?.username || false;
-  const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
-  axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
   const [postHeight, setPostHeight] = useState();
 
@@ -188,7 +190,7 @@ const Post = ({
       }}
       background={background}
     >
-      <Background post>
+      <Background mode={mode} post>
         <Head>
           <Info>
             <Avatar
@@ -216,9 +218,9 @@ const Post = ({
               handleEdit={handleEdit}
             />
           ) : (
-            <PostContent>
-              <p ref={postRef}>{post.content}</p>
-            </PostContent>
+            <PostContentContainer>
+              <PostContent ref={postRef}>{post.content}</PostContent>
+            </PostContentContainer>
           )}
 
           <VoteContainer>

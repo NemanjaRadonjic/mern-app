@@ -1,10 +1,28 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  background-image: linear-gradient(
+      to right,
+      rgba(${(props) => props.theme.background}, 0.7),
+      rgba(${(props) => props.theme.background}, 0.4)
+    ),
+    url(${(props) => props.background});
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  max-width: 100%;
+  min-height: 7rem;
+  border-bottom: 1px solid rgb(${(props) => props.theme.primary});
+  cursor: pointer;
+  position: relative;
+`;
+
 export const TextArea = styled.textarea`
   width: 90%;
   padding: 0.5rem;
   margin-left: 1.5rem;
   margin-top: 0.5rem;
+  margin-bottom: 2rem;
   resize: none;
   font-size: 1.05rem;
   line-height: 1.2rem;
@@ -29,32 +47,13 @@ export const NewCommentHead = styled.div`
   margin-bottom: 0.26rem;
 `;
 
-export const Button = styled.button`
+export const Counter = styled.div`
   position: absolute;
-  right: 1.5rem;
-  bottom: 0.8rem;
-  width: 8rem;
-  font-size: 1rem;
-  background: transparent;
-  display: block;
-  padding: 0 1rem;
-  border: 1px solid
-    rgb(
-      ${(props) =>
-        props.disabled ? props.theme.lightText : props.theme.primary}
-    );
-  box-shadow: inset 0 0 0
-    rgb(
-      ${(props) =>
-        props.disabled ? props.theme.lightText : props.theme.primary}
-    );
-  cursor: pointer;
+  bottom: 2rem;
+  right: 2rem;
+  color: rgb(
+    ${(props) => (props.filled ? props.theme.primary : props.theme.text)}
+  );
 
-  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out,
-    border 0.5s ease-in-out;
-
-  &:hover {
-    color: white;
-    box-shadow: inset 0 -3rem 0 rgb(${(props) => (props.disabled ? props.theme.lightText : props.theme.primary)});
-  }
+  transition: color 0.5s ease-in-out;
 `;

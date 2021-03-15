@@ -2,17 +2,10 @@ import React from "react";
 import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
 import { getImageSrc } from "@helpers/imageSrc";
-import moment from "moment";
 
-import {
-  Container,
-  Background,
-  AvatarContainer,
-  Author,
-  Info,
-  Counter,
-} from "../common/styles";
-import { TextArea, NewCommentHead, ButtonContainer, Button } from "./styles";
+import { Background, AvatarContainer, Author, Info } from "../common/styles";
+import { Counter, Container, TextArea, NewCommentHead } from "./styles";
+import { Button } from "@styles/common";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 
 const maxLength = 400;
@@ -33,8 +26,6 @@ const NewComment = ({
       postId,
       userId: user.id,
     };
-    const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
-    axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
     const response = await axiosInstance.post(
       `/posts/${postId}/comment`,
       reqBody
@@ -78,6 +69,7 @@ const NewComment = ({
           />
           <Counter>{inputs.comment.length + "/" + maxLength}</Counter>
           <Button
+            className="force-center"
             disabled={!/[A-Za-z0-9]/g.test(inputs.comment)}
             onClick={handleClick}
           >

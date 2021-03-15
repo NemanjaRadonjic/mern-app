@@ -6,6 +6,7 @@ export const FormContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  position: relative;
 `;
 
 export const Form = styled.form`
@@ -27,10 +28,11 @@ export const Input = styled.input`
   font-size: 1.1rem;
   padding: 0.5rem 1rem;
   border: none;
-  border-bottom: 2px solid rgb(${(props) => props.theme.primary});
+  border-bottom: 2px solid
+    rgb(${(props) => (props.error ? props.theme.error : props.theme.primary)});
   background-color: transparent;
   box-shadow: inset 0 0px 0px rgb(0, 0, 0, 0.2);
-  transition: box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
 
   &:hover {
     box-shadow: inset 0 3px 10px rgb(0, 0, 0, 0.1);
@@ -42,10 +44,10 @@ export const Input = styled.input`
 `;
 
 export const Error = styled.div`
-  width: 60%;
+  width: 100%;
   height: 1.5rem;
   margin: 0 auto 0.5rem auto;
-  color: red;
+  color: rgb(${(props) => props.theme.error});
   text-align: center;
 `;
 
@@ -66,24 +68,36 @@ export const NoContentMessage = styled.div`
 `;
 
 export const Button = styled.button`
-  width: 8rem;
+  margin: 1rem auto;
+  width: 9.5rem;
   font-size: 1rem;
   background: transparent;
   display: block;
-  padding: 0.5rem 1rem;
-  border: 1px solid rgb(${(props) => props.theme.primary});
-  box-shadow: inset 0 0 0 rgb(${(props) => props.theme.primary});
+  padding: 0 1rem;
+  color: rgb(${(props) => props.theme.text});
+  border: none;
+  border: 1px solid
+    ${(props) =>
+      props.disabled
+        ? `rgba(${props.theme.primary}, 0.5)`
+        : `rgb(${props.theme.primary})`};
+  box-shadow: inset 0 2rem 2rem
+    ${(props) =>
+      props.disabled
+        ? `rgba(${props.theme.primary}, 0.5)`
+        : `rgb(${props.theme.primary})`};
   cursor: pointer;
 
-  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: box-shadow 0.3s ease-in-out, border 0.5s ease-in-out;
 
   &:hover {
-    color: white;
-    box-shadow: inset 0 -3rem 0 rgb(${(props) => props.theme.primary});
+    box-shadow: inset 0 -2rem 10rem ${(props) => (props.disabled ? `rgba(${props.theme.primary}, 0.7)` : `rgb(${props.theme.primary})`)};
   }
-
-  &.align-center {
-    margin: 0 auto;
+  &.force-center {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
 `;
 

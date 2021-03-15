@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
 import getImageSrc from "@helpers/imageSrc";
-import moment from "moment";
 
+import { Button } from "@styles/common";
 import {
   Container,
   TopSection,
@@ -13,7 +12,6 @@ import {
   Avatar,
   TextArea,
   Counter,
-  Button,
   Error,
   Message,
 } from "./styles";
@@ -36,26 +34,19 @@ const NewPost = ({ posts, setPosts }) => {
 
   const createPost = async (event) => {
     event.preventDefault();
-    if (inputs.post.length === 0) {
-      setErrors({ post: "What do you want to post?" });
-    } else {
-      const accessToken = JSON.parse(
-        window.localStorage.getItem("accessToken")
-      );
-      const requestBody = {
-        content: inputs.post,
-        id: user.id,
-      };
-      try {
-        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
-        const response = await axiosInstance.post("/posts/create", requestBody);
 
-        setPosts([response.data, ...posts]);
-      } catch (error) {
-        console.log(error);
-      }
-      setInputs({ ...fields });
+    const requestBody = {
+      content: inputs.post,
+      id: user.id,
+    };
+    try {
+      const response = await axiosInstance.post("/posts/create", requestBody);
+
+      setPosts([response.data, ...posts]);
+    } catch (error) {
+      console.log(error);
     }
+    setInputs({ ...fields });
   };
 
   return (
@@ -69,7 +60,7 @@ const NewPost = ({ posts, setPosts }) => {
               spellCheck="false"
               name="post"
               maxLength={maxLength}
-              rows="1"
+              rows="2"
               onChange={onChange}
               value={inputs.post}
               placeholder="Post something..."
@@ -82,7 +73,7 @@ const NewPost = ({ posts, setPosts }) => {
             <Error>{errors.post}</Error>
             <Button
               disabled={!/[A-Za-z0-9]/g.test(inputs.post)}
-              className="align-center"
+              className="force-center"
               type="submit"
               onClick={createPost}
             >

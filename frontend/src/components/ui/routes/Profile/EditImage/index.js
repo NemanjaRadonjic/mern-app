@@ -9,9 +9,8 @@ import {
   ReactCropContainer,
   Header,
   Label,
-  Button,
 } from "./styles";
-
+import { Button } from "@styles/common";
 import "react-image-crop/dist/ReactCrop.css";
 
 const pixelRatio = 4;
@@ -65,7 +64,6 @@ const uploadAvatar = async (previewCanvas, crop, filename, history, type) => {
     const response = await axiosInstance.post("/upload", bodyFormData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        authorization: `Bearer ${accessToken}`,
       },
     });
     const { path } = response.data;

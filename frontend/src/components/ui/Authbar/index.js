@@ -54,7 +54,12 @@ function Authbar({ logout }) {
                 id="open-dropdown"
               />
               <Name>
-                <Link to={`/user/${user.username}/posts`}>{user.username}</Link>
+                <Link
+                  className="text-align__center"
+                  to={`/user/${user.username}/posts`}
+                >
+                  {user.username}
+                </Link>
               </Name>
             </>
           ) : (

@@ -70,6 +70,7 @@ function Login({ history }) {
       <Form autoComplete="off" onSubmit={handleSubmit}>
         <Header>Login</Header>
         <Input
+          error={errors.email.length > 0}
           type="text"
           placeholder="Email"
           name="email"
@@ -78,6 +79,7 @@ function Login({ history }) {
         />
         <Error>{errors.email}</Error>
         <Input
+          error={errors.password.length > 0}
           type="password"
           placeholder="Password"
           name="password"

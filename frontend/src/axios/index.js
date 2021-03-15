@@ -12,7 +12,10 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 403) {
-      if (error.response?.data.expiredAt) {
+      if (
+        error.response?.data.expiredAt ||
+        error.response?.data.message === "jwt malformed"
+      ) {
         const originalRequest = error.config;
         const userData = JSON.parse(window.localStorage.getItem("user"));
         const response = await axiosInstance.post("/auth/refresh_token", {

@@ -77,6 +77,7 @@ const ChangeEmail = ({ history }) => {
       <Form autoComplete="off" onSubmit={handleSubmit}>
         <Header>Change your email</Header>
         <Input
+          error={errors.email.length > 0}
           type="text"
           placeholder="New Email"
           name="email"
@@ -85,6 +86,7 @@ const ChangeEmail = ({ history }) => {
         />
         <Error>{errors.email}</Error>
         <Input
+          error={errors.password.length > 0}
           type="password"
           placeholder="Password"
           name="password"

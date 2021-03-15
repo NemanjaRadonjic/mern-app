@@ -16,6 +16,8 @@ router
   .route("/:commentId/remove")
   .delete(authenticateAccessToken, CommentControllers.remove);
 
-router.route("/:commentId/edit").patch(CommentControllers.edit);
+router
+  .route("/:commentId/edit")
+  .patch(authenticateAccessToken, CommentControllers.edit);
 
 module.exports = router;

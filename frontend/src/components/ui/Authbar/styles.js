@@ -12,14 +12,13 @@ export const Container = styled.div`
 export const AuthContainer = styled.div`
   margin-top: 1rem;
   height: 3rem;
-  width: 8rem;
+  width: 10rem;
   float: left;
   display: flex;
   justify-content: space-around;
 `;
 
 export const Name = styled.p`
-  margin: auto 0;
   cursor: pointer;
 
   transition: color 0.1s ease-in-out;

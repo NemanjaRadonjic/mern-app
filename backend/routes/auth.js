@@ -7,7 +7,7 @@ router.route("/refresh_token").post(AuthControllers.refreshToken);
 
 router.route("/register").post(AuthControllers.register);
 
-router.route("/register/validate").post(AuthControllers.validate); // validate onBlur
+router.route("/register/validate").post(AuthControllers.validate);
 
 router.route("/login").post(AuthControllers.login);
 

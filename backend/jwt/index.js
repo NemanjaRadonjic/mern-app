@@ -12,7 +12,6 @@ const generateRefreshToken = (userData) => {
   });
 };
 
-// middleware
 const authenticateAccessToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const accessToken = authHeader && authHeader.split(" ")[1];

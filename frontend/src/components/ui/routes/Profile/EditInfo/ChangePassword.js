@@ -80,6 +80,7 @@ const ChangePassword = ({ history }) => {
       <Form autoComplete="off" onSubmit={handleSubmit}>
         <Header>Change your password</Header>
         <Input
+          error={errors.currentPassword.length > 0}
           type="password"
           placeholder="Current Password"
           name="currentPassword"
@@ -88,6 +89,7 @@ const ChangePassword = ({ history }) => {
         />
         <Error>{errors.currentPassword}</Error>
         <Input
+          error={errors.newPassword.length > 0}
           type="password"
           placeholder="New Password"
           name="newPassword"

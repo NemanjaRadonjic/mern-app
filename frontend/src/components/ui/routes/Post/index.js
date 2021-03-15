@@ -39,7 +39,7 @@ const Post = (props) => {
   useEffect(() => {
     !post && fetchPost();
     post && fetchComments();
-  }, []);
+  }, [post]);
 
   const toggleNewCommentModal = () => {
     user

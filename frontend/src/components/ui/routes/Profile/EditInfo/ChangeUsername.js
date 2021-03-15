@@ -62,6 +62,7 @@ const ChangeUsername = ({ history }) => {
       <Form autoComplete="off" onSubmit={handleSubmit}>
         <Header>Change your username</Header>
         <Input
+          error={errors.username.length > 0}
           type="text"
           placeholder="New Username"
           name="username"

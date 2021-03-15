@@ -31,20 +31,31 @@ export const Header = styled.div`
 `;
 
 export const Label = styled.label`
-  width: 6rem;
+  text-align: center;
   margin: 1rem auto;
+  width: 9.5rem;
+  font-size: 1rem;
+  background: transparent;
   display: block;
-  padding: 0.5rem 1rem;
-  box-shadow: inset 0 0 0 transparent;
+  padding: 0 1rem;
+  color: rgb(${(props) => props.theme.text});
+  border: none;
+  border: 1px solid
+    ${(props) =>
+      props.disabled
+        ? `rgba(${props.theme.primary}, 0.5)`
+        : `rgb(${props.theme.primary})`};
+  box-shadow: inset 0 2rem 2rem
+    ${(props) =>
+      props.disabled
+        ? `rgba(${props.theme.primary}, 0.5)`
+        : `rgb(${props.theme.primary})`};
   cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out,
-    border 0.2s ease-in-out;
+
+  transition: box-shadow 0.3s ease-in-out, border 0.5s ease-in-out;
 
   &:hover {
-    border: 1px solid rgb(${(props) => props.theme.primary});
-    color: white;
-    box-shadow: inset -8rem 0 0 rgb(${(props) => props.theme.primary});
+    box-shadow: inset 0 -2rem 10rem ${(props) => (props.disabled ? `rgba(${props.theme.primary}, 0.7)` : `rgb(${props.theme.primary})`)};
   }
 `;
 

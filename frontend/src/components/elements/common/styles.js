@@ -15,6 +15,8 @@ export const Container = styled.div`
   border-bottom: 1px solid rgb(${(props) => props.theme.primary});
   cursor: pointer;
   position: relative;
+
+  transition: border 0.3s ease-in-out;
 `;
 
 export const PostContent = styled.div`
@@ -49,28 +51,29 @@ export const TextArea = styled.textarea`
 `;
 
 export const Button = styled.button`
-  position: absolute;
-  left: 2.5rem;
-  bottom: 1rem;
-  width: 8rem;
+  width: 9.5rem;
   font-size: 1rem;
   background: transparent;
   display: block;
   padding: 0 1rem;
-
+  color: rgb(${(props) => props.theme.text});
+  border: none;
   border: 1px solid
-    rgb(
-      ${(props) =>
-        props.disabled ? props.theme.lightText : props.theme.primary}
-    );
-  box-shadow: inset 0 0 0 rgb(${(props) => props.theme.primary});
+    ${(props) =>
+      props.disabled
+        ? `rgba(${props.theme.primary}, 0.5)`
+        : `rgb(${props.theme.primary})`};
+  box-shadow: inset 0 2rem 2rem
+    ${(props) =>
+      props.disabled
+        ? `rgba(${props.theme.primary}, 0.5)`
+        : `rgb(${props.theme.primary})`};
   cursor: pointer;
 
-  transition: box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: box-shadow 0.3s ease-in-out, border 0.5s ease-in-out;
 
   &:hover {
-    color: white;
-    box-shadow: inset 0 -3rem 0 rgb(${(props) => (props.disabled ? props.theme.lightText : props.theme.primary)});
+    box-shadow: inset 0 -2rem 10rem ${(props) => (props.disabled ? `rgba(${props.theme.primary}, 0.7)` : `rgb(${props.theme.primary})`)};
   }
 
   &.align-center {
@@ -92,13 +95,19 @@ export const Counter = styled.div`
 export const Background = styled.div`
   width: 100%;
   min-height: ${(props) => (props.post ? "7rem" : "5rem")};
-  padding: 1.5rem 1.5rem ${(props) => (props.paddingBottom ? "3rem" : "0")}
+  padding: 1.5rem 1.5rem ${(props) => (props.paddingBottom ? ".7rem" : "0")}
     1.5rem;
   display: flex;
-  background: rgba(${(props) => props.theme.background}, 0.3);
+  background: rgba(
+    ${(props) => props.theme.background},
+    ${(props) => (props.mode === "light" ? "0.2" : "0.8")}
+  );
   transition: background 0.4s ease-in-out;
   &:hover {
-    background: rgba(${(props) => props.theme.background}, 0);
+    background: rgba(
+      ${(props) => props.theme.background},
+      ${(props) => (props.mode === "light" ? "0" : "0.6")}
+    );
   }
 `;
 
@@ -112,7 +121,8 @@ export const AuthorContainer = styled.div`
 `;
 
 export const Author = styled.div`
-  font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: 500;
   margin: ${(props) => (props.post ? "1rem" : "0 1rem")};
 
   transition: color 0.3s ease-in-out;
@@ -135,6 +145,8 @@ export const Info = styled.div`
 `;
 export const Time = styled.div`
   color: rgb(${(props) => props.theme.lightText});
+
+  transition: color 0.3s ease-in-out;
 `;
 
 export const VoteContainer = styled.div`

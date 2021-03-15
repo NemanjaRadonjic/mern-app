@@ -16,8 +16,6 @@ export const SearchContainer = styled.div`
 `;
 
 export const SearchResultContainer = styled.div`
-  border-left: 1px solid rgb(${(props) => props.theme.primary});
-
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
   transition: box-shadow 0.2s ease-in-out;
 
@@ -41,7 +39,6 @@ export const Username = styled.div`
   display: flex;
   align-items: center;
   margin-left: 1rem;
-  color: inherit;
 `;
 
 export const Input = styled.input`
@@ -55,7 +52,7 @@ export const Input = styled.input`
   border-left: 1px solid rgb(${(props) => props.theme.primary});
   background-color: transparent;
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
-  transition: box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out, border 0.3s ease-in-out;
 
   &:hover {
     box-shadow: 0 3px 10px rgb(0, 0, 0, 0.1);
@@ -78,15 +75,23 @@ export const BackgroundContainer = styled.div`
 `;
 
 export const LinkContainer = styled.div`
+  border-left: 1px solid rgb(${(props) => props.theme.primary});
   display: flex;
   padding: 1rem 1rem;
   width: calc(100% - 2rem);
-  background: rgba(255, 255, 255, 0.2);
-
-  transition: background 0.3s ease-in-out, color 0.2s ease-in-out;
+  background: rgba(
+    ${(props) => props.theme.background},
+    ${(props) => (props.mode === "light" ? "0.2" : "0.8")}
+  );
+  transition: background 0.3s ease-in-out, color 0.2s ease-in-out,
+    border 0.2s ease-in-out;
 
   &:hover {
-    background: rgba(255, 255, 255, 0);
+    border-left: 3px solid rgb(${(props) => props.theme.primary});
+    background: rgba(
+      ${(props) => props.theme.background},
+      ${(props) => (props.mode === "light" ? "0" : "0.6")}
+    );
     color: rgb(${(props) => props.theme.primary});
   }
 `;
@@ -100,7 +105,9 @@ export const SearchIcon = styled.i`
 
 export const ChangeTheme = styled.i`
   color: rgb(${(props) => props.theme.primary});
+  height: 3rem;
   font-size: 2rem;
-  margin: 1.3rem 2rem;
+  margin: 1.3rem 2.5rem;
   cursor: pointer;
+  z-index: 1000;
 `;

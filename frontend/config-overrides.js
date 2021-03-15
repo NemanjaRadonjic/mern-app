@@ -16,6 +16,7 @@ module.exports = function override(config, env) {
     "@helpers": path.resolve(__dirname, `${paths.appSrc}/helpers`),
     "@store": path.resolve(__dirname, `${paths.appSrc}`),
     "@modals": path.resolve(__dirname, `${paths.appSrc}/components/modals`),
+    "@context": path.resolve(__dirname, `${paths.appSrc}/context`),
   })(config, env);
   return config;
 };

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useSelector } from "react-redux";
 import axiosInstance from "@axios";
 import moment from "moment";
 import { toast } from "react-toastify";
+import ThemeContext from "@context/theme";
 
 import getImageSrc from "@helpers/imageSrc";
 
@@ -31,6 +32,9 @@ import {
 } from "../common/styles";
 
 const Comment = ({ comment, history, comments, setComments }) => {
+  const {
+    themeInfo: { mode },
+  } = useContext(ThemeContext);
   const user = useSelector((state) => state.user);
   const authorSelf = comment.author?.username == user?.username;
   const convertedDate = moment(comment.createdAt, "MM/DD/YYYY, h:mm:ss A");
@@ -50,9 +54,6 @@ const Comment = ({ comment, history, comments, setComments }) => {
   const background = `http://localhost:4000/uploads/${
     comment.author.background?.split("\\")[1]
   }`;
-
-  const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
-  axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
 
   useEffect(() => {
     setCommentHeight(commentRef.current.offsetHeight);
@@ -166,7 +167,7 @@ const Comment = ({ comment, history, comments, setComments }) => {
 
   return (
     <Container background={background}>
-      <Background>
+      <Background mode={mode}>
         <AvatarContainer>
           <Avatar
             src={getImageSrc(comment.author.avatar, "avatar")}

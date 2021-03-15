@@ -100,6 +100,7 @@ function Register({ history }) {
         <Header>Register</Header>
 
         <Input
+          error={errors.username.length > 0}
           type="text"
           placeholder="Username"
           name="username"
@@ -109,6 +110,7 @@ function Register({ history }) {
         />
         <Error>{errors.username}</Error>
         <Input
+          error={errors.email.length > 0}
           type="text"
           placeholder="Email"
           name="email"
@@ -118,6 +120,7 @@ function Register({ history }) {
         />
         <Error>{errors.email}</Error>
         <Input
+          error={errors.password.length > 0}
           type="password"
           placeholder="Password"
           name="password"
@@ -129,6 +132,7 @@ function Register({ history }) {
         />
         <Error>{errors.password}</Error>
         <Input
+          error={errors.repeatPassword.length > 0}
           type="password"
           placeholder="Repeat password"
           name="repeatPassword"

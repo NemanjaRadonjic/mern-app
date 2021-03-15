@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  margin-top: 1rem;
-  margin-left: -1.67rem;
+  margin-top: 0.5rem;
+  margin-left: -1.45rem;
   border-left: 1px solid rgb(${(props) => props.theme.primary});
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
   width: 12rem;
