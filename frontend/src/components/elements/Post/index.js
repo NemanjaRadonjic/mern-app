@@ -46,7 +46,7 @@ const Post = ({
   const postRef = useRef();
   const postCopy = location.post;
   const user = useSelector((state) => state.user);
-  const authorSelf = post.author.username == user?.username || false;
+  const authorSelf = post.author.username === user?.username || false;
   post.createdAt = moment(post.createdAt, "MM/DD/YYYY, h:mm:ss A");
   const [postHeight, setPostHeight] = useState();
 
@@ -94,12 +94,15 @@ const Post = ({
         let updatedVotes = { ...votes, liked, disliked };
 
         if (votes.liked) {
-          updatedVotes.likes = updatedVotes.likes.filter((id) => id != user.id);
+          updatedVotes.likes = updatedVotes.likes.filter(
+            (id) => id !== user.id
+          );
         } else {
           if (votes.disliked) {
             updatedVotes.dislikes = updatedVotes.dislikes.filter(
-              (id) => id != user.id
+              (id) => id !== user.id
             );
+
             updatedVotes.likes.push(user.id);
           } else {
             updatedVotes.likes.push(user.id);
@@ -109,6 +112,8 @@ const Post = ({
       } catch (error) {
         console.log(error);
       }
+    } else {
+      toast.error("You have to login to vote.");
     }
   };
 
@@ -128,12 +133,12 @@ const Post = ({
 
         if (votes.disliked) {
           updatedVotes.dislikes = updatedVotes.dislikes.filter(
-            (id) => id != user.id
+            (id) => id !== user.id
           );
         } else {
           if (votes.liked) {
             updatedVotes.likes = updatedVotes.likes.filter(
-              (id) => id != user.id
+              (id) => id !== user.id
             );
             updatedVotes.dislikes.push(user.id);
           } else {
@@ -162,7 +167,7 @@ const Post = ({
     event.stopPropagation();
     try {
       await axiosInstance.delete(`/posts/${post._id}/remove`);
-      setPosts(posts.filter((p) => p._id != post._id));
+      setPosts(posts.filter((p) => p._id !== post._id));
       toast.error("The post is removed");
     } catch (error) {
       console.log(error);

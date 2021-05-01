@@ -15,7 +15,7 @@ const EditPost = ({ content, handleEdit, postHeight }) => {
 
   useEffect(() => {
     inputRef.focus();
-  }, []);
+  }, [inputRef]);
 
   return (
     <EditContainer style={{ height: `${postHeight}px` }}>

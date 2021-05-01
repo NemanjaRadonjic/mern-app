@@ -15,12 +15,11 @@ const EditComment = ({ content, handleEdit, commentHeight }) => {
 
   useEffect(() => {
     inputRef.focus();
-  }, []);
+  }, [inputRef]);
 
   return (
     <EditContainer style={{ height: `${commentHeight}px` }}>
       <TextArea
-        comment
         spellCheck="false"
         maxLength={maxLength}
         rows={rows}

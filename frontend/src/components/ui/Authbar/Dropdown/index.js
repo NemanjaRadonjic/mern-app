@@ -11,20 +11,20 @@ import {
 
 const Dropdown = ({ username, toggleDropdown, toggleModal, handleLogout }) => {
   useEffect(() => {
+    const handleClick = (event) => {
+      if (
+        event.target.parentElement.id === "dropdown" ||
+        event.target.parentElement.parentElement.id === "dropdown" ||
+        event.target.id === "open-dropdown"
+      ) {
+      } else {
+        toggleDropdown();
+      }
+    };
+
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
-
-  const handleClick = (event) => {
-    if (
-      event.target.parentElement.id === "dropdown" ||
-      event.target.parentElement.parentElement.id === "dropdown" ||
-      event.target.id === "open-dropdown"
-    ) {
-    } else {
-      toggleDropdown();
-    }
-  };
+  }, [toggleDropdown]);
 
   return (
     <>
@@ -68,6 +68,7 @@ const Dropdown = ({ username, toggleDropdown, toggleModal, handleLogout }) => {
               toggleDropdown();
               toggleModal();
             }}
+            to=""
           >
             Delete Account
           </Link>

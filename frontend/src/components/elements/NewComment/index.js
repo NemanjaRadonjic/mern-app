@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
 import { getImageSrc } from "@helpers/imageSrc";
+import ThemeContext from "@context/theme";
 
 import { Background, AvatarContainer, Author, Info } from "../common/styles";
 import { Counter, Container, TextArea, NewCommentHead } from "./styles";
@@ -18,6 +19,10 @@ const NewComment = ({
   toggleNewCommentModal,
   history,
 }) => {
+  const {
+    themeInfo: { mode },
+  } = useContext(ThemeContext);
+
   const { inputs, onChange } = useFormHook({ comment: "" });
 
   const handleClick = async () => {
@@ -39,8 +44,11 @@ const NewComment = ({
     history.push(`/user/${user.username}`);
   };
   return (
-    <Container background={getImageSrc(user.background, "background")}>
-      <Background paddingBottom>
+    <Container
+      mode={mode}
+      background={getImageSrc(user.background, "background")}
+    >
+      <Background noHover paddingBottom>
         <AvatarContainer>
           <Avatar
             src={getImageSrc(user.avatar, "avatar")}

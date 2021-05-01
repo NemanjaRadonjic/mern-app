@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { v4 as id } from "uuid";
 import axiosInstance from "@axios";
 import useAmount from "@hooks/useAmount";
 import useLoader from "@hooks/useLoader";

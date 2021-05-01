@@ -1,9 +1,19 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  display: flex;
+  padding-top: 3rem;
+  justify-content: space-around;
+
+  @media (max-width: 1000px) {
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+`;
+
 export const Avatars = styled.div`
-  width: 50%;
-  margin-top: 3rem;
-  float: left;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
@@ -28,9 +38,6 @@ export const Avatar = styled.img`
 `;
 
 export const Backgrounds = styled.div`
-  width: 50%;
-  margin-top: 3rem;
-  float: right;
   display: flex;
   justify-content: space-around;
   flex-direction: column;
@@ -38,8 +45,8 @@ export const Backgrounds = styled.div`
 `;
 
 export const Background = styled.img`
-  width: 15rem;
-  height: 5rem;
+  width: 12rem;
+  height: 4rem;
   margin: 1rem;
   border: 10px solid transparent;
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.3);

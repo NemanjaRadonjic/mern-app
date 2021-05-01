@@ -21,14 +21,7 @@ const maxLength = 400;
 const NewPost = ({ posts, setPosts }) => {
   const user = useSelector((state) => state.user);
 
-  const {
-    inputs,
-    onChange,
-    setInputs,
-    errors,
-    setErrors,
-    fields,
-  } = useFormHook({
+  const { inputs, onChange, setInputs, errors, fields } = useFormHook({
     post: "",
   });
 

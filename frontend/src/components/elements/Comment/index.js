@@ -36,7 +36,7 @@ const Comment = ({ comment, history, comments, setComments }) => {
     themeInfo: { mode },
   } = useContext(ThemeContext);
   const user = useSelector((state) => state.user);
-  const authorSelf = comment.author?.username == user?.username;
+  const authorSelf = comment.author?.username === user?.username;
   const convertedDate = moment(comment.createdAt, "MM/DD/YYYY, h:mm:ss A");
 
   const [editModal, setEditModal] = useState(false);
@@ -153,7 +153,7 @@ const Comment = ({ comment, history, comments, setComments }) => {
   const handleClickRemove = async () => {
     try {
       await axiosInstance.delete(`/comments/${comment._id}/remove`);
-      setComments(comments.filter((c) => c._id != comment._id));
+      setComments(comments.filter((c) => c._id !== comment._id));
       toast.error("The comment is removed");
     } catch (error) {
       console.log(error);

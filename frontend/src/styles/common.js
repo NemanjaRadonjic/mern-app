@@ -7,19 +7,29 @@ export const FormContainer = styled.div`
   justify-content: space-around;
   align-items: center;
   position: relative;
+
+  @media (max-width: 600px) {
+    height: ${(props) => (props.smaller ? "45vh" : "calc(100vh - 11rem)")};
+  }
 `;
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 70%;
+  @media (max-height: 900px) {
+  }
 `;
 
 export const Header = styled.div`
   font-size: 2rem;
   text-align: center;
   margin-bottom: 3rem;
-  color: rgb(${(props) => props.theme.primary}); ;
+  color: rgb(${(props) => props.theme.primary});
+
+  @media (max-height: 900px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 export const Input = styled.input`
@@ -41,6 +51,10 @@ export const Input = styled.input`
   &:focus {
     box-shadow: inset 0 3px 10px rgb(0, 0, 0, 0.1);
   }
+
+  @media (max-height: 900px) {
+    margin: 0 auto;
+  }
 `;
 
 export const Error = styled.div`
@@ -54,9 +68,14 @@ export const Error = styled.div`
 export const Message = styled.div`
   cursor: pointer;
   margin: 3rem auto 1rem auto;
+  text-align: center;
   text-decoration: underline;
   &:hover {
     color: rgb(${(props) => props.theme.primary});
+  }
+
+  @media (max-height: 900px) {
+    margin: 1rem auto;
   }
 `;
 
@@ -118,7 +137,7 @@ export const Loader = styled.div`
   margin: 60px auto;
   font-size: ${(props) => (props.mini ? "4px" : "10px")};
   position: ${(props) => (props.mini ? "absolute" : "relative")};
-  top: -2.1rem;
+  top: ${(props) => (props.mini ? "-3.1rem" : "-2.1rem")};
   right: 0.8rem;
   text-indent: -9999em;
   border-top: 1.1em solid rgba(255, 255, 255, 0.2);

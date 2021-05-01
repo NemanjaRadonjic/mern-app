@@ -4,13 +4,10 @@ import { ThemeMenuContainer, Header, Mode, Accent } from "./styles.js";
 import { modes, accents } from "@styles/themes";
 
 const ThemeMenu = () => {
-  const { themeInfo, themeValues, setMode, setAccent } = useContext(
-    ThemeContext
-  );
+  const { themeInfo, setMode, setAccent } = useContext(ThemeContext);
 
   const changeMode = () => {
     const nextMode = themeInfo.mode === "light" ? "dark" : "light";
-
     setMode({ ...modes[nextMode] });
 
     window.localStorage.setItem(

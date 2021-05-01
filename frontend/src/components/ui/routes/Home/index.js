@@ -31,6 +31,7 @@ function Home() {
       response && setPosts([...posts, ...response.data.reverse()]);
     }
   };
+
   useEffect(() => {
     fetchPosts();
   }, []);

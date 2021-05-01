@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ThemeMenuContainer = styled.div`
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -9,6 +9,7 @@ export const ThemeMenuContainer = styled.div`
   width: 7rem;
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
   transition: box-shadow 0.2s ease-in-out;
+  background: rgb(${(props) => props.theme.background});
 
   &:hover {
     box-shadow: 0 3px 10px rgb(0, 0, 0, 0.1);
@@ -53,5 +54,9 @@ export const Accent = styled.div`
   &:hover {
     box-shadow: 0 3px 10px rgb(0, 0, 0, 0.1);
     border-radius: 4px;
+  }
+
+  @media (max-height: 814px) {
+    height: 3.2rem;
   }
 `;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, connect } from "react-redux";
 import { logout } from "@actions/userActions";
 import getImageSrc from "@helpers/imageSrc";
@@ -12,7 +12,6 @@ import {
   Name,
   Settings,
   Avatar,
-  Button,
   LinkContainer,
 } from "./styles";
 
@@ -73,7 +72,7 @@ function Authbar({ logout }) {
             </>
           )}
         </AuthContainer>
-        {dropdown && (
+        {user && dropdown && (
           <Dropdown
             username={user.username}
             handleLogout={handleLogout}

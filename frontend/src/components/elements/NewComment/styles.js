@@ -3,8 +3,14 @@ import styled from "styled-components";
 export const Container = styled.div`
   background-image: linear-gradient(
       to right,
-      rgba(${(props) => props.theme.background}, 0.7),
-      rgba(${(props) => props.theme.background}, 0.4)
+      rgba(
+        ${(props) => props.theme.background},
+        ${(props) => (props.mode === "light" ? "0.2" : "0.8")}
+      ),
+      rgba(
+        ${(props) => props.theme.background},
+        ${(props) => (props.mode === "light" ? "0.2" : "0.8")}
+      )
     ),
     url(${(props) => props.background});
   background-repeat: no-repeat;

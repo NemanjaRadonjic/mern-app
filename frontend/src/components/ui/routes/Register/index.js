@@ -144,7 +144,9 @@ function Register({ history }) {
         />
         <Error>{errors.repeatPassword}</Error>
         <Message>
-          <Link to="/login">Already have an account? Click here to Login!</Link>
+          <Link className="text-align__center" to="/login">
+            Already have an account? Click here to Login!
+          </Link>
         </Message>
         <Button className="align-center">Register</Button>
       </Form>

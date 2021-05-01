@@ -88,7 +88,7 @@ function Login({ history }) {
         />
         <Error>{errors.password}</Error>
         <Message>
-          <Link to="/register">
+          <Link className="text-align__center" to="/register">
             Don't have an account? Click here to Register!
           </Link>
         </Message>

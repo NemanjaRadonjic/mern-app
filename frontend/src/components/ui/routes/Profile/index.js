@@ -31,14 +31,12 @@ const Profile = (props) => {
   useSelector((state) => state.user?.previewCanvas);
   const { username } = props.match.params;
   const [userInfo, setUserInfo] = useState(null);
-  const isSelf = user?.username == username; // ?
-
-  const fetchUser = async () => {
-    const response = await axiosInstance.get(`/users/${username}`);
-    setUserInfo(response.data);
-  };
 
   useEffect(() => {
+    const fetchUser = async () => {
+      const response = await axiosInstance.get(`/users/${username}`);
+      setUserInfo(response.data);
+    };
     fetchUser();
   }, [username]);
 
@@ -48,7 +46,7 @@ const Profile = (props) => {
 
   return (
     <>
-      {user?.previewCanvas && user?.previewCanvas.type == "background" ? (
+      {user?.previewCanvas && user?.previewCanvas.type === "background" ? (
         <NavContainerPreview
           type="background"
           ref={user.previewCanvas.ref}

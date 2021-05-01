@@ -31,7 +31,7 @@ const ChangePassword = ({ history }) => {
     setErrors(fields);
     if (event.target.name === "newPassword") {
       setErrors((prevErrors) => {
-        const { name, value } = event.target;
+        const { value } = event.target;
         return { ...prevErrors, newPassword: validateInputs.password(value) };
       });
     }

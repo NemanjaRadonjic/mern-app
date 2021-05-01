@@ -31,11 +31,12 @@ export const PostContent = styled.div`
 export const EditContainer = styled.div`
   margin: 1rem;
   padding: 0.5rem;
+  position: relative;
 `;
 
 export const TextArea = styled.textarea`
   position: absolute;
-  width: ${(props) => (props.comment ? "77%" : "85%")};
+  width: 100%;
   padding: 0.5rem;
   margin-left: -0.5rem;
   margin-top: -0.5rem;
@@ -55,6 +56,8 @@ export const Button = styled.button`
   font-size: 1rem;
   background: transparent;
   display: block;
+  position: absolute;
+  bottom: -140%;
   padding: 0 1rem;
   color: rgb(${(props) => props.theme.text});
   border: none;
@@ -83,8 +86,8 @@ export const Button = styled.button`
 
 export const Counter = styled.div`
   position: absolute;
-  bottom: 2.3rem;
-  right: 1.5rem;
+  bottom: -1.6rem;
+  right: 0;
   color: rgb(
     ${(props) => (props.filled ? props.theme.primary : props.theme.lightText)}
   );
@@ -103,20 +106,23 @@ export const Background = styled.div`
     ${(props) => (props.mode === "light" ? "0.2" : "0.8")}
   );
   transition: background 0.4s ease-in-out;
-  &:hover {
+
+  ${(props) =>
+    !props.noHover &&
+    `&:hover {
     background: rgba(
-      ${(props) => props.theme.background},
-      ${(props) => (props.mode === "light" ? "0" : "0.6")}
+      ${props.theme.background},
+      ${props.mode === "light" ? "0" : "0.6"}
     );
-  }
+  } `}
 `;
 
 export const AvatarContainer = styled.div`
   width: 2rem;
   margin-left: 1rem;
 `;
+
 export const AuthorContainer = styled.div`
-  width: 15rem;
   display: flex;
 `;
 
@@ -143,8 +149,13 @@ export const Info = styled.div`
   margin-left: 1rem;
   align-items: center;
 `;
+
 export const Time = styled.div`
-  color: rgb(${(props) => props.theme.lightText});
+  font-size: 0.9rem;
+  color: rgb(${(props) => props.theme.text});
+  position: absolute;
+  right: 3rem;
+  top: 25%;
 
   transition: color 0.3s ease-in-out;
 `;
@@ -238,6 +249,7 @@ export const RemoveButton = styled.div`
 export const Message = styled.div`
   font-size: 1.2rem;
   margin-top: 2rem;
+  text-align: center;
 `;
 
 export const ButtonContainer = styled.div`

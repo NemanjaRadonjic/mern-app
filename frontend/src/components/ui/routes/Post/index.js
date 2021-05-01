@@ -10,7 +10,7 @@ import NewComment from "../../../elements/NewComment";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-import NotFound from "@routes/NotFound"; // routes/NotFound ?
+import NotFound from "@routes/NotFound";
 
 const Post = (props) => {
   const user = useSelector((state) => state.user);
@@ -18,28 +18,27 @@ const Post = (props) => {
   const [post, setPost] = useState(props.location.post);
   const [comments, setComments] = useState(null);
   const [newCommentModal, setNewCommentModal] = useState(
-    props.location.isCommentActive
+    user && props.location.isCommentActive
   );
 
-  const fetchPost = async () => {
-    try {
-      const response = await axiosInstance.get(`/posts/${postId}`);
-      setPost(response.data);
-    } catch (error) {
-      if (error.response.status === 404) {
-        setPost(null);
-      }
-    }
-  };
-  const fetchComments = async () => {
-    const response = await axiosInstance.get(`/posts/${postId}/comments`);
-    setComments(response.data.reverse());
-  };
-
   useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await axiosInstance.get(`/posts/${postId}`);
+        setPost(response.data);
+      } catch (error) {
+        if (error.response.status === 404) {
+          setPost(null);
+        }
+      }
+    };
+    const fetchComments = async () => {
+      const response = await axiosInstance.get(`/posts/${postId}/comments`);
+      setComments(response.data.reverse());
+    };
     !post && fetchPost();
     post && fetchComments();
-  }, [post]);
+  }, [post, postId]);
 
   const toggleNewCommentModal = () => {
     user

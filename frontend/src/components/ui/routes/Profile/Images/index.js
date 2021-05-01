@@ -3,7 +3,14 @@ import axiosInstance from "@axios";
 import getImageSrc from "@helpers/imageSrc";
 import { v4 as id } from "uuid";
 
-import { Avatars, Avatar, Backgrounds, Background, Header } from "./styles";
+import {
+  Container,
+  Avatars,
+  Avatar,
+  Backgrounds,
+  Background,
+  Header,
+} from "./styles";
 import { Loader } from "@styles/common";
 
 const Images = (props) => {
@@ -21,7 +28,7 @@ const Images = (props) => {
       });
     };
     fetchUserImages();
-  }, []);
+  }, [username]);
 
   const renderAvatars = () => {
     return images.avatars?.length > 0 ? (
@@ -50,12 +57,12 @@ const Images = (props) => {
     );
   };
   return (
-    <>
+    <Container>
       <Avatars>{images.avatars ? renderAvatars() : <Loader />}</Avatars>
       <Backgrounds>
         {images.backgrounds ? renderBackgrounds() : <Loader />}
       </Backgrounds>
-    </>
+    </Container>
   );
 };
 

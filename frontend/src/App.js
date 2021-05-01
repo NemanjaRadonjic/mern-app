@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch, Link } from "react-router-dom";
 import axiosInstance from "@axios";
 
@@ -69,13 +69,7 @@ function App({ login }) {
       >
         <GlobalStyle />
         <MainContainer>
-          <Searchbar />
           <RoutesContainer>
-            <BackToHome>
-              <Link className="text-align__center" to="/home">
-                Home
-              </Link>
-            </BackToHome>
             <Switch>
               <Route exact path="/">
                 <Redirect to="/home" />
@@ -106,8 +100,14 @@ function App({ login }) {
 
               <Route default component={NotFound} />
             </Switch>
+            <BackToHome>
+              <Link className="text-align__center" to="/home">
+                Home
+              </Link>
+            </BackToHome>
           </RoutesContainer>
           <Authbar />
+          <Searchbar />
           <ToastContainer position="bottom-right" />
         </MainContainer>
       </ThemeContext.Provider>

@@ -58,8 +58,6 @@ const uploadAvatar = async (previewCanvas, crop, filename, history, type) => {
   bodyFormData.append("image", imageFile);
   bodyFormData.append("type", type);
 
-  const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
-
   try {
     const response = await axiosInstance.post("/upload", bodyFormData, {
       headers: {
@@ -122,7 +120,7 @@ const EditImage = ({ history, type }) => {
     return () => {
       store.dispatch(setPreviewCanvas(null));
     };
-  }, [completedCrop]);
+  }, [completedCrop, type]);
   const onFileChange = (event) => {
     event.persist();
     setSrc();

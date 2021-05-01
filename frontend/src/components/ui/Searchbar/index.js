@@ -12,6 +12,7 @@ import ThemeMenu from "./ThemeMenu";
 import {
   Container,
   SearchContainer,
+  SearchbarContainer,
   SearchResultContainer,
   SearchIcon,
   Avatar,
@@ -65,6 +66,8 @@ function Searchbar() {
       event.target.parentElement?.className === "text-align__center" ||
       event.target.parentElement?.parentElement?.className ===
         "text-align__center" ||
+      event.target.parentElement?.parentElement?.parentElement?.className ===
+        "text-align__center" ||
       (typeof event.target.className === "string" &&
         event.target.className.includes("fa-search"))
     ) {
@@ -77,8 +80,8 @@ function Searchbar() {
     if (
       (typeof event.target.className === "string" &&
         event.target.className.includes("fas fa-palette")) ||
-      event.target.id === "themeDropdown" ||
-      event.target.parentElement.id === "themeDropdown" ||
+      event.target?.id === "themeDropdown" ||
+      event.target?.parentElement?.id === "themeDropdown" ||
       (typeof event.target.className === "string" &&
         event.target.className.includes("fa-search"))
     ) {
@@ -120,24 +123,26 @@ function Searchbar() {
       {dropdownActive && <ThemeMenu />}
       <ChangeTheme className="fas fa-palette" onClick={toggleDropdown} />
       <SearchContainer>
-        <Input
-          onFocus={() => setShowResults(true)}
-          value={input}
-          onChange={(event) => {
-            onChange(event.target.value);
-            debounced(event.target.value);
-          }}
-          spellCheck="false"
-          type="text"
-          placeholder="Search..."
-          maxLength={12}
-        />
+        <SearchbarContainer>
+          <Input
+            onFocus={() => setShowResults(true)}
+            value={input}
+            onChange={(event) => {
+              onChange(event.target.value);
+              debounced(event.target.value);
+            }}
+            spellCheck="false"
+            type="text"
+            placeholder="Search..."
+            maxLength={12}
+          />
 
-        {loaderActive ? (
-          <Loader mini />
-        ) : (
-          <SearchIcon className="fas fa-search" />
-        )}
+          {loaderActive ? (
+            <Loader mini />
+          ) : (
+            <SearchIcon className="fas fa-search" />
+          )}
+        </SearchbarContainer>
         {users && showResults && renderUsers()}
       </SearchContainer>
     </Container>
