@@ -189,7 +189,6 @@ const fetchUserImages = async (req, res) => {
     const { avatars, backgrounds } = user;
     return res.json({ avatars, backgrounds });
   } catch (error) {
-    console.log(error);
     return res.sendStatus(404);
   }
 };
@@ -220,8 +219,7 @@ const changeEmail = async (req, res) => {
   } catch (error) {
     return res.sendStatus(404);
   }
-  console.log("user password:", user.password);
-  console.log(password);
+
   let validPassword;
   try {
     validPassword = await bcrypt.compare(password, user.password);
@@ -287,37 +285,34 @@ const deleteUser = async (req, res) => {
   } catch (error) {
     return res.sendStatus(500);
   }
-
   try {
-    user.votedPosts.likes.map(async (id) => {
+    for await (const id of user.votedPosts.likes) {
       const post = await Post.findById(id);
-      post.votes.likes = post.votes.likes.filter((id) => id != user.id);
+      post.votes.likes = post.votes.likes.filter(id => id != user.id);
       await post.save();
-    });
-
-    user.votedPosts.dislikes.map(async (id) => {
+    }
+    for await (const id of user.votedPosts.dislikes) {
       const post = await Post.findById(id);
-      post.votes.dislikes = post.votes.dislikes.filter((id) => id != user.id);
+      post.votes.dislikes = post.votes.dislikes.filter(id => id != user.id);
       await post.save();
-    });
+    }
   } catch (error) {
     return res.sendStatus(500);
   }
 
   try {
-    user.votedComments.likes.map(async (id) => {
+    for await (const id of user.votedComments.likes) {
       const comment = await Comment.findById(id);
-      comment.votes.likes = comment.votes.likes.filter((id) => id != user.id);
+      comment.votes.likes = comment.votes.likes.filter(id => id != user.id);
       await comment.save();
-    });
-
-    user.votedComments.dislikes.map(async (id) => {
+    }
+    for await (const id of user.votedComments.dislikes) {
       const comment = await Comment.findById(id);
       comment.votes.dislikes = comment.votes.dislikes.filter(
-        (id) => id != user.id
+        id => id != user.id
       );
       await comment.save();
-    });
+    }
   } catch (error) {
     return res.sendStatus(500);
   }

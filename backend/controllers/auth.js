@@ -140,7 +140,7 @@ const refreshToken = async (req, res) => {
   if (!token) {
     return res.status(403).json({ accessToken: "" });
   }
-  verify(token, process.env.REFRESH_TOKEN_SECRET, (err) => {
+  verify(token, process.env.REFRESH_TOKEN_SECRET, err => {
     if (err && err.expiredAt) {
       return res.status(403).json({ accessToken: "" });
     }

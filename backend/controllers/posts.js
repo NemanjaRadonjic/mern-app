@@ -21,7 +21,7 @@ const fetchPosts = async (req, res) => {
         "username avatar background -_id"
       );
       const postsWithComments = await Promise.all(
-        posts.map(async (post) => {
+        posts.map(async post => {
           const numOfComments = await Comment.countDocuments({
             post: post._id,
           });
@@ -38,7 +38,7 @@ const fetchPosts = async (req, res) => {
           .populate("author", "username avatar background -_id")
           .limit(limit);
         const postsWithComments = await Promise.all(
-          posts.map(async (post) => {
+          posts.map(async post => {
             const numOfComments = await Comment.countDocuments({
               post: post._id,
             });
@@ -53,7 +53,7 @@ const fetchPosts = async (req, res) => {
         .skip(numOfDocuments - amount)
         .limit(postsPerFetch);
       const postsWithComments = await Promise.all(
-        posts.map(async (post) => {
+        posts.map(async post => {
           const numOfComments = await Comment.countDocuments({
             post: post._id,
           });
@@ -63,7 +63,6 @@ const fetchPosts = async (req, res) => {
       return res.json(postsWithComments);
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
@@ -192,11 +191,11 @@ const like = async (req, res) => {
     return res.status(404).json({ message: "Couldn't find a user." });
   }
   // cheking if a user has already liked a post
-  if (post.votes.likes.some((user) => user == userId)) {
+  if (post.votes.likes.some(user => user == userId)) {
     // filter from post likes
-    post.votes.likes = post.votes.likes.filter((id) => id != userId);
+    post.votes.likes = post.votes.likes.filter(id => id != userId);
     // filter from user likes
-    user.votedPosts.likes = user.votedPosts.likes.filter((id) => id != postId);
+    user.votedPosts.likes = user.votedPosts.likes.filter(id => id != postId);
     // save
     try {
       await post.save();
@@ -211,7 +210,7 @@ const like = async (req, res) => {
     return res.status(201).json({ liked: false, disliked: false });
   } else {
     // deleting a user from dislikes if he wants to like and saving the user to that posts likes
-    post.votes.dislikes = post.votes.dislikes.filter((id) => {
+    post.votes.dislikes = post.votes.dislikes.filter(id => {
       id != userId;
     });
     post.votes.likes.push(user);
@@ -224,7 +223,7 @@ const like = async (req, res) => {
 
     // deleting a post from a users votedPosts dislikes and saving it to likes
     user.votedPosts.dislikes = user.votedPosts.dislikes.filter(
-      (id) => id != postId
+      id => id != postId
     );
     user.votedPosts.likes.push(post);
 
@@ -258,12 +257,12 @@ const dislike = async (req, res) => {
     return res.status(404).json({ message: "Couldn't find a user." });
   }
 
-  if (post.votes.dislikes.some((user) => user == userId)) {
+  if (post.votes.dislikes.some(user => user == userId)) {
     // filter from post dislikes
-    post.votes.dislikes = post.votes.dislikes.filter((id) => id != userId);
+    post.votes.dislikes = post.votes.dislikes.filter(id => id != userId);
     // filter from user dislikes
     user.votedPosts.dislikes = user.votedPosts.dislikes.filter(
-      (id) => id != postId
+      id => id != postId
     );
     // save
     try {
@@ -279,7 +278,7 @@ const dislike = async (req, res) => {
     return res.status(201).json({ liked: false, disliked: false });
   } else {
     // deleting a user from likes if he wants to dislike and saving the user to that posts dislikes
-    post.votes.likes = post.votes.likes.filter((id) => id != userId);
+    post.votes.likes = post.votes.likes.filter(id => id != userId);
 
     post.votes.dislikes.push(user);
 
@@ -290,7 +289,7 @@ const dislike = async (req, res) => {
     }
 
     // deleting a post from a users votedPosts likes and saving it to dislikes
-    user.votedPosts.likes = user.votedPosts.likes.filter((id) => id != postId);
+    user.votedPosts.likes = user.votedPosts.likes.filter(id => id != postId);
     user.votedPosts.dislikes.push(post);
     try {
       await user.save();
@@ -330,6 +329,28 @@ const remove = async (req, res) => {
   let post;
   try {
     post = await Post.findById(postId);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    post.votes.likes.map(async id => {
+      const user = await User.findById(id);
+      user.votedPosts.likes = user.votedPosts.likes.filter(id => id != postId);
+      await user.save();
+    });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+
+  try {
+    post.votes.dislikes.map(async id => {
+      const user = await User.findById(id);
+      user.votedPosts.dislikes = user.votedPosts.dislikes.filter(
+        id => id != postId
+      );
+      await user.save();
+    });
   } catch (error) {
     return res.sendStatus(500);
   }
