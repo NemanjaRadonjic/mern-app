@@ -32,7 +32,9 @@ function App({ login }) {
   const user = JSON.parse(window.localStorage.getItem("user"));
   const accessToken = JSON.parse(window.localStorage.getItem("accessToken"));
   let currentTheme = JSON.parse(window.localStorage.getItem("theme"));
-  axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
+  if (accessToken) {
+    axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
+  }
 
   if (!currentTheme) {
     currentTheme = { mode: "light", accent: "red" };

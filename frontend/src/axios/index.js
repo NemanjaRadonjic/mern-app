@@ -3,8 +3,12 @@ import store from "../index";
 import { logout } from "@actions/userActions";
 import { toast } from "react-toastify";
 
+const isLocal = window.location.hostname === "localhost";
+
 const axiosInstance = create({
-  baseURL: "http://localhost:4000",
+  baseURL: isLocal
+    ? "http://localhost:4000"
+    : process.env.REACT_APP_BACKEND_URL,
   withCredentials: true,
 });
 
@@ -18,9 +22,7 @@ axiosInstance.interceptors.response.use(
       ) {
         const originalRequest = error.config;
         const userData = JSON.parse(window.localStorage.getItem("user"));
-        const response = await axiosInstance.post("/auth/refresh_token", {
-          userData,
-        });
+        const response = await axiosInstance.post("/auth/refresh_token");
 
         if (response) {
           const { accessToken } = response.data;

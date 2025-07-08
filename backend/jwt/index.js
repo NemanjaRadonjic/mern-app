@@ -12,13 +12,35 @@ const generateRefreshToken = (userData) => {
   });
 };
 
+// const authenticateAccessToken = (req, res, next) => {
+//   const authHeader = req.headers["authorization"];
+//   const accessToken = authHeader && authHeader.split(" ")[1];
+//   verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err) => {
+//     if (err) {
+//       return res.status(403).send(err);
+//     }
+//     next();
+//   });
+// };
+
 const authenticateAccessToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
+  console.log(authHeader);
   const accessToken = authHeader && authHeader.split(" ")[1];
-  verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err) => {
+
+  if (!accessToken) {
+    return res.status(401).json({ message: "Missing access token" });
+  }
+
+  verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    console.log(err);
     if (err) {
-      return res.status(403).send(err);
+      return res
+        .status(403)
+        .json({ message: "Invalid or expired access token" });
     }
+
+    req.user = decoded;
     next();
   });
 };

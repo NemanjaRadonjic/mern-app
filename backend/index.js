@@ -16,7 +16,18 @@ const uploadRoutes = require("./routes/upload");
 const app = express();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
+// const allowedOrigins =
+//   process.env.NODE_ENV === "production"
+//     ? [process.env.FRONTEND_URL]
+//     : ["http://localhost:3000"];
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:3000",
+].filter(Boolean);
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -27,14 +38,14 @@ app.use("/posts", postRoutes);
 app.use("/comments", commentRoutes);
 app.use("/upload", uploadRoutes);
 
+const port = process.env.PORT || 4000;
+
 mongoose
   .connect(process.env.MONGO_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() =>
-    app.listen(process.env.PORT, () =>
-      console.log("Server is running at port: ", process.env.PORT)
-    )
+    app.listen(port, () => console.log("Server is running at port: ", port))
   )
   .catch((error) => console.log("Unable to connect to MongoDB: ", error));

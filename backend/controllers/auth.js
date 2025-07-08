@@ -134,19 +134,45 @@ const fetchUser = async (req, res) => {
   return res.status(200).json();
 };
 
+// const refreshToken = async (req, res) => {
+//   const { token } = req.cookies;
+//   const { userData } = req.body;
+//   if (!token) {
+//     return res.status(403).json({ accessToken: "" });
+//   }
+//   verify(token, process.env.REFRESH_TOKEN_SECRET, err => {
+//     if (err && err.expiredAt) {
+//       return res.status(403).json({ accessToken: "" });
+//     }
+//     const accessToken = generateAccessToken(userData);
+//     const refreshToken = generateRefreshToken(userData);
+//     res.cookie("token", refreshToken);
+//     return res.json({ accessToken });
+//   });
+// };
+
 const refreshToken = async (req, res) => {
   const { token } = req.cookies;
-  const { userData } = req.body;
+
   if (!token) {
     return res.status(403).json({ accessToken: "" });
   }
-  verify(token, process.env.REFRESH_TOKEN_SECRET, err => {
-    if (err && err.expiredAt) {
+
+  verify(token, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
       return res.status(403).json({ accessToken: "" });
     }
+
+    const userData = { id: decoded.id, username: decoded.username };
     const accessToken = generateAccessToken(userData);
     const refreshToken = generateRefreshToken(userData);
-    res.cookie("token", refreshToken);
+
+    res.cookie("token", refreshToken, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+    });
+
     return res.json({ accessToken });
   });
 };

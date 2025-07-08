@@ -37,6 +37,7 @@ function Login({ history }) {
     } else {
       let userData = {};
       try {
+        console.dir(axiosInstance);
         const response = await axiosInstance.post("/auth/login", inputs);
         const { avatar, background, accessToken } = response.data;
         const { email, id, username } = jwtDecode(accessToken);
@@ -49,8 +50,9 @@ function Login({ history }) {
         };
         window.localStorage.setItem("user", JSON.stringify(userData));
         window.localStorage.setItem("accessToken", JSON.stringify(accessToken));
-        history.push("/home");
+        axiosInstance.defaults.headers.authorization = "Bearer " + accessToken;
         store.dispatch(login(userData));
+        history.push("/home");
       } catch (error) {
         if (error.response) {
           const { field, message } = error.response.data;
