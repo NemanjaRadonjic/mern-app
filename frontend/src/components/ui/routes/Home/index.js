@@ -11,28 +11,31 @@ import { NoContentMessage, Loader } from "@styles/common";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 function Home() {
-  const user = useSelector(state => state.user);
+  const user = useSelector((state) => state.user);
   const [posts, setPosts] = useState(null);
   const { loaderActive, setLoaderActive } = useLoader();
 
   const { amountOfPosts, setAmountOfPosts, postsPerFetch } = useAmount();
 
-  const fetchPosts = async shouldResetAmount => {
-    shouldResetAmount
-      ? setAmountOfPosts(amountOfPosts)
-      : setAmountOfPosts(amountOfPosts + postsPerFetch);
+  const fetchPosts = async (shouldResetAmount) => {
+    const newAmount = shouldResetAmount
+      ? postsPerFetch
+      : amountOfPosts + postsPerFetch;
+
     const response = await axiosInstance.get("/posts", {
-      params: { amount: amountOfPosts, postsPerFetch },
+      params: { amount: newAmount, postsPerFetch },
     });
+
     if (response.data.length === 0) {
       setLoaderActive(false);
     }
-    if (!posts) {
-      response && setPosts([...response.data.reverse()]);
+
+    if (shouldResetAmount) {
+      setAmountOfPosts(postsPerFetch);
+      setPosts(response.data.reverse());
     } else {
-      shouldResetAmount
-        ? response && setPosts([...response.data.reverse()])
-        : response && setPosts([...posts, ...response.data.reverse()]);
+      setAmountOfPosts(newAmount);
+      setPosts((prev) => [...prev, ...response.data.reverse()]);
     }
   };
 
@@ -43,7 +46,7 @@ function Home() {
   const renderPosts = () => {
     return (
       posts.length > 0 &&
-      posts.map(post => {
+      posts.map((post) => {
         return (
           <Post
             key={post._id}

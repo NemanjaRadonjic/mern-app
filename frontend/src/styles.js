@@ -9,7 +9,6 @@ export const MainContainer = styled.div`
 
 export const RoutesContainer = styled.div`
   margin: auto;
-  margin-top: 3rem;
   min-height: calc(100vh - 3rem);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   width: 40rem;
@@ -30,7 +29,7 @@ export const RoutesContainer = styled.div`
 
   @media (max-width: 1000px) {
     width: 100%;
-    margin-top: 7rem;
+    margin-top: 4rem;
   }
 
   @media (max-width: 600px) {
@@ -48,7 +47,7 @@ export const BackToHome = styled.div`
   color: rgb(${(props) => props.theme.lightText});
   transition: color 0.2s ease-in-out, border 0.3s ease-in-out,
     background 0.4s ease-in-out;
-  position: fixed;
+  position: sticky;
   width: 40rem;
   top: 0;
   box-shadow: 0 0.5rem 10px -3px rgba(0, 0, 0, 0.2);
@@ -70,7 +69,6 @@ export const BackToHome = styled.div`
   }
 
   @media (max-width: 1000px) {
-    margin-top: 4rem;
     width: 100vw;
   }
 `;

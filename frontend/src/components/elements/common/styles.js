@@ -155,7 +155,7 @@ export const Time = styled.div`
   color: rgb(${(props) => props.theme.text});
   position: absolute;
   right: 3rem;
-  top: 25%;
+  top: 3rem;
 
   transition: color 0.3s ease-in-out;
 `;

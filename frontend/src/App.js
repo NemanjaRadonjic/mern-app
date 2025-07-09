@@ -27,6 +27,7 @@ import ThemeContext from "@context/theme";
 
 import { ThemeProvider } from "styled-components";
 import { modes, accents } from "./styles/themes";
+import Instructions from "./components/elements/instructions";
 
 function App({ login }) {
   const user = JSON.parse(window.localStorage.getItem("user"));
@@ -70,8 +71,14 @@ function App({ login }) {
         }}
       >
         <GlobalStyle />
+        <Instructions />
         <MainContainer>
           <RoutesContainer>
+            <BackToHome>
+              <Link className="text-align__center" to="/home">
+                Home
+              </Link>
+            </BackToHome>
             <Switch>
               <Route exact path="/">
                 <Redirect to="/home" />
@@ -102,12 +109,8 @@ function App({ login }) {
 
               <Route default component={NotFound} />
             </Switch>
-            <BackToHome>
-              <Link className="text-align__center" to="/home">
-                Home
-              </Link>
-            </BackToHome>
           </RoutesContainer>
+
           <Authbar />
           <Searchbar />
           <ToastContainer position="bottom-right" />

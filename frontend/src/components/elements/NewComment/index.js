@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
 import ThemeContext from "@context/theme";
-
 import { Background, AvatarContainer, Author, Info } from "../common/styles";
 import { Counter, Container, TextArea, NewCommentHead } from "./styles";
 import { Button } from "@styles/common";

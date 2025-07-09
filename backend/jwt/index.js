@@ -14,7 +14,6 @@ const generateRefreshToken = (userData) => {
 
 const authenticateAccessToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  console.log(authHeader);
   const accessToken = authHeader && authHeader.split(" ")[1];
 
   if (!accessToken) {

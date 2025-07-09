@@ -288,12 +288,12 @@ const deleteUser = async (req, res) => {
   try {
     for await (const id of user.votedPosts.likes) {
       const post = await Post.findById(id);
-      post.votes.likes = post.votes.likes.filter(id => id != user.id);
+      post.votes.likes = post.votes.likes.filter((id) => id != user.id);
       await post.save();
     }
     for await (const id of user.votedPosts.dislikes) {
       const post = await Post.findById(id);
-      post.votes.dislikes = post.votes.dislikes.filter(id => id != user.id);
+      post.votes.dislikes = post.votes.dislikes.filter((id) => id != user.id);
       await post.save();
     }
   } catch (error) {
@@ -303,13 +303,13 @@ const deleteUser = async (req, res) => {
   try {
     for await (const id of user.votedComments.likes) {
       const comment = await Comment.findById(id);
-      comment.votes.likes = comment.votes.likes.filter(id => id != user.id);
+      comment.votes.likes = comment.votes.likes.filter((id) => id != user.id);
       await comment.save();
     }
     for await (const id of user.votedComments.dislikes) {
       const comment = await Comment.findById(id);
       comment.votes.dislikes = comment.votes.dislikes.filter(
-        id => id != user.id
+        (id) => id != user.id
       );
       await comment.save();
     }

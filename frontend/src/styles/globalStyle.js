@@ -13,6 +13,11 @@ export const globalStyles = css`
     font-family: "Baloo Da 2", cursive;
   }
 
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
   }

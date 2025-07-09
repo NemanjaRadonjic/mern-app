@@ -6,7 +6,6 @@ import EditPost from "./edit";
 import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
 import ThemeContext from "@context/theme";
-
 import { PostContentContainer, PostContent } from "./styles";
 import { Avatar } from "../../ui/routes/Home/NewPost/styles";
 import {

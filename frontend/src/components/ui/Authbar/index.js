@@ -4,7 +4,6 @@ import { useSelector, connect } from "react-redux";
 import { logout } from "@actions/userActions";
 import Dropdown from "./Dropdown";
 import DeleteAccountModal from "@modals/DeleteAccount";
-
 import {
   Container,
   AuthContainer,

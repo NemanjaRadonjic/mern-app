@@ -79,7 +79,8 @@ const register = async (req, res) => {
   ) {
     return res.json(errors);
   } else {
-    user.avatar = "uploads/AvatarDefault.jpg";
+    user.avatar =
+      "https://res.cloudinary.com/dbk5wesqt/image/upload/v1752035256/avatar_default.jpg";
     try {
       user.password = await bcrypt.hash(password, 10);
     } catch (error) {

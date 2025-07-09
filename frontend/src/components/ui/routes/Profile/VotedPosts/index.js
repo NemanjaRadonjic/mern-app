@@ -8,34 +8,33 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "@components/elements/Post";
 import { NoContentMessage, Loader } from "@styles/common";
 
-const VotedPosts = props => {
-  const user = useSelector(state => state.user);
+const VotedPosts = (props) => {
+  const user = useSelector((state) => state.user);
   const { username } = props.match.params;
   const [votedPosts, setVotedPosts] = useState(null);
   const { loaderActive, setLoaderActive } = useLoader();
-  const { amountOfPosts, setAmountOfPosts, postsPerFetch } = useAmount();
+  const { amountOfPosts, postsPerFetch } = useAmount();
 
-  const fetchVotedPostsByUser = async shouldRefetch => {
-    shouldRefetch
-      ? setAmountOfPosts(amountOfPosts)
-      : setAmountOfPosts(amountOfPosts + postsPerFetch);
+  const fetchVotedPostsByUser = async (shouldRefetch) => {
+    const nextAmount = shouldRefetch
+      ? postsPerFetch
+      : amountOfPosts + postsPerFetch;
 
     const response = await axiosInstance.get(
       `/users/${username}/posts/${props.type}`,
       {
-        params: { amount: amountOfPosts, postsPerFetch },
+        params: { amount: nextAmount, postsPerFetch },
       }
     );
+
     if (response.data.length === 0) {
       setLoaderActive(false);
     }
-    if (!votedPosts) {
+
+    if (shouldRefetch || !votedPosts) {
       response && setVotedPosts([...response.data.reverse()]);
     } else {
-      shouldRefetch
-        ? response && setVotedPosts([...response.data.reverse()])
-        : response &&
-          setVotedPosts([...votedPosts, ...response.data.reverse()]);
+      response && setVotedPosts([...votedPosts, ...response.data.reverse()]);
     }
   };
 
@@ -45,7 +44,7 @@ const VotedPosts = props => {
 
   const renderPosts = () => {
     return votedPosts.length > 0 ? (
-      votedPosts.map(post => {
+      votedPosts.map((post) => {
         return (
           <Post
             key={post._id}

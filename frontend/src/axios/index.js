@@ -22,9 +22,8 @@ axiosInstance.interceptors.response.use(
         error.response?.data.message === "Invalid or expired access token"
       ) {
         const originalRequest = error.config;
-        const userData = JSON.parse(window.localStorage.getItem("user"));
+        // const userData = JSON.parse(window.localStorage.getItem("user"));
         const response = await axiosInstance.post("/auth/refresh_token");
-        console.log(response);
         if (response) {
           const { accessToken } = response.data;
           if (accessToken) {

@@ -6,7 +6,7 @@ export const modes = {
     error: "227, 20, 20",
   },
   light: {
-    background: "255,240,240",
+    background: "255,255,255",
     text: "51,51,51",
     lightText: "87, 87, 87",
     error: "255, 41, 41",

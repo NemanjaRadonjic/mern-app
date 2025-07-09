@@ -16,21 +16,31 @@ const Posts = (props) => {
   const { loaderActive, setLoaderActive } = useLoader();
   const { amountOfPosts, setAmountOfPosts, postsPerFetch } = useAmount();
 
-  const fetchUserPosts = async () => {
-    setAmountOfPosts(amountOfPosts + postsPerFetch);
+  const fetchUserPosts = async (shouldResetAmount) => {
+    const nextAmount = shouldResetAmount
+      ? postsPerFetch
+      : amountOfPosts + postsPerFetch;
+
     const response = await axiosInstance.get(`/users/${username}/posts`, {
-      params: { amount: amountOfPosts, postsPerFetch },
+      params: { amount: nextAmount, postsPerFetch },
     });
 
     if (response.data.length === 0) {
       setLoaderActive(false);
+      return;
     }
-    response &&
-      setUserPosts([...(userPosts || []), ...response.data.reverse()]);
+
+    if (shouldResetAmount) {
+      setAmountOfPosts(postsPerFetch);
+      setUserPosts(response.data.reverse());
+    } else {
+      setAmountOfPosts(nextAmount);
+      setUserPosts((prev) => [...(prev || []), ...response.data.reverse()]);
+    }
   };
 
   useEffect(() => {
-    fetchUserPosts();
+    fetchUserPosts(true);
   }, []);
 
   const renderPosts = () => {

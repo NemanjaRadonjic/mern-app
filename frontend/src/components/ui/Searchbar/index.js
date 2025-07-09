@@ -130,7 +130,7 @@ function Searchbar() {
             }}
             spellCheck="false"
             type="text"
-            placeholder="Search..."
+            placeholder="Search users..."
             maxLength={12}
           />
 
