@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
-import { getImageSrc } from "@helpers/imageSrc";
 import ThemeContext from "@context/theme";
 
 import { Background, AvatarContainer, Author, Info } from "../common/styles";
@@ -44,16 +43,10 @@ const NewComment = ({
     history.push(`/user/${user.username}`);
   };
   return (
-    <Container
-      mode={mode}
-      background={getImageSrc(user.background, "background")}
-    >
+    <Container mode={mode} background={user.background}>
       <Background noHover paddingBottom>
         <AvatarContainer>
-          <Avatar
-            src={getImageSrc(user.avatar, "avatar")}
-            onClick={redirectToProfile}
-          />
+          <Avatar src={user.avatar} onClick={redirectToProfile} />
         </AvatarContainer>
         <NewCommentHead>
           <Info>

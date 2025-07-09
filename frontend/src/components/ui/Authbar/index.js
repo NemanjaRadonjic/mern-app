@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, connect } from "react-redux";
 import { logout } from "@actions/userActions";
-import getImageSrc from "@helpers/imageSrc";
 import Dropdown from "./Dropdown";
 import DeleteAccountModal from "@modals/DeleteAccount";
 
@@ -46,7 +45,7 @@ function Authbar({ logout }) {
         <AuthContainer>
           {user ? (
             <>
-              <Avatar src={getImageSrc(user.avatar, "avatar")} />
+              <Avatar src={user.avatar} />
               <Settings
                 className="fas fa-cog"
                 onClick={toggleDropdown}

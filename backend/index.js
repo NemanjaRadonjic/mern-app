@@ -17,11 +17,6 @@ const app = express();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// const allowedOrigins =
-//   process.env.NODE_ENV === "production"
-//     ? [process.env.FRONTEND_URL]
-//     : ["http://localhost:3000"];
-
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   "http://localhost:3000",

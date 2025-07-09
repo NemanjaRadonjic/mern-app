@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axiosInstance from "@axios";
-import getImageSrc from "@helpers/imageSrc";
 import { Route, NavLink, Redirect, Switch } from "react-router-dom";
 import Posts from "./Posts";
 import VotedPosts from "./VotedPosts";
@@ -52,9 +51,7 @@ const Profile = (props) => {
           ref={user.previewCanvas.ref}
         ></NavContainerPreview>
       ) : (
-        <NavContainer
-          image={getImageSrc(userInfo.background, "background")}
-        ></NavContainer>
+        <NavContainer image={userInfo.background}></NavContainer>
       )}
       <NavbarContainer>
         <NavbarItem>
@@ -78,7 +75,7 @@ const Profile = (props) => {
         {user?.previewCanvas && user?.previewCanvas.type === "avatar" ? (
           <AvatarPreview type="avatar" ref={user.previewCanvas.ref} />
         ) : (
-          <AvatarContainer src={getImageSrc(userInfo.avatar, "avatar")} />
+          <AvatarContainer src={userInfo.avatar} />
         )}
         <Username>
           <NavLink className="text-align__center" to={`/user/${username}`}>

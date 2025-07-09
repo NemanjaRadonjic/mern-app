@@ -6,6 +6,7 @@ const uploadImage = async (req, res) => {
   const { type } = req.body;
   const { path } = req.file;
   const { id } = decode(accessToken);
+
   let user;
   try {
     user = await User.findById(id);
@@ -18,8 +19,9 @@ const uploadImage = async (req, res) => {
   user[`${type}s`].push(path);
 
   try {
-    user.save();
+    await user.save();
   } catch (error) {
+    console.error(error);
     return res.sendStatus(500);
   }
 

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import { toast } from "react-toastify";
-import getImageSrc from "@helpers/imageSrc";
 import EditPost from "./edit";
 import axiosInstance from "@axios";
 import { useSelector } from "react-redux";
@@ -62,10 +61,6 @@ const Post = ({
       ? postCopy.votes.disliked
       : post.votes.dislikes.includes(user?.id),
   });
-
-  const background = `http://localhost:4000/uploads/${
-    post.author.background?.split("\\")[1]
-  }`;
 
   useEffect(() => {
     setPostHeight(postRef.current.offsetHeight);
@@ -193,15 +188,12 @@ const Post = ({
       onClick={() => {
         redirectToPost(false);
       }}
-      background={background}
+      background={post.author.background}
     >
       <Background mode={mode} post>
         <Head>
           <Info>
-            <Avatar
-              src={getImageSrc(post.author.avatar, "avatar")}
-              onClick={redirectToProfile}
-            />
+            <Avatar src={post.author.avatar} onClick={redirectToProfile} />
             <AuthorContainer>
               <Author
                 post

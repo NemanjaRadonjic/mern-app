@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import axiosInstance from "@axios";
 import useFormHook from "@hooks/useFormHook";
-import getImageSrc from "@helpers/imageSrc";
 
 import { Button } from "@styles/common";
 import {
@@ -47,7 +46,7 @@ const NewPost = ({ posts, setPosts }) => {
       {user ? (
         <>
           <TopSection>
-            <Avatar src={getImageSrc(user.avatar, "avatar")} />
+            <Avatar src={user.avatar} />
             <TextArea
               notValid={!/[A-Za-z0-9]/g.test(inputs.post)}
               spellCheck="false"

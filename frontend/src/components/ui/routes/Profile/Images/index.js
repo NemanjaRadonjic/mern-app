@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "@axios";
-import getImageSrc from "@helpers/imageSrc";
 import { v4 as id } from "uuid";
 
 import {
@@ -35,9 +34,7 @@ const Images = (props) => {
       <>
         <Header>Avatars</Header>
         {images.avatars &&
-          images.avatars.map((avatar) => (
-            <Avatar key={avatar} src={getImageSrc(avatar)} />
-          ))}
+          images.avatars.map((avatar) => <Avatar key={avatar} src={avatar} />)}
       </>
     ) : (
       <Header>User didnt upload any Avatars...</Header>
@@ -49,7 +46,7 @@ const Images = (props) => {
         <Header>Backgrounds</Header>
         {images.backgrounds &&
           images.backgrounds.map((background) => (
-            <Background key={id()} src={getImageSrc(background)} />
+            <Background key={id()} src={background} />
           ))}
       </>
     ) : (

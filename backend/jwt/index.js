@@ -12,17 +12,6 @@ const generateRefreshToken = (userData) => {
   });
 };
 
-// const authenticateAccessToken = (req, res, next) => {
-//   const authHeader = req.headers["authorization"];
-//   const accessToken = authHeader && authHeader.split(" ")[1];
-//   verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err) => {
-//     if (err) {
-//       return res.status(403).send(err);
-//     }
-//     next();
-//   });
-// };
-
 const authenticateAccessToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   console.log(authHeader);

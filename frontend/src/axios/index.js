@@ -18,12 +18,13 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 403) {
       if (
         error.response?.data.expiredAt ||
-        error.response?.data.message === "jwt malformed"
+        error.response?.data.message === "jwt malformed" ||
+        error.response?.data.message === "Invalid or expired access token"
       ) {
         const originalRequest = error.config;
         const userData = JSON.parse(window.localStorage.getItem("user"));
         const response = await axiosInstance.post("/auth/refresh_token");
-
+        console.log(response);
         if (response) {
           const { accessToken } = response.data;
           if (accessToken) {
@@ -36,6 +37,11 @@ axiosInstance.interceptors.response.use(
             );
             return await axiosInstance(originalRequest);
           }
+        } else {
+          window.localStorage.removeItem("user");
+          window.localStorage.removeItem("accessToken");
+          store.dispatch(logout());
+          toast.error("Session expired.");
         }
       }
       if (error.response?.data.accessToken === "") {

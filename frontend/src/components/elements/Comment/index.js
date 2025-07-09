@@ -5,8 +5,6 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import ThemeContext from "@context/theme";
 
-import getImageSrc from "@helpers/imageSrc";
-
 import EditComment from "./edit";
 
 import { CommentContent } from "./styles";
@@ -51,9 +49,8 @@ const Comment = ({ comment, history, comments, setComments }) => {
     liked: comment.votes.likes.includes(user?.id),
     disliked: comment.votes.dislikes.includes(user?.id),
   });
-  const background = `http://localhost:4000/uploads/${
-    comment.author.background?.split("\\")[1]
-  }`;
+
+  const background = comment.author.background;
 
   useEffect(() => {
     setCommentHeight(commentRef.current.offsetHeight);
@@ -169,10 +166,7 @@ const Comment = ({ comment, history, comments, setComments }) => {
     <Container background={background}>
       <Background mode={mode}>
         <AvatarContainer>
-          <Avatar
-            src={getImageSrc(comment.author.avatar, "avatar")}
-            onClick={redirectToProfile}
-          />
+          <Avatar src={comment.author.avatar} onClick={redirectToProfile} />
         </AvatarContainer>
         <Head>
           <Info>

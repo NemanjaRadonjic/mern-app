@@ -4,7 +4,7 @@ import { Route, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const user = window.localStorage.getItem("user"); // needs a fix
+  const user = window.localStorage.getItem("user");
   return (
     <Route
       {...rest}

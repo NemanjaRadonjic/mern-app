@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDebouncedCallback } from "use-debounce";
 import axios from "@axios";
-import getImageSrc from "@helpers/imageSrc";
 import { v4 as uuid } from "uuid";
 import useLoader from "@hooks/useLoader";
 import { Loader } from "@styles/common";
@@ -104,11 +103,9 @@ function Searchbar() {
             className="text-align__center"
             to={`/user/${user.username}`}
           >
-            <BackgroundContainer
-              backgroundImageUrl={getImageSrc(user.background, "background")}
-            >
+            <BackgroundContainer backgroundImageUrl={user.background}>
               <LinkContainer>
-                <Avatar src={getImageSrc(user.avatar)} />
+                <Avatar src={user.avatar} />
                 <Username>{user.username}</Username>
               </LinkContainer>
             </BackgroundContainer>
